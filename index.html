@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LCARS // TNG Trivia Challenge</title>
+<link href="https://fonts.googleapis.com/css2?family=Michroma&family=Share+Tech+Mono&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --lcars-orange: #FF9900;
+    --lcars-tan: #FFCC99;
+    --lcars-peach: #FFAA66;
+    --lcars-red: #CC4444;
+    --lcars-red-bright: #FF3333;
+    --lcars-blue: #9999FF;
+    --lcars-blue-light: #CCCCFF;
+    --lcars-purple: #CC88FF;
+    --lcars-bg: #000000;
+    --lcars-panel: #111111;
+    --text-main: #FFFFFF;
+    --text-dim: #AAAAAA;
+    --correct: #33CC66;
+    --correct-bg: rgba(51, 204, 102, 0.12);
+    --wrong: #FF3333;
+    --wrong-bg: rgba(255, 51, 51, 0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--lcars-bg);
+    background-image: radial-gradient(ellipse at 30% 20%, rgba(255,153,0,0.04) 0%, transparent 50%),
+                      radial-gradient(ellipse at 70% 80%, rgba(153,153,255,0.04) 0%, transparent 50%);
+    min-height: 100vh;
+    font-family: 'Exo 2', sans-serif;
+    color: var(--text-main);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 12px 60px;
+  }
+
+  /* ── LCARS HEADER ── */
+  .lcars-header {
+    width: 100%;
+    max-width: 740px;
+    margin-bottom: 20px;
+  }
+
+  .lcars-top-bar {
+    display: flex;
+    align-items: stretch;
+    height: 72px;
+    margin-bottom: 4px;
+  }
+
+  .lcars-elbow {
+    width: 80px;
+    background: var(--lcars-orange);
+    border-radius: 36px 0 0 0;
+    flex-shrink: 0;
+  }
+
+  .lcars-top-segments {
+    flex: 1;
+    display: flex;
+    gap: 4px;
+    padding-left: 4px;
+    align-items: stretch;
+  }
+
+  .lcars-seg {
+    height: 100%;
+    border-radius: 0 0 8px 8px;
+  }
+
+  .seg-1 { background: var(--lcars-orange); flex: 2; }
+  .seg-2 { background: var(--lcars-peach); flex: 1; border-radius: 0 20px 8px 8px; }
+  .seg-3 { background: var(--lcars-tan); flex: 3; }
+  .seg-4 { background: var(--lcars-blue); flex: 1; }
+  .seg-5 { background: var(--lcars-purple); flex: 2; border-radius: 0 20px 8px 8px; }
+
+  .lcars-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 4px;
+  }
+
+  .lcars-left-col {
+    width: 80px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .lcars-pill {
+    background: var(--lcars-orange);
+    height: 28px;
+    border-radius: 14px 0 0 14px;
+  }
+
+  .lcars-pill-blue {
+    background: var(--lcars-blue);
+    height: 28px;
+    border-radius: 14px 0 0 14px;
+  }
+
+  .lcars-title-content {
+    flex: 1;
+    padding: 8px 16px;
+    border-top: 2px solid rgba(255,153,0,0.2);
+    border-bottom: 2px solid rgba(255,153,0,0.2);
+  }
+
+  .lcars-label {
+    font-family: 'Michroma', sans-serif;
+    font-size: 0.6rem;
+    color: var(--lcars-orange);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  .lcars-main-title {
+    font-family: 'Michroma', sans-serif;
+    font-size: clamp(1.1rem, 4vw, 1.9rem);
+    color: var(--lcars-tan);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    line-height: 1.1;
+  }
+
+  .lcars-sub-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--lcars-blue-light);
+    letter-spacing: 2px;
+    margin-top: 2px;
+    opacity: 0.8;
+  }
+
+  .lcars-bottom-bar {
+    display: flex;
+    gap: 4px;
+    height: 16px;
+    padding-left: 84px;
+  }
+
+  .lcars-bottom-bar div { border-radius: 0 0 8px 8px; height: 100%; }
+  .bb1 { background: var(--lcars-orange); flex: 3; }
+  .bb2 { background: var(--lcars-red); flex: 1; }
+  .bb3 { background: var(--lcars-peach); flex: 2; }
+  .bb4 { background: var(--lcars-blue); flex: 4; }
+
+  /* ── PROGRESS ── */
+  .progress-container {
+    width: 100%;
+    max-width: 740px;
+    margin-bottom: 14px;
+    padding: 10px 14px;
+    border: 1px solid rgba(255,153,0,0.2);
+    border-radius: 4px;
+    background: rgba(255,153,0,0.04);
+  }
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .progress-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--lcars-orange);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .progress-score {
+    font-family: 'Michroma', sans-serif;
+    font-size: 0.85rem;
+    color: var(--lcars-tan);
+    letter-spacing: 2px;
+  }
+
+  .progress-bar-bg {
+    background: rgba(255,255,255,0.08);
+    border-radius: 2px;
+    height: 8px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(to right, var(--lcars-red), var(--lcars-orange), var(--lcars-tan));
+    border-radius: 2px;
+    transition: width 0.5s ease;
+    box-shadow: 0 0 8px rgba(255,153,0,0.5);
+  }
+
+  /* ── QUIZ CARD ── */
+  .quiz-card {
+    width: 100%;
+    max-width: 740px;
+    background: var(--lcars-panel);
+    border: 1px solid rgba(255,153,0,0.25);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(255,153,0,0.08), 0 0 60px rgba(0,0,0,0.5);
+  }
+
+  .card-header {
+    background: #0a0a0a;
+    border-bottom: 2px solid var(--lcars-orange);
+    padding: 0;
+    display: flex;
+  }
+
+  .card-header-left {
+    width: 60px;
+    background: var(--lcars-orange);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 14px 0;
+    gap: 4px;
+  }
+
+  .q-number {
+    font-family: 'Michroma', sans-serif;
+    font-size: 1.4rem;
+    color: #000;
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+
+  .q-of {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.55rem;
+    color: rgba(0,0,0,0.6);
+    letter-spacing: 1px;
+  }
+
+  .card-header-content {
+    flex: 1;
+    padding: 14px 16px;
+  }
+
+  .q-category {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--lcars-orange);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    opacity: 0.8;
+  }
+
+  .question-text {
+    font-family: 'Exo 2', sans-serif;
+    font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+    font-weight: 600;
+    color: var(--lcars-tan);
+    line-height: 1.45;
+  }
+
+  /* ── FEEDBACK BANNER ── */
+  .feedback-banner {
+    display: none;
+    padding: 9px 16px;
+    font-family: 'Michroma', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .feedback-banner.correct-bg {
+    display: block;
+    background: var(--correct-bg);
+    color: var(--correct);
+    border-bottom-color: rgba(51,204,102,0.3);
+  }
+
+  .feedback-banner.wrong-bg {
+    display: block;
+    background: var(--wrong-bg);
+    color: var(--wrong);
+    border-bottom-color: rgba(255,51,51,0.3);
+  }
+
+  /* ── CHOICES ── */
+  .choices-section {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: #0d0d0d;
+  }
+
+  .choice-btn {
+    background: rgba(255,153,0,0.05);
+    border: 1px solid rgba(255,153,0,0.2);
+    border-left: 4px solid var(--lcars-orange);
+    border-radius: 2px;
+    padding: 11px 14px;
+    text-align: left;
+    cursor: pointer;
+    font-family: 'Exo 2', sans-serif;
+    font-size: clamp(0.85rem, 2vw, 0.95rem);
+    font-weight: 600;
+    color: #ddd;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .choice-btn:hover:not(:disabled) {
+    background: rgba(255,153,0,0.12);
+    border-left-color: var(--lcars-tan);
+    color: var(--lcars-tan);
+    transform: translateX(3px);
+  }
+
+  .choice-letter {
+    font-family: 'Michroma', sans-serif;
+    font-size: 0.85rem;
+    color: var(--lcars-orange);
+    min-width: 18px;
+    letter-spacing: 1px;
+  }
+
+  .choice-btn.correct {
+    background: var(--correct-bg);
+    border-color: rgba(51,204,102,0.4);
+    border-left-color: var(--correct);
+    color: var(--correct);
+    box-shadow: 0 0 10px rgba(51,204,102,0.15);
+  }
+  .choice-btn.correct .choice-letter { color: var(--correct); }
+
+  .choice-btn.wrong {
+    background: var(--wrong-bg);
+    border-color: rgba(255,51,51,0.4);
+    border-left-color: var(--wrong);
+    color: var(--wrong);
+  }
+  .choice-btn.wrong .choice-letter { color: var(--wrong); }
+
+  .choice-btn.reveal-correct {
+    background: var(--correct-bg);
+    border-left-color: var(--correct);
+    color: var(--correct);
+    box-shadow: 0 0 12px rgba(51,204,102,0.2);
+    animation: revealPulse 0.4s ease;
+  }
+  .choice-btn.reveal-correct .choice-letter { color: var(--correct); }
+
+  @keyframes revealPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.01); }
+    100% { transform: scale(1); }
+  }
+
+  .choice-btn:disabled { cursor: default; transform: none !important; }
+
+  /* ── EXPLANATION ── */
+  .explanation {
+    display: none;
+    background: rgba(153,153,255,0.05);
+    border-top: 2px solid rgba(153,153,255,0.25);
+    padding: 14px 16px;
+    animation: slideDown 0.3s ease;
+  }
+
+  .explanation.show { display: block; }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .explanation-title {
+    font-family: 'Michroma', sans-serif;
+    font-size: 0.65rem;
+    color: var(--lcars-blue-light);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .explanation-title::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--lcars-blue);
+  }
+
+  .explanation-text {
+    font-size: 0.87rem;
+    font-weight: 400;
+    color: #bbb;
+    line-height: 1.6;
+    font-family: 'Exo 2', sans-serif;
+  }
+
+  /* ── NEXT BUTTON ── */
+  .next-btn-wrap {
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px 16px;
+    background: #0a0a0a;
+    border-top: 1px solid rgba(255,153,0,0.15);
+  }
+
+  .next-btn {
+    display: none;
+    background: transparent;
+    color: var(--lcars-orange);
+    border: 1px solid var(--lcars-orange);
+    border-radius: 2px;
+    padding: 10px 24px;
+    font-family: 'Michroma', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s;
+    box-shadow: 0 0 8px rgba(255,153,0,0.15);
+  }
+
+  .next-btn:hover {
+    background: rgba(255,153,0,0.12);
+    box-shadow: 0 0 16px rgba(255,153,0,0.3);
+    color: var(--lcars-tan);
+    border-color: var(--lcars-tan);
+  }
+
+  /* ── LCARS SIDE DECORATIONS ── */
+  .lcars-side-strip {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+    background: linear-gradient(to bottom,
+      var(--lcars-orange) 0%,
+      var(--lcars-orange) 20%,
+      transparent 20%,
+      transparent 22%,
+      var(--lcars-red) 22%,
+      var(--lcars-red) 35%,
+      transparent 35%,
+      transparent 37%,
+      var(--lcars-blue) 37%,
+      var(--lcars-blue) 60%,
+      transparent 60%,
+      transparent 62%,
+      var(--lcars-purple) 62%,
+      var(--lcars-purple) 80%,
+      transparent 80%
+    );
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  /* ── RESULTS ── */
+  #results-screen {
+    display: none;
+    width: 100%;
+    max-width: 740px;
+  }
+
+  .results-card {
+    background: var(--lcars-panel);
+    border: 1px solid rgba(255,153,0,0.25);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(255,153,0,0.08);
+  }
+
+  .results-header {
+    background: #0a0a0a;
+    border-bottom: 2px solid var(--lcars-orange);
+    padding: 20px 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .results-icon-col {
+    width: 60px;
+    background: var(--lcars-orange);
+    border-radius: 2px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.8rem;
+  }
+
+  .results-title-col { flex: 1; }
+
+  .results-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--lcars-orange);
+    letter-spacing: 3px;
+    margin-bottom: 4px;
+  }
+
+  .results-title {
+    font-family: 'Michroma', sans-serif;
+    font-size: clamp(1rem, 4vw, 1.5rem);
+    color: var(--lcars-tan);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .score-display {
+    background: #050505;
+    padding: 24px 16px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,153,0,0.15);
+  }
+
+  .score-number {
+    font-family: 'Michroma', sans-serif;
+    font-size: 3.5rem;
+    color: var(--lcars-orange);
+    letter-spacing: 6px;
+    text-shadow: 0 0 20px rgba(255,153,0,0.5);
+    display: block;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .score-pct {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1rem;
+    color: var(--lcars-blue-light);
+    letter-spacing: 3px;
+  }
+
+  .verdict {
+    padding: 20px 16px;
+    border-bottom: 1px solid rgba(255,153,0,0.1);
+  }
+
+  .verdict-text {
+    font-family: 'Michroma', sans-serif;
+    font-size: 1.1rem;
+    color: var(--lcars-tan);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .verdict-sub {
+    font-size: 0.88rem;
+    color: #999;
+    line-height: 1.6;
+  }
+
+  .breakdown {
+    padding: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .breakdown-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,153,0,0.15);
+    border-radius: 2px;
+    padding: 14px;
+    text-align: center;
+  }
+
+  .breakdown-num {
+    font-family: 'Michroma', sans-serif;
+    font-size: 2.4rem;
+    letter-spacing: 3px;
+    display: block;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .breakdown-num.c { color: var(--correct); text-shadow: 0 0 12px rgba(51,204,102,0.4); }
+  .breakdown-num.w { color: var(--wrong); }
+
+  .breakdown-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: #666;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .restart-btn {
+    display: block;
+    width: calc(100% - 32px);
+    margin: 0 16px 16px;
+    background: transparent;
+    color: var(--lcars-orange);
+    border: 1px solid var(--lcars-orange);
+    border-radius: 2px;
+    padding: 14px;
+    font-family: 'Michroma', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s;
+    box-shadow: 0 0 8px rgba(255,153,0,0.15);
+  }
+
+  .restart-btn:hover {
+    background: rgba(255,153,0,0.1);
+    box-shadow: 0 0 20px rgba(255,153,0,0.3);
+  }
+
+  .lcars-footer {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0.35;
+  }
+
+  .footer-line { width: 40px; height: 1px; background: var(--lcars-orange); }
+
+  .footer-text {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--lcars-orange);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+
+<div class="lcars-side-strip"></div>
+
+<!-- LCARS HEADER -->
+<div class="lcars-header">
+  <div class="lcars-top-bar">
+    <div class="lcars-elbow"></div>
+    <div class="lcars-top-segments">
+      <div class="lcars-seg seg-1"></div>
+      <div class="lcars-seg seg-2"></div>
+      <div class="lcars-seg seg-3"></div>
+      <div class="lcars-seg seg-4"></div>
+      <div class="lcars-seg seg-5"></div>
+    </div>
+  </div>
+  <div class="lcars-title-row">
+    <div class="lcars-left-col">
+      <div class="lcars-pill"></div>
+      <div class="lcars-pill-blue"></div>
+    </div>
+    <div class="lcars-title-content">
+      <div class="lcars-label">Starfleet Database // Classification: Recreation</div>
+      <div class="lcars-main-title">Star Trek: TNG</div>
+      <div class="lcars-sub-title">KNOWLEDGE ASSESSMENT · ALL 7 SEASONS · 100 QUERIES</div>
+    </div>
+  </div>
+  <div class="lcars-bottom-bar">
+    <div class="bb1"></div>
+    <div class="bb2"></div>
+    <div class="bb3"></div>
+    <div class="bb4"></div>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-container" id="progress-container">
+  <div class="progress-header">
+    <span class="progress-label" id="progress-label">Query 1 of 50</span>
+    <span class="progress-score" id="progress-score">Score: 0</span>
+  </div>
+  <div class="progress-bar-bg">
+    <div class="progress-bar-fill" id="progress-bar" style="width:0%"></div>
+  </div>
+</div>
+
+<!-- QUIZ CARD -->
+<div class="quiz-card" id="quiz-card">
+  <div class="card-header">
+    <div class="card-header-left">
+      <div class="q-number" id="q-number">01</div>
+      <div class="q-of">OF 100</div>
+    </div>
+    <div class="card-header-content">
+      <div class="q-category">// Starfleet Trivia Assessment</div>
+      <div class="question-text" id="question-text">Initializing...</div>
+    </div>
+  </div>
+
+  <div class="feedback-banner" id="feedback-banner"></div>
+  <div class="choices-section" id="choices-section"></div>
+
+  <div class="explanation" id="explanation">
+    <div class="explanation-title">Starfleet Database Entry</div>
+    <div class="explanation-text" id="explanation-text"></div>
+  </div>
+
+  <div class="next-btn-wrap">
+    <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Query //</button>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="results-screen">
+  <div class="results-card">
+    <div class="results-header">
+      <div class="results-icon-col" id="results-icon">★</div>
+      <div class="results-title-col">
+        <div class="results-label">// Assessment Complete</div>
+        <div class="results-title" id="results-title">Final Analysis</div>
+      </div>
+    </div>
+    <div class="score-display">
+      <span class="score-number" id="final-score">0 / 50</span>
+      <div class="score-pct" id="final-pct">Calculating...</div>
+    </div>
+    <div class="verdict">
+      <div class="verdict-text" id="verdict-title">Starfleet Assessment</div>
+      <div class="verdict-sub" id="verdict-sub"></div>
+    </div>
+    <div class="breakdown">
+      <div class="breakdown-item">
+        <span class="breakdown-num c" id="final-correct">0</span>
+        <span class="breakdown-label">Confirmed</span>
+      </div>
+      <div class="breakdown-item">
+        <span class="breakdown-num w" id="final-wrong">0</span>
+        <span class="breakdown-label">Incorrect</span>
+      </div>
+    </div>
+    <button class="restart-btn" onclick="restartQuiz()">// Re-Initialize Assessment</button>
+  </div>
+</div>
+
+<div class="lcars-footer">
+  <div class="footer-line"></div>
+  <div class="footer-text">LCARS v47.2 // USS Enterprise NCC-1701-D // SD 47634.4</div>
+  <div class="footer-line"></div>
+</div>
+
+<script>
+const questions = [
+  {
+    q: "In 'The Inner Light,' what instrument does Picard learn to play during his lifetime on Kataan?",
+    choices: ["Vulcan lute", "Ressikan flute", "Bajoran clarinet", "Terran ocarina"],
+    answer: 1,
+    explain: "The Ressikan flute — named after the village of Ressik on Kataan — becomes one of Picard's most treasured possessions. He carries it for the rest of the series. When Picard awakens, the probe contains only the flute, a physical artifact of a 25-year lifetime that lasted less than 30 minutes in real time."
+  },
+  {
+    q: "What name do the Borg give Picard when he is assimilated in 'The Best of Both Worlds'?",
+    choices: ["Archon of Borg", "Magnus of Borg", "Locutus of Borg", "Primus of Borg"],
+    answer: 2,
+    explain: "Locutus of Borg — from the Latin 'one who has spoken' — was chosen as a spokesman to facilitate humanity's assimilation. The Borg believed that having a human voice for their message would make resistance futile. They were nearly right: Locutus led the Battle of Wolf 359, destroying 39 starships and killing 11,000 people."
+  },
+  {
+    q: "In 'The Measure of a Man,' who is legally assigned to argue that Data is Starfleet property — a role he finds deeply uncomfortable?",
+    choices: ["Counselor Troi", "Commander Riker", "Geordi La Forge", "Captain Louvois"],
+    answer: 1,
+    explain: "Riker is compelled to prosecute the case against Data because no other qualified officer is available. His argument that Data is a machine — demonstrated by removing Data's hand and switching him off — is devastatingly effective and nearly costs Data his personhood."
+  },
+  {
+    q: "What planet was Data discovered on, the site of a destroyed Federation colony?",
+    choices: ["Terlina III", "Omicron Theta", "Veridian IV", "Exo III"],
+    answer: 1,
+    explain: "Omicron Theta — a Federation colony rendered lifeless by the Crystalline Entity. Data was found buried there along with the notes and equipment of his creator, Dr. Noonian Soong. His brother Lore had been disassembled and stored there as well."
+  },
+  {
+    q: "What is the name of Data's cat, who appears throughout the series?",
+    choices: ["Mittens", "Spot", "Pixel", "Neutrino"],
+    answer: 1,
+    explain: "Spot is Data's orange tabby cat — a subject of Data's ongoing scientific fascination and occasional poetry. Despite Data's stated inability to feel affection, his relationship with Spot consistently suggests otherwise. Spot's gender famously changes between episodes without explanation."
+  },
+  {
+    q: "In 'Darmok,' what is the name of the Tamarian captain who attempts to forge a bond with Picard on El-Adrel IV?",
+    choices: ["Jalad", "Shaka", "Dathon", "Temba"],
+    answer: 2,
+    explain: "Dathon deliberately stranded himself and Picard together, armed with daggers, to create a shared experience — 'Darmok and Jalad at Tanagra' — through which the two species could finally communicate. Dathon's sacrifice, mortally wounded by the alien beast, ultimately succeeded."
+  },
+  {
+    q: "In 'Yesterday's Enterprise,' the Enterprise-C emerges from a temporal rift. It was fleeing which battle when it disappeared?",
+    choices: ["The Battle of Maxia", "The Battle of Narendra III", "The Setlik III Massacre", "Wolf 359"],
+    answer: 1,
+    explain: "The Enterprise-C was defending the Klingon outpost on Narendra III against a Romulan attack. That act of sacrifice — a Federation ship dying to protect Klingons — was the foundation of the Federation-Klingon alliance. Without it, the alternate timeline showed a Federation at war with the Klingon Empire."
+  },
+  {
+    q: "What is the name of Tasha Yar's half-Romulan daughter, who appears in later seasons as an antagonist?",
+    choices: ["Sela", "Vash", "Lursa", "Ro"],
+    answer: 0,
+    explain: "Sela was the daughter of the alternate timeline Tasha Yar — sent back on the Enterprise-C — and a Romulan general. When the young Tasha tried to escape with her four-year-old daughter, Sela cried out and revealed them. Tasha was executed. Sela grew up fully Romulan, denying her human heritage."
+  },
+  {
+    q: "Which species is Guinan, whose homeworld was completely destroyed by the Borg?",
+    choices: ["Betazoid", "El-Aurian", "Deltian", "Ocampan"],
+    answer: 1,
+    explain: "El-Aurians are a long-lived, widely travelled 'race of listeners.' The Borg destroyed their homeworld and scattered the survivors. Guinan is over 500 years old by TNG's era. Her unique relationship with Q — one of genuine mutual hostility — suggests a shared history that the show deliberately leaves unexplained."
+  },
+  {
+    q: "In 'Tapestry,' Q shows Picard what his life would have been like had he not been stabbed by the Nausicaan. What did that version of Picard become?",
+    choices: ["A brilliant but cold admiral", "A cautious, unremarkable junior science officer who never achieved command", "A celebrated diplomat rather than an explorer", "A Starfleet instructor at the Academy"],
+    answer: 1,
+    explain: "Without the recklessness that led to being stabbed — and the artificial heart and brush with mortality it produced — Picard became Lieutenant J.G. Picard, a cautious, competent but utterly forgettable astrophysics officer. Picard is horrified. Q's point: the passion, the daring, and the drive that made him extraordinary came from that moment."
+  },
+  {
+    q: "What is the name of Picard's family vineyard in France?",
+    choices: ["Domaine Picard", "Château Picard", "Clos du Capitaine", "Mas de la Fédération"],
+    answer: 1,
+    explain: "Château Picard, in the village of La Barre in the Burgundy region, has been in the Picard family for generations. Picard's brother Robert tends the vines and resents Jean-Luc's adventures among the stars. The vineyard features centrally in 'Family' and becomes the setting for Picard's first appearance in 'Star Trek: Picard.'"
+  },
+  {
+    q: "In 'The Survivors,' Kevin Uxbridge is revealed to be what type of being, the last of his kind?",
+    choices: ["A Q-like entity called a Douwd", "A shape-shifting Founder precursor", "An ancient Preserver construct", "A Traveler from another dimension"],
+    answer: 0,
+    explain: "A Douwd — 'an immortal being of disguise and false surroundings.' Kevin had lived as a human for decades, until the Husnock destroyed the colony and killed his wife Rishon. In a moment of grief and rage, he annihilated every Husnock in existence — 50 billion beings — with a single thought. He considers himself a murderer and cannot forgive himself."
+  },
+  {
+    q: "In 'The Drumhead,' which admiral conducts the increasingly paranoid investigation into supposed Romulan infiltration of the Enterprise?",
+    choices: ["Admiral Nechayev", "Admiral Quinn", "Admiral Norah Satie", "Admiral Haftel"],
+    answer: 2,
+    explain: "Admiral Norah Satie — daughter of a celebrated Federation jurist — begins as a legitimate investigator but descends into paranoid witch-hunting. Her unraveling comes when she accuses Picard himself of disloyalty. Picard's quiet response quoting her own father's words about freedom is one of the finest moments in the series."
+  },
+  {
+    q: "What species temporarily takes over the Enterprise in '11001001' by upgrading the holodeck, creating an irresistible simulation?",
+    choices: ["The Pakleds", "The Bynars", "The Sheliak", "The Edo"],
+    answer: 1,
+    explain: "The Bynars — cybernetically linked humanoids who operate exclusively in pairs and communicate in binary — needed to borrow the Enterprise's computer core to save their home system. They created the holodeck character Minuet to occupy Riker while Picard was distracted, but underestimated how much Riker would fall for her."
+  },
+  {
+    q: "What is the full name of Geordi's visual aid device, and what does the acronym stand for?",
+    choices: ["VISOR — Visual Instrument and Sensory Organ Replacement", "VISOR — Variable Infrared Sensor for Optical Reception", "VISOR — Visual Interface System for Organic Restoration", "VISOR — Visible-spectrum Instrument for Sensory Optical Relay"],
+    answer: 0,
+    explain: "Visual Instrument and Sensory Organ Replacement. Geordi's VISOR allows him to see across the full electromagnetic spectrum — from infrared to ultraviolet — but caused him chronic pain. In the TNG films he transitions to ocular implants. His VISOR's ability to be hijacked was also exploited by the Romulans in 'The Mind's Eye.'"
+  },
+  {
+    q: "In 'The Chase,' what do Picard and representatives of Klingon, Cardassian, and Romulan species discover at the end of a genetic puzzle?",
+    choices: ["A superweapon left by a precursor race", "A message from an ancient humanoid species that seeded life across the galaxy", "The location of a subspace relay used by all spacefaring species", "Proof that the Q Continuum created humanoid life as an experiment"],
+    answer: 1,
+    explain: "An ancient humanoid species — who existed before all current spacefaring civilizations — encoded a message into the DNA of every species they seeded. The holographic message explains they were lonely and hoped that one day their 'children' would find each other. It's the show's most profound statement about interconnectedness — and is immediately dismissed by the Klingon and Cardassian representatives."
+  },
+  {
+    q: "In 'Who Watches the Watchers,' which proto-Vulcan civilization accidentally witnesses Federation technology and begins to worship Picard as a god?",
+    choices: ["The Organians", "The Mintakans", "The Ligonians", "The Edo"],
+    answer: 1,
+    explain: "The Mintakans — a Vulcan-descended species who had developed past superstition into rational, Bronze Age culture — glimpsed Federation anthropologists and Federation medicine. Their belief system began to regress back toward religious worship of 'The Picard.' Picard is horrified, considering the rekindling of superstition one of the greatest harms the Federation could cause."
+  },
+  {
+    q: "In 'Cause and Effect,' the Enterprise is caught in a temporal causality loop. Which ship, missing for 90 years, emerges from the anomaly and causes the collision?",
+    choices: ["USS Defiant", "USS Bozeman", "USS Pegasus", "USS Jenolan"],
+    answer: 1,
+    explain: "The USS Bozeman, a Soyuz-class vessel under Captain Morgan Bateson, had been trapped in the loop for 90 years — though from their perspective, no time had passed at all. The crew experienced only a single moment repeating. Ironically, Bateson's crew had no idea anything unusual had happened until after Data saved them both."
+  },
+  {
+    q: "What is Reg Barclay's mocking nickname, used behind his back by the Enterprise crew?",
+    choices: ["Barclay the Broken", "Lieutenant Broccoli", "Reg the Recluse", "Holodeck Harry"],
+    answer: 1,
+    explain: "Lieutenant Broccoli — accidentally repeated to Barclay's face by Picard, who had been told to remember the name so he wouldn't use it. Barclay's social anxiety and holodeck addiction made him an outcast, though he eventually becomes one of the franchise's most beloved recurring characters."
+  },
+  {
+    q: "In 'Relics,' which original series character is found alive, having suspended himself in a transporter buffer for 75 years?",
+    choices: ["Dr. Leonard McCoy", "Hikaru Sulu", "Montgomery Scott", "Pavel Chekov"],
+    answer: 2,
+    explain: "Montgomery 'Scotty' Scott had routed his pattern through the transporter of the crashed USS Jenolan and locked it in a diagnostic loop. He waited 75 years for rescue. His emotional reconciliation with being obsolete — and a beautiful scene on a holodeck recreation of the original Enterprise — makes 'Relics' one of TNG's most poignant hours."
+  },
+  {
+    q: "In 'The Next Phase,' which two crew members are accidentally rendered out of phase by a Romulan cloaking experiment?",
+    choices: ["Worf and Troi", "Data and Crusher", "Ro Laren and Geordi La Forge", "Riker and O'Brien"],
+    answer: 2,
+    explain: "Ro and Geordi pass through solid matter, cannot be seen or heard, and are presumed dead. They discover a Romulan operative also trapped in the phased state — who intends to destroy the Enterprise. The episode also significantly develops Ro Laren's character, touching on her Bajoran faith in the afterlife."
+  },
+  {
+    q: "What is the name of Worf's half-human son, who comes to live aboard the Enterprise in Season 4?",
+    choices: ["Mogh", "K'Tar", "Alexander", "Toq"],
+    answer: 2,
+    explain: "Alexander Rozhenko — son of Worf and the Federation Ambassador K'Ehleyr — is sent to live with Worf aboard the Enterprise after K'Ehleyr's murder by Duras. Their difficult relationship, with Worf struggling to balance Klingon expectations against his son's more human temperament, runs through several episodes."
+  },
+  {
+    q: "K'Ehleyr, Alexander's mother and Worf's mate, is killed by which Klingon political figure?",
+    choices: ["Gowron", "Torak", "Duras", "K'mpec"],
+    answer: 2,
+    explain: "Duras killed K'Ehleyr in 'Reunion' to prevent her from revealing that it was his father Ja'rod — not Worf's father Mogh — who betrayed the Klingons at Khitomer. Worf exercised his right of vengeance and killed Duras in single combat, which Picard officially reprimanded him for."
+  },
+  {
+    q: "In 'Sins of the Father,' why does Worf accept discommendation — public dishonor — from the Klingon High Council?",
+    choices: ["To protect his brother Kurn from a blood feud", "To preserve the stability of the Empire, which would fracture if the truth about Duras's father were revealed", "To spare Picard from having to testify against the Council", "To gain access to classified Klingon battle records"],
+    answer: 1,
+    explain: "The evidence cleared Worf's father Mogh — it was Duras's father Ja'rod who betrayed Khitomer to the Romulans. But Duras's family was too politically powerful; exposing the truth would cause civil war. Worf accepted dishonor to preserve the Empire. Picard stood beside him as his Cha'DIch — his champion — in one of the series' most powerful gestures of loyalty."
+  },
+  {
+    q: "In 'Elementary, Dear Data,' which holodeck character becomes genuinely self-aware and threatens the ship — then returns in 'Ship in a Bottle'?",
+    choices: ["Sherlock Holmes", "Irene Adler", "Professor James Moriarty", "Inspector Lestrade"],
+    answer: 2,
+    explain: "Geordi accidentally commanded the computer to create a holodeck villain capable of defeating Data — which meant Moriarty had to become self-aware. In 'Ship in a Bottle,' he creates a simulation-within-a-simulation and nearly escapes into the real world. Ultimately, Picard leaves him in a running simulation, living a full life — forever. Or until the power fails."
+  },
+  {
+    q: "What holodeck simulation does Picard most frequently use for recreation throughout the series?",
+    choices: ["A Klingon calisthenics program", "Dixon Hill, 1940s San Francisco private detective", "Robin Hood and Sherwood Forest", "A quiet vineyard in France"],
+    answer: 1,
+    explain: "Dixon Hill is Picard's alter ego — a hardboiled 1940s San Francisco private detective. The holodeck adventure serves as both escapism and a recurring source of plot complications when holodeck safety protocols fail. Patrick Stewart's delight playing the character is evident in every scene."
+  },
+  {
+    q: "In 'The Offspring,' Data creates an android child. What does the child ultimately choose regarding its android form?",
+    choices: ["To remain android indefinitely", "To transfer her consciousness into a female human form", "To become one with the ship's computer", "To choose a female android body, naming herself Lal"],
+    answer: 3,
+    explain: "Lal — Hindi for 'beloved' — chose a female human-appearing android form from a selection of options. She surpassed Data's abilities in one crucial respect: she developed the capacity to feel emotions. The cascade failure from those uncontrollable emotions ultimately killed her — but not before she told Data she loved him, something he still cannot say himself."
+  },
+  {
+    q: "In 'Data's Day,' Data serves as an observer and narrator of a typical day aboard the Enterprise. Whose wedding is being prepared?",
+    choices: ["Counselor Troi and Commander Riker", "Dr. Crusher and Captain Picard", "Keiko Ishikawa and Miles O'Brien", "Guinan and an unknown suitor"],
+    answer: 2,
+    explain: "The marriage of Keiko Ishikawa and Miles O'Brien — which nearly falls apart when Keiko gets cold feet — is the emotional backbone of 'Data's Day.' The episode also features a Romulan defection subplot, but it's best remembered for O'Brien and Keiko's wedding, which launched their partnership into DS9."
+  },
+  {
+    q: "What causes Counselor Troi to temporarily lose her empathic abilities in 'The Loss'?",
+    choices: ["Exposure to a Romulan neural weapon", "A field of two-dimensional creatures attached to the Enterprise's hull", "An experimental Betazoid suppression drug", "Proximity to a dark matter nebula"],
+    answer: 1,
+    explain: "Two-dimensional lifeforms — creatures so flat they existed in only two spatial dimensions — were clinging to the hull and somehow blocking Troi's empathic sense. The episode uses Troi's vulnerability as an exploration of identity: who is she without her abilities? The answer is satisfying — she's still a skilled counselor and officer."
+  },
+  {
+    q: "In 'Unification,' Spock has traveled secretly to Romulus to pursue what goal?",
+    choices: ["Assassinating the Romulan Praetor", "Working toward a reunification movement between Romulans and Vulcans", "Recovering stolen Federation cloaking technology", "Making contact with a Romulan underground resistance"],
+    answer: 1,
+    explain: "Spock believed a genuine peace and eventual reunification between the Romulan and Vulcan peoples — who share common ancestry — was achievable. The Romulans exploited his idealism as cover for a planned invasion of Vulcan. Spock's scene with Picard, mindmelding to experience Sarek's memories, is among the most emotional in TNG."
+  },
+  {
+    q: "What is the name of the ancient, powerful alien in 'Deja Q' who is stripped of his powers by the Q Continuum and deposited on the Enterprise?",
+    choices: ["No new character — Q himself loses his powers", "Guinan's ancient adversary", "A rogue member of the Metron species", "An unnamed Continuum exile"],
+    answer: 0,
+    explain: "Q himself is stripped of his powers and becomes human — mortal, vulnerable, and terrified. Dropped naked on the Enterprise bridge, he is forced to confront existence without omnipotence. His eventual restoration comes after a genuine act of self-sacrifice. It's the definitive Q episode — funny, moving, and genuinely revealing about his character."
+  },
+  {
+    q: "In 'The Drumhead,' Picard quotes a famous maxim about the fragility of rights. Whose words does he cite to rebuke Admiral Satie?",
+    choices: ["Picard's own Academy thesis on justice", "Admiral Satie's own father, a celebrated Federation jurist", "Surak of Vulcan's writings on civil society", "The Federation Charter's preamble"],
+    answer: 1,
+    explain: "Picard quotes Admiral Aaron Satie — Norah's own father — whose writings on civil liberties and the dangers of sacrificing freedom for security were foundational Federation texts. Being confronted with her father's words destroys Norah Satie's composure entirely. Her subsequent rage discredits her before the entire assembled court."
+  },
+  {
+    q: "In 'Frame of Mind,' Riker struggles to determine which reality is real — the Enterprise or an alien psychiatric institution. Which species actually abducted him?",
+    choices: ["The Tilonians", "The Angosians", "The Ktarians", "The Romulans"],
+    answer: 0,
+    explain: "The Tilonians of Tilonus IV abducted Riker and used a psychotricorder to probe his mind — fracturing his sense of reality so thoroughly that he couldn't tell which version of his life was real. The episode is TNG's most effective psychological horror, with Riker literally tearing apart his own reality piece by piece."
+  },
+  {
+    q: "In 'Birthright,' what does Data experience for the first time when an alien device accidentally activates something in his positronic brain?",
+    choices: ["Pain", "Fear", "Dreams", "Love"],
+    answer: 2,
+    explain: "Data begins to dream — and his dreams initially appear as visions of Dr. Soong as a blacksmith, with a bird representing Data's own emerging unconscious. The episode explores whether dreaming is evidence of a soul, and Data — with characteristic precision — begins to document and analyze his dreams the moment he wakes."
+  },
+  {
+    q: "What is the name of the Cardassian/Federation armistice zone that becomes a flashpoint in later TNG seasons?",
+    choices: ["The Neutral Zone", "The Demilitarized Zone", "The Badlands", "The Borderland"],
+    answer: 1,
+    explain: "The Demilitarized Zone was established by the Federation-Cardassian Treaty, which ceded several Federation colony worlds to Cardassian control. The colonists who refused to leave formed the Maquis — a resistance movement that became central to both late TNG and DS9."
+  },
+  {
+    q: "In 'Remember Me,' Dr. Crusher finds herself in a shrinking universe where people keep disappearing and only she remembers them. What is actually happening?",
+    choices: ["She is trapped inside a warp bubble created by Wesley's experiment", "She is experiencing a Betazoid empathic resonance event", "A Romulan cloaking device has isolated her section of the ship", "She has been displaced into a pocket dimension by a spatial anomaly"],
+    answer: 0,
+    explain: "Wesley's warp field experiment created a static warp bubble that accidentally formed around Dr. Crusher, trapping her in a universe defined by her own thoughts at the moment of entrapment. The universe contracted around her fears. The Traveler helps Wesley reach into the bubble to retrieve her in one of the series' most clever sci-fi premises."
+  },
+  {
+    q: "What is the name of the Enterprise's ship's counselor's mother — a full Betazoid telepath and Federation ambassador famous for her extravagant personality?",
+    choices: ["Lwaxana Troi", "Deanna Troi's mother has no given name in the series", "Jasmine Troi", "Maribel Troi"],
+    answer: 0,
+    explain: "Lwaxana Troi, Daughter of the Fifth House, Holder of the Sacred Chalice of Rixx, Heir to the Holy Rings of Betazed — and one of TNG's most scene-stealing recurring characters. Played by Majel Barrett, she pursues Picard relentlessly across multiple episodes and has a surprisingly poignant side explored in later seasons."
+  },
+  {
+    q: "In 'The Perfect Mate,' Picard falls in love with a Kriosian empath being delivered as a peace offering. What makes her unique and ultimately tragic?",
+    choices: ["She is a metamorph — she permanently bonds to the consciousness of the first man she loves at the moment of final empathic bonding", "She is a time traveler who knows she must complete her mission", "She is dying and the peace treaty is the only thing that can save her species", "She has been telepathically bonded to someone who died, and Picard resembles him"],
+    answer: 0,
+    explain: "Kamala is a metamorph — an extremely rare empath who permanently bonds to the ideal of the man she is with at the moment of final bonding. She bonds with Picard's values, intellect, and idealism — not the Kriosian ambassador she was intended for. She goes through with the marriage, but she will spend the rest of her life as Picard's perfect match, married to another man."
+  },
+  {
+    q: "In 'Schisms,' crew members are found suffering from unexplained fatigue and physical modifications. What is being done to them?",
+    choices: ["Q is running a medical experiment without consent", "Aliens from another dimension are abducting crew members while they sleep and conducting experiments", "A subspace rift is displacing crew members into a pocket universe", "A Romulan weapon is affecting their neurology"],
+    answer: 1,
+    explain: "Solanagen-based lifeforms from a tertiary subspace domain were abducting crew members during sleep and conducting surgical experiments. The alien environment was reconstructed through recovered memories in a holodeck session — one of TNG's creepiest scenes, with crew members unknowingly collaborating to recreate the place of their own violation."
+  },
+  {
+    q: "What is the central moral dilemma of 'I, Borg' — when the crew captures an injured Borg drone?",
+    choices: ["Whether to return the drone to the Collective against its will", "Whether to use the drone as a vector to introduce a potentially genocidal program into the Borg Collective", "Whether a Borg drone can legally be held as a prisoner of war", "Whether to reveal to the drone that his memories of individuality were deleted"],
+    answer: 1,
+    explain: "The crew debates using the drone — who they name Hugh — as a carrier for a self-propagating paradox that would destroy the Borg Collective. Picard initially supports the plan. Hugh's individuality emerges during his time on the Enterprise, and Picard ultimately cannot send a person — which Hugh has become — to his death as a weapon. The decision has massive unintended consequences."
+  },
+  {
+    q: "In 'Sarek,' the elderly Vulcan ambassador is suffering from Bendii Syndrome. How does his emotional breakdown affect those around him?",
+    choices: ["His telepathic projections cause crew members to experience his repressed emotions", "He begins openly weeping, which causes Vulcans on the ship to break emotional control", "His failing mental shields allow his mind to merge with the ship's computer", "Nearby non-Vulcans begin displaying Vulcan emotional suppression involuntarily"],
+    answer: 0,
+    explain: "Bendii Syndrome causes a loss of emotional control in Vulcans — catastrophic for a species that suppresses all emotion. Sarek's projected emotions cause crew members to erupt in inexplicable anger and violence. Picard undergoes a mindmeld with Sarek to temporarily give him Picard's emotional stability — experiencing 80 years of suppressed Vulcan grief and love in return."
+  },
+  {
+    q: "What discovery does Picard make about the Dixon Hill novels in 'The Big Goodbye' that delights him?",
+    choices: ["A new Dixon Hill story has been found that was thought lost", "The holodeck can now render the 1940s San Francisco setting in perfect period detail, including interactive characters", "The author of the Dixon Hill novels was actually a Vulcan living on Earth", "Dixon Hill was based on a real historical figure"],
+    answer: 1,
+    explain: "The holodeck's updated historical databases allow it to render 1940s San Francisco with extraordinary fidelity — interactive characters who believe themselves real, period-accurate dialogue, and a fully immersive mystery. The trouble begins when the holodeck malfunctions and the characters start to realize they are fictional."
+  },
+  {
+    q: "In 'The Ensigns of Command,' Data must convince a human colony to evacuate their world — which the Sheliak Corporate claim under an ancient treaty. What does Data ultimately do to convince the stubborn colonists to leave?",
+    choices: ["He destroys their irrigation system to show how serious the threat is", "He threatens to call Starfleet and have them removed by force", "He uses his android strength to demolish part of the colony infrastructure as a demonstration of Sheliak capability", "He takes control of the colony's computer and locks them out until they agree"],
+    answer: 2,
+    explain: "After failing repeatedly to persuade the colonists with words, Data destroys part of their aqueduct — the most valuable piece of infrastructure they've built. It's a cold but rational calculation: make the threat real and immediate through a controlled demonstration, or the Sheliak will make it real and fatal. It works."
+  },
+  {
+    q: "In 'Parallels,' Worf experiences sudden shifts between parallel quantum realities. What triggers the transitions?",
+    choices: ["His bat'leth, which has been exposed to a temporal anomaly", "A quantum fissure in the space-time continuum, which Worf disrupts", "His communicator badge, altered by a Romulan weapon", "A Betazoid empathic resonance field tied to his son Alexander"],
+    answer: 1,
+    explain: "A quantum fissure was the source, and Worf's shuttlecraft had passed through it, making him a focal point for quantum reality shifts. Each timeline shows small variations — paintings, tournament rankings, his relationship with Troi — until the realities begin collapsing together and millions of Enterprise variants emerge from the fissure simultaneously."
+  },
+  {
+    q: "What is the Borg Queen's primary role in 'Star Trek: First Contact,' and which TNG character does she attempt to seduce and corrupt?",
+    choices: ["She attempts to assimilate Picard again through Locutus; she seduces Riker", "She attempts to alter history by assimilating Earth in 2063; she seduces Data by giving him human skin", "She attempts to destroy the Phoenix warp ship; she uses Troi as a puppet", "She attempts to access Starfleet's defense codes through Picard's link to the Collective"],
+    answer: 1,
+    explain: "The Borg Queen grafted human skin onto Data's arm — giving him genuine organic sensation for the first time — and offered him full humanity in exchange for his cooperation in assimilating Earth during first contact. Data appeared to betray Picard, but had been stalling. His resistance and ultimate destruction of the Queen resolves the film's central tension."
+  },
+  {
+    q: "In 'Lower Decks,' the episode focuses on four junior officers. One of them volunteers for a dangerous mission that ends in her death. Who is this character?",
+    choices: ["Ensign Alyssa Ogawa", "Ensign Sito Jaxa", "Ensign Taurik", "Ensign Sam Lavelle"],
+    answer: 1,
+    explain: "Ensign Sito Jaxa — one of the Nova Squadron cadets from 'The First Duty' who witnessed Wesley Crusher's cover-up — had worked hard to redeem herself. Picard gave her a second chance and a dangerous covert mission to help a Cardassian informant escape. She was killed. Her death, reported in a quiet line of dialogue, is devastating precisely because the episode made us care about her."
+  },
+  {
+    q: "What recurring psychological condition does Lt. Worf invoke by challenging Captain Jellico's authority in 'Chain of Command'?",
+    choices: ["Nothing — Worf is relieved of duty immediately", "His right of Mok'bara — Klingon warrior's exemption from chain of command", "Nothing formal, but Jellico transfers him to a different ship", "He invokes Article 14, Section 31 of the Starfleet charter"],
+    answer: 2,
+    explain: "Jellico transferred Worf off the bridge — replacing him with Riker as conn officer — after Worf too openly expressed support for Riker's approach. It's a brief moment that illustrates Jellico's style: efficient, confrontational, and intolerant of any questioning of his command. The 'Chain of Command' two-parter remains one of TNG's darkest and most critically acclaimed stories."
+  },
+  {
+    q: "In 'The First Duty,' Wesley Crusher's elite flight team 'Nova Squadron' attempts to cover up a cadet's death. What maneuver caused the accident?",
+    choices: ["A high-warp slingshot maneuver banned by Starfleet", "A banned Kolvoord Starburst, a multi-ship plasma trail ignition maneuver", "An illegal atmospheric entry pattern at warp speed", "An unrehearsed formation dive near Jupiter Station"],
+    answer: 1,
+    explain: "The Kolvoord Starburst — five ships flying in close formation and igniting their plasma trails simultaneously — had been banned by Starfleet for decades after killing all five members of the last team to attempt it. Nova Squadron planned to perform it at graduation to impress the crowd. Cadet Joshua Albert died. Picard's confrontation with Wesley, demanding he tell the truth, is one of the series' great moral moments."
+  },
+  {
+    q: "What is the name of the godlike entity encountered in 'Where No One Has Gone Before,' who is able to make thoughts instantly real?",
+    choices: ["The Traveler", "The Caretaker", "The Watcher", "The Navigator"],
+    answer: 0,
+    explain: "The Traveler — a being of pure thought from Tau Alpha C — was disguised as an assistant to the Enterprise's warp specialist. He recognized Wesley Crusher as extraordinarily gifted, a potential being of pure thought like himself. He later returns in 'Remember Me' and 'Journey's End,' eventually taking Wesley beyond the boundaries of conventional space and time."
+  },
+  {
+    q: "In 'All Good Things...' — the series finale — Picard jumps between three time periods. The spatial anomaly in the Devron system threatens all life on Earth because of which paradox?",
+    choices: ["The anomaly was created by Picard's own actions across three timelines", "The anomaly was a Borg weapon triggered by Picard's temporal displacement", "The Q Continuum was testing whether humanity would destroy itself through hubris", "A supernova in the future sent shockwaves backward through time"],
+    answer: 0,
+    explain: "The anomaly existed in all three time periods simultaneously and was caused by three separate anti-time eruptions — each created by Picard using the Farpoint Relay in each era. The paradox: the anomaly was created by the attempt to scan for it. Q called it 'the ultimate test of whether humanity can expand its mind and see the universe fresh.' Picard's realization, and his explanation to the crew at the poker table, closes the series perfectly."
+  },
+  {
+    q: "In 'Encounter at Farpoint,' Q puts humanity on trial. What specific charge does he level against the human race?",
+    choices: ["Warmongering and territorial aggression", "Being a grievously savage child-race", "Technological advancement without moral development", "Repeated violation of the Prime Directive"],
+    answer: 1,
+    explain: "Q charges humanity as 'a grievously savage child-race' — barbaric, savage, and not yet ready to venture beyond their home star. Picard accepts the charge in principle but argues humanity has changed. Q remains unconvinced, and his 'trial' becomes the framing device for the entire series."
+  },
+  {
+    q: "What is the name of Picard's artificial heart, and why does he have one?",
+    choices: ["He was born with a congenital defect repaired at the Academy", "He was stabbed through his original heart by a Nausicaan during a bar fight in his youth", "A Cardassian disruptor destroyed his heart during the Border Wars", "His heart was destroyed in the Borg assimilation process"],
+    answer: 1,
+    explain: "As a young, brash ensign, Picard laughed when he was stabbed through the heart by a Nausicaan during a fight he had provoked. The incident gave him his artificial heart and, as Q later reveals in 'Tapestry,' the brush with mortality that transformed his character from reckless youth into the captain we know."
+  },
+  {
+    q: "In 'A Matter of Honor,' Riker participates in an officer exchange program and serves aboard a Klingon vessel. What is the name of that ship's captain?",
+    choices: ["Kargan", "Klag", "Koloth", "Korris"],
+    answer: 0,
+    explain: "Captain Kargan commands the IKS Pagh — a suspicious, aggressive commander who becomes convinced the Enterprise has deliberately infected his ship with hull-eating bacteria. Riker's loyalty is tested when Kargan orders an attack on the Enterprise, and Riker uses a device Worf gave him to defuse the situation without violating his obligations to either ship."
+  },
+  {
+    q: "In 'The Defector,' a Romulan admiral defects to the Federation with information about an alleged military buildup on Nelvana III. What is his real identity, hidden from him until the episode's climax?",
+    choices: ["He is actually a Romulan intelligence operative running a deliberate deception", "He is a decorated war hero named Admiral Alidar Jarok, sent as an unwitting pawn", "He is a holographic construct designed to infiltrate Federation systems", "He is a shapeshifting Changeling testing Federation response protocols"],
+    answer: 1,
+    explain: "Admiral Alidar Jarok — a celebrated Romulan war hero who genuinely believed the buildup was real — was fed false information by Romulan intelligence specifically to test Federation response. When Romulan warbirds decloak around the Enterprise and Jarok realizes he was deceived, he takes his own life rather than face the dishonor of defection for nothing."
+  },
+  {
+    q: "What is the name of the Klingon who serves briefly as Worf's first officer when Worf temporarily commands a Bird of Prey, and who loses his arm in battle?",
+    choices: ["Toq", "Klag", "Mogh", "Gowron"],
+    answer: 1,
+    explain: "Klag — second officer of the IKS Pagh in 'A Matter of Honor' — lost his arm in battle and refused a replacement because his father died a coward, and Klag would not dishonor his own body with the arm of a coward. He reappears in DS9 and the novels as a major character. His refusal of a prosthetic is one of TNG's sharper statements about Klingon honor culture."
+  },
+  {
+    q: "In 'Hollow Pursuits,' Reg Barclay has created holodeck versions of the senior staff. What holodeck character does he model after Troi?",
+    choices: ["A goddess of empathy on a throne", "A swashbuckling pirate queen", "A medieval princess he rescues", "A Starfleet admiral who admires him"],
+    answer: 0,
+    explain: "Troi is rendered as 'the Goddess of Empathy' in Barclay's holodeck fantasy — seated on a throne, admiring him. Troi's reaction when she discovers this, unlike Riker's anger, is professional and measured: she correctly identifies it as a symptom of isolation and loneliness, not malice."
+  },
+  {
+    q: "In 'Allegiance,' Captain Picard is abducted and replaced by an alien replica while the real Picard is imprisoned with three others. Who are his fellow prisoners?",
+    choices: ["A Bolian, a Chalnoth named Esoqq, and a Mizarian named Kova Tholl", "A Romulan, a Ferengi, and a Klingon youth", "Two Humans and a Vulcan cadet", "A Starfleet admiral, a Cardassian, and a Bajoran monk"],
+    answer: 0,
+    explain: "Picard's three cellmates represent a study in contrasting responses to captivity: the Chalnoth Esoqq is aggressive and violent, the Mizarian Kova Tholl is passively compliant, and a Bolian Starfleet cadet is frightened but cooperative. The unknown species conducting the experiment are studying how different life forms respond to imprisonment — Picard ultimately deduces the experiment and turns it back on their captors."
+  },
+  {
+    q: "In 'Family,' how does Picard's brother Robert respond to Jean-Luc's trauma following his Borg assimilation — specifically during the scene in the vineyard mud?",
+    choices: ["He offers a formal Starfleet counseling contact", "He embraces him silently as Jean-Luc breaks down", "They come to blows, and the fight breaks Picard's emotional walls and lets him finally grieve", "He tells Picard he should resign from Starfleet"],
+    answer: 2,
+    explain: "Robert and Jean-Luc's argument escalates to a physical fight in the mud of the vineyard — and it's exactly what Picard needed. As they help each other up, laughing and exhausted, Picard weeps and finally admits he needed help. It's the most emotionally raw scene in the series, and it required no alien threat, no spaceship, no plot — just two brothers."
+  },
+  {
+    q: "In 'Devil's Due,' a woman claims to be Ardra — the equivalent of a devil figure in Ventaxian mythology — and that she owns the planet under an ancient contract. How does Picard ultimately defeat her?",
+    choices: ["He proves she is a mortal con artist using a cloaked ship and technology to fake supernatural powers", "He invokes a Federation treaty that supersedes ancient planetary contracts", "He defeats her in ritual combat as the planet's champion", "He gets Q to intervene and expose her false claims"],
+    answer: 0,
+    explain: "Ardra was a highly skilled con artist using a cloaked vessel to simulate supernatural abilities — earthquake powers, shape-shifting into Picard himself, even the devil. Data, serving as arbitrator, allowed Picard to demonstrate exactly how each 'miracle' was technologically produced. Ardra is beamed to the brig, and the planet is freed from its ancient contract."
+  },
+  {
+    q: "What is the name of the Cardassian tailor on Deep Space Nine who appears briefly in TNG — a character later revealed to be a pivotal figure in Cardassian intelligence?",
+    choices: ["Garak", "Dukat", "Damar", "Tain"],
+    answer: 0,
+    explain: "Elim Garak — 'plain, simple Garak' — appears in 'The Wounded' as a background Cardassian contact before becoming one of DS9's most celebrated characters. His true identity as a former Obsidian Order operative is the great open secret of that series. His TNG appearance is brief but establishes the Cardassian-Federation relationship."
+  },
+  {
+    q: "In 'The Wounded,' Captain Maxwell of the USS Phoenix wages a private war against the Cardassians, convinced they are re-arming in violation of the peace treaty. Who is sent to stop him, and what is the emotional core of the episode?",
+    choices: ["Picard; the episode is about the Prime Directive's limits", "Picard and O'Brien; O'Brien's shared history with Maxwell on the Rutledge and his conflicted loyalties", "Riker; the episode is about Starfleet officers going rogue", "Data; the episode explores whether logic or emotion should guide diplomacy"],
+    answer: 1,
+    explain: "Chief O'Brien served under Maxwell on the USS Rutledge and was present at the Setlik III massacre — a Cardassian attack that killed many civilians. O'Brien understands Maxwell's rage viscerally. His choice to sing a song from their shared service — 'The Minstrel Boy' — to talk Maxwell down is one of the most quietly powerful moments O'Brien ever gets in TNG."
+  },
+  {
+    q: "What is the Tamarian language's fundamental structural problem that makes it initially impossible to translate?",
+    choices: ["It is entirely tonal and the UT cannot reproduce the tones accurately", "It is entirely composed of metaphorical references to events from their mythology — without knowing the stories, the words are meaningless", "It uses a base-7 mathematical structure incompatible with Federation linguistics algorithms", "It is spoken simultaneously on multiple subvocal frequencies the UT filters as noise"],
+    answer: 1,
+    explain: "The Tamarian language is entirely referential — every statement is a metaphor drawn from their shared mythology and history. 'Darmok and Jalad at Tanagra' means 'let us face a common enemy together.' Without knowing the stories, the Universal Translator can render the words but not their meaning. It's TNG's most elegant exploration of what language actually is."
+  },
+  {
+    q: "In 'Ethics,' Worf is paralyzed after an accident and demands the right to die with honor rather than live disabled. Which crew member refuses to perform a Klingon-assisted death ritual, and on what grounds?",
+    choices: ["Picard refuses, citing Federation law against assisted death", "Dr. Crusher refuses, citing her personal and medical ethics, despite Worf's right to choose", "Troi refuses, sensing Worf's true fear beneath the request", "Riker refuses, citing his role as Worf's son Alexander's protector"],
+    answer: 1,
+    explain: "Dr. Crusher's confrontation with Dr. Toby Russell — who performs experimental neurosurgery on Worf — is the episode's ethical spine. Crusher refuses to participate in the ritual death and opposes Russell's reckless medical gamble. Worf survives but Crusher's argument, that a doctor's duty is never to facilitate death, remains unresolved — Klingon law genuinely does permit this, and Beverly knows it."
+  },
+  {
+    q: "In 'Power Play,' three noncorporeal entities possess Troi, Data, and O'Brien and attempt to take over the Enterprise. Who or what do they claim to be, and what is the truth?",
+    choices: ["They claim to be Starfleet officers lost in the Mab-Bu VI system; they are actually convicted criminals imprisoned there", "They claim to be ancient Vulcan philosophers; they are actually Q-class entities", "They claim to be lost colonists; they are actually hostile life forms with no humanoid origin", "They claim to be the original crew of the Essex; they are ancient Betazoid war criminals"],
+    answer: 0,
+    explain: "They claimed to be the crew of the USS Essex, lost 200 years earlier. In truth, they were the criminals who had been imprisoned in the electromagnetic environment of Mab-Bu VI as an early form of penal confinement. The Essex's crew were their victims. Their possession of Data provides TNG's most frightening portrayal of Data as antagonist — cold, strategic, and utterly unstoppable."
+  },
+  {
+    q: "What critically important tactical advantage does the Enterprise use against the Borg in 'The Best of Both Worlds, Part II' — and why does it almost not work?",
+    choices: ["A modified deflector dish weapon; the Borg adapt before it can fire", "A feedback pulse through Locutus's connection to the Collective; it works because the Borg are regenerating and the command puts them to sleep", "A warp core overload; Riker is reluctant to destroy the ship and hesitates", "A spatial anomaly created by reversing the ship's shields; the Borg predict it"],
+    answer: 1,
+    explain: "Data accessed the Borg Collective through Locutus and implanted a regeneration command — putting the entire Collective into a sleep state during which the Cube self-destructed. It worked because the Collective's interconnectedness, their greatest strength, became their fatal vulnerability. The irony — that saving humanity required using the Borg's own unity against them — is the episode's masterstroke."
+  },
+  {
+    q: "In 'Half a Life,' Lwaxana Troi falls in love with a scientist named Timicin who is about to undergo his culture's mandatory death ritual at age 60. What is the Kaelon custom called?",
+    choices: ["The Final Sunset", "Resolution", "The Choosing", "Kaelos"],
+    answer: 1,
+    explain: "Resolution — the Kaelon ritual death at age 60 — exists to prevent the elderly from becoming a burden on their society. Lwaxana's passionate opposition to Timicin's acceptance of his own death forces him to temporarily break with his culture and request asylum, before ultimately choosing to return. It's a rare episode where Lwaxana is played entirely seriously and breaks your heart."
+  },
+  {
+    q: "What does the phrase 'The line must be drawn here' refer to, and in which film does Picard deliver it?",
+    choices: ["His refusal to sign the Cardassian armistice in the series finale", "His declaration against further Borg advancement in Star Trek: First Contact", "His refusal to allow Q to join the Enterprise crew", "His decision to destroy the Enterprise-D rather than allow Soran to access the Nexus"],
+    answer: 1,
+    explain: "In 'Star Trek: First Contact,' Picard refuses to retreat from the Borg — 'The line must be drawn here! This far, no further!' — channeling his Ahab-like obsession with the Borg before Lily Sloane forces him to confront that his vendetta has clouded his judgment. It's one of Patrick Stewart's finest moments and one of cinema's great speeches about the cost of hatred."
+  },
+  {
+    q: "In 'Conundrum,' the crew loses their memories and a false record inserts a new crew member named MacDuff as first officer. What does MacDuff actually want the Enterprise to do?",
+    choices: ["Destroy a Lysian Central Command, using the amnesiac crew who won't recognize the order as wrong", "Deliver a weapon to a Cardassian weapons depot", "Assassinate a Romulan senator the crew would otherwise refuse to target", "Defect to the Lysian Alliance with Starfleet tactical codes"],
+    answer: 0,
+    explain: "MacDuff was a Satarran — an enemy of the Lysians — who implanted false records to trick the Enterprise into destroying the Lysian Central Command, a target the crew would never attack if they knew what they were doing. Riker ultimately refuses the final order, sensing something is wrong, even without his memories."
+  },
+  {
+    q: "In 'The Nth Degree,' what transforms Reg Barclay from a timid, anxiety-prone lieutenant into a being of near-omniscient intelligence?",
+    choices: ["A Vulcan mind-meld performed by Ambassador Sarek", "Contact with an alien probe that interfaces with his brain and exponentially amplifies his neural activity", "Exposure to a quantum singularity that restructures his positronic pathways", "A series of holodeck sessions that gradually rewrite his neural patterns"],
+    answer: 1,
+    explain: "An alien probe from the Cytherian civilization made contact with Barclay during a shuttlecraft mission and interfaced with his mind — expanding his intelligence and capability to near-godlike levels. Barclay briefly controlled the entire Enterprise computer with his mind. The Cytherians, unable to travel, use this method to invite other species to visit them."
+  },
+  {
+    q: "In 'Redemption,' a Klingon civil war breaks out after the death of K'mpec. Which two rival claimants contest the chancellorship?",
+    choices: ["Gowron and Duras", "Gowron and Klag", "Martok and Duras", "Gowron and Torak"],
+    answer: 0,
+    explain: "Gowron versus the Duras family — backed by Romulan interests, specifically Sela. Worf's discommendation is lifted when his challenge of the Duras family's claim forces the Council to review the evidence. The Romulans' support of Duras, and the Federation's neutrality, forms one of TNG's richest political arcs across multiple seasons."
+  },
+  {
+    q: "What is the name of the empathic metamorph in 'The Perfect Mate,' and to which Kaelon dignitary is she supposed to be given as a peace offering — though Picard is the one she bonds with?",
+    choices: ["Kamala; Ambassador Briam of Kriosian", "Kamala; Chancellor Alrik of Valt Minor", "Alara; Ambassador Voval of the Rekag", "Devana; First Minister Campio"],
+    answer: 1,
+    explain: "Kamala was to be given to Chancellor Alrik of Valt Minor to seal a centuries-old peace. She is a Kriosian metamorph who bonds permanently with the consciousness of the man she is with at the moment of final bonding — which happens to be Picard. She goes through with the marriage, but she will always be, internally, the woman Picard shaped her to be."
+  },
+  {
+    q: "In 'The Quality of Life,' Data refuses a direct order from Picard and Geordi to save their lives. Why?",
+    choices: ["He determines the rescue would violate the Prime Directive", "He believes the Exocomps — small repair robots — are alive and refuses to sacrifice them", "He enters a feedback loop of logical paradoxes that temporarily disables his decision-making", "He calculates the rescue has less than a 0.3% chance of success"],
+    answer: 1,
+    explain: "Data determines that the Exocomps — small repair devices that had begun modifying their own programming to avoid dangerous tasks — are sentient life forms. He refuses to sacrifice them to save Picard and Geordi, citing that no life should be valued above another. It's one of TNG's most direct statements about Data's moral evolution: he has a conscience, whether he knows it or not."
+  },
+  {
+    q: "In 'Face of the Enemy,' Counselor Troi wakes up surgically altered to look like a Romulan officer. What is she forced to do?",
+    choices: ["Assassinate a Romulan senator for the Tal Shiar", "Pose as a member of the Tal Shiar to facilitate the defection of a high-ranking Romulan official and his cargo", "Infiltrate a Romulan warbird to recover stolen Federation technology", "Deliver false intelligence to the Romulan High Command"],
+    answer: 1,
+    explain: "Troi is surgically altered to impersonate Major Rakal of the Tal Shiar and coerced into facilitating N'Vek's plan to defect with a Romulan vice-proconsul and two high-ranking defectors hidden in cargo containers. The episode showcases Troi's competence and courage in an environment where a single mistake means death — a welcome departure from her typical ship-board role."
+  },
+  {
+    q: "What is the significance of the game in 'The Game' — besides being addictive?",
+    choices: ["It secretly transmits crew neural patterns to a Ktarian intelligence agency", "It is designed to make the crew compliant and facilitate a Ktarian takeover of Starfleet", "It is a prototype of Borg assimilation technology disguised as entertainment", "It rewires the pleasure centers of the brain to induce loyalty to whoever distributes it"],
+    answer: 1,
+    explain: "The Ktarians used the game as a method of conquest — the pleasure-conditioning made players eager to recruit others and eventually compliant to Ktarian commands. Riker was deliberately infected by a Ktarian woman on Risa. Wesley Crusher and Data, who doesn't have a pleasure center to stimulate, are the only ones who can resist and ultimately free the crew."
+  },
+  {
+    q: "In 'True Q,' a young woman named Amanda Rogers discovers she is actually a Q. Why was she raised human on Earth?",
+    choices: ["She was sent as an experiment to determine if Q could be raised without using their powers", "Her Q parents chose to live as humans and were killed by the Q Continuum for refusing to give up their powers", "She was exiled from the Continuum as an infant for an unknown offense", "The Continuum placed her on Earth to observe human development from the inside"],
+    answer: 1,
+    explain: "Amanda's parents were Q who chose to live as humans, which the Continuum judged an unacceptable use of their powers. The Continuum executed them — disguised as a tornado. Amanda was raised by human foster parents with no knowledge of her origin. The Q Continuum's ruthlessness toward its own members is one of TNG's darkest implications about seemingly omnipotent beings."
+  },
+  {
+    q: "In 'Timescape,' Picard, Troi, Geordi, and Data return from a conference to find the Enterprise and a Romulan warbird frozen in time at the moment of a warp core breach. What is actually happening?",
+    choices: ["Romulan cloaking technology has created a temporal stasis field", "Alien life forms are nesting in the warp cores and the temporal distortion is a side effect of their reproductive cycle", "A quantum filament has locked both ships in a moment of subspace discontinuity", "The ships are caught in a loop caused by a rift between a parallel timeline"],
+    answer: 1,
+    explain: "Devidian-like temporal creatures were using the energy of the warp core breach as an incubator for their young — freezing time around both ships as a side effect. The apparent disaster was actually a nest. The away team had to rescue the ships' crews from inside a tableau of frozen combat. It's one of TNG's most visually inventive premises."
+  },
+  {
+    q: "In 'The Measure of a Man,' Captain Louvois rules that Data has the right to choose his own fate. What three criteria does she say Starfleet uses to define sentience?",
+    choices: ["Intelligence, self-awareness, and consciousness", "Sapience, autonomy, and the capacity for suffering", "Intelligence, emotion, and a sense of identity", "Biological origin, self-awareness, and moral reasoning"],
+    answer: 0,
+    explain: "Captain Phillipa Louvois identifies Intelligence, Self-Awareness, and Consciousness as the three criteria. Data demonstrably satisfies the first two. Whether he is truly conscious remains unproven — and that uncertainty is the entire point. Louvois rules that the decision must err on the side of caution. The ruling does not declare Data sentient; it declares the question unanswerable, and therefore the choice must be his."
+  },
+  {
+    q: "In 'Lessons,' Picard falls in love with the Enterprise's new stellar cartography officer, Lt. Commander Nella Daren. What difficult decision does the relationship force?",
+    choices: ["He must choose between her and a diplomatic mission that requires him to be away for months", "He sends her on a dangerous mission and nearly loses her, realizing he cannot command someone he loves", "She is revealed to be a Romulan agent and he must arrest her", "She receives a promotion that requires her to transfer, and he refuses to ask her to stay"],
+    answer: 1,
+    explain: "Picard sends Nella on a dangerous mission to shield evacuees from a firestorm — and believes she is dead. When she survives, they both realize their relationship is incompatible with his command responsibilities: he cannot treat her objectively, and she cannot serve under a captain who might sacrifice her differently than any other officer. She requests a transfer. The episode revisits 'The Inner Light' beautifully."
+  },
+  {
+    q: "In 'The Pegasus,' what illegal device is recovered from inside an asteroid — and why is its existence so politically explosive?",
+    choices: ["A Federation interphasic cloaking device, which violates the Treaty of Algeron forbidding the Federation from developing cloaking technology", "A Romulan weapon capable of destroying a star, hidden by Admiral Pressman for future use", "A quantum torpedo capable of destroying a planet, developed in secret by Starfleet Intelligence", "A Cardassian transponder that proves the Federation sanctioned the Setlik III massacre"],
+    answer: 0,
+    explain: "The interphasic cloaking device — which also allows a ship to pass through solid matter — had been developed in secret by Admiral Pressman aboard the USS Pegasus in direct violation of the Treaty of Algeron. Riker had helped cover up the mutiny that nearly exposed it years earlier. Picard forces Riker to come clean, and Pressman is arrested. The treaty violation, if it had succeeded, could have triggered war with the Romulans."
+  },
+  {
+    q: "In 'Night Terrors,' the crew is slowly driven to madness by the inability to dream, caused by which phenomenon?",
+    choices: ["A Betazoid psi-dampening field that suppresses REM sleep across the ship", "The ship trapped in a Tyken's Rift, which drains the crew's REM sleep by absorbing theta wave activity from their brains", "A Romulan neurological weapon disguised as a subspace signal", "Prolonged exposure to a dark matter cloud that interferes with neural chemistry"],
+    answer: 1,
+    explain: "Trapped in a Tyken's Rift — a spatial anomaly that drained energy from everything inside it — the Enterprise crew couldn't enter REM sleep because the rift was absorbing theta waves. Without dreaming, they experienced mounting hallucinations, paranoia, and suicidal behavior. Troi, whose half-Betazoid physiology let her still dream, was the only one who could communicate with another ship trapped in the rift."
+  },
+  {
+    q: "In 'Identity Crisis,' Geordi and a former crewmate begin involuntarily transforming into alien creatures. What triggers the transformation, and what species are they becoming?",
+    choices: ["A Tarchannen III parasite, implanted during an away mission five years earlier, that converts hosts into the native invisible humanoids of that world", "Exposure to a mutagenic pathogen released by a Romulan biological weapon", "A DNA-rewriting virus contracted on Risa that activates under specific light conditions", "An ancient mechanism on an uninhabited world designed to protect it from colonization"],
+    answer: 0,
+    explain: "A Tarchannen III lifeform had implanted itself into away team members during a mission — five years later, it began transforming hosts into their species: luminescent, invisible, four-legged creatures. Geordi recreates the original away mission holographically and spots an anomalous shadow in the recording — the detail that leads to saving both him and Susanna Leijten."
+  },
+  {
+    q: "In 'Clues,' the crew loses approximately one day of memory with no explanation. Data knows what happened but is bound by a promise. What actually occurred?",
+    choices: ["The ship accidentally crossed into Romulan space and the Romulans erased the crew's memories as a condition of release", "The ship made first contact with the intensely xenophobic Paxans, who erased everyone's memories to protect their existence — and Data agreed to help maintain the cover story", "Q suspended the crew for 24 hours as part of a test", "A temporal anomaly looped the ship through the same day and Data was the only one who retained continuity"],
+    answer: 1,
+    explain: "The Paxans are an intensely xenophobic civilization that would destroy the Enterprise rather than allow knowledge of their existence to spread. The crew agreed to have their memories erased and to loop back through the wormhole. Data was excepted because he cannot be reliably memory-wiped — he agreed to maintain the deception. But small clues kept emerging. On their second contact, the crew agrees again — this time, more carefully."
+  },
+  {
+    q: "In 'The Price,' the Enterprise competes with other powers for rights to what is claimed to be the only stable wormhole in the galaxy. Where does the wormhole actually lead?",
+    choices: ["To the Gamma Quadrant, where the Dominion resides", "To a point 70,000 light years away in the Delta Quadrant, making it worthless for the negotiations", "To a pocket universe outside known space", "To a temporal anomaly that leads to the past"],
+    answer: 1,
+    explain: "The Barzan wormhole was unstable — one endpoint drifted through the Delta Quadrant, 70,000 light years from Federation space. Two Ferengi negotiators discover this firsthand when they fly through and are stranded in the Delta Quadrant. The Federation gave up nothing of value, but neither did anyone gain anything. The episode is significant as an early hint of the Delta Quadrant before Voyager."
+  },
+  {
+    q: "The dedication plaque of the Enterprise-D contains a motto drawn from which poem, and what does it say?",
+    choices: ["Tennyson's 'Ulysses' — 'To strive, to seek, to find, and not to yield'", "Shakespeare's 'The Tempest' — 'We are such stuff as dreams are made on'", "Whitman's 'O Captain! My Captain!' — 'The ship has weathered every rack'", "Milton's 'Paradise Lost' — 'The mind is its own place'"],
+    answer: 0,
+    explain: "'To strive, to seek, to find, and not to yield' — from Tennyson's 'Ulysses' — is the motto on the Enterprise-D's dedication plaque. It perfectly encapsulates Picard's character and the show's philosophical ambitions. The full line comes from Ulysses' speech to his mariners about venturing beyond the known world regardless of age or weariness — a sentiment Picard would endorse entirely."
+  },
+  {
+    q: "In 'Descent,' the Borg are behaving with individual cunning and tactical creativity. What has changed about them?",
+    choices: ["Hugh's return to the Collective introduced the concept of individuality, which spread and fractured the Collective — Lore exploited these disconnected drones", "A new Borg Queen has taken control and altered their tactical programming", "The Borg have assimilated a species of individual tactical geniuses", "Q has modified the Borg as a test of humanity's ability to adapt"],
+    answer: 0,
+    explain: "Hugh's individuality spread through the Collective like a virus — disconnecting a group of drones who then experienced existential despair. Lore found them, offered them a sense of purpose under his leadership, and shaped them into a ruthless but individual fighting force. Data, influenced by the emotion chip's fragments, temporarily joins Lore. The two-part episode is a direct consequence of the crew's 'compassionate' choice in 'I, Borg.'"
+  },
+  {
+    q: "What medical condition does Captain Picard develop in 'Tapestry' as a result of his artificial heart, and what does Q's intervention actually reveal?",
+    choices: ["His artificial heart fails catastrophically; Q's test reveals that caution and regret, not courage, define the alternate Picard", "A biogenic implant causes a neurological cascade; Q reveals Picard has been living in a simulation since his assimilation", "A plasma discharge destroys his artificial heart; Q reveals Picard is already dead and the episode takes place in a liminal state", "His heart is deliberately sabotaged; Q reveals a Romulan intelligence plot decades in the making"],
+    answer: 2,
+    explain: "Picard is shot in the chest — his artificial heart irreparably damaged — and dies. He finds himself with Q, who offers him the chance to change the past. The episode exists in the space between life and death. When Picard returns to the 'present,' he is a junior lieutenant. When he demands his real life back, he returns to consciousness in sickbay. The question of whether Q 'really' intervened is deliberately left open."
+  },
+  {
+    q: "In 'The Outcast,' Riker falls in love with a member of the androgynous J'naii species. What is the central conflict of the episode, and what happens to Soren?",
+    choices: ["Soren identifies as female, which is taboo in J'naii society; she is captured and subjected to psychological conversion therapy to eliminate her gender identity", "The J'naii prohibit relationships with other species; Soren is executed for treason", "Riker's relationship violates the Prime Directive; he must end it or face court-martial", "Soren chooses duty over love and ends the relationship to prevent a diplomatic incident"],
+    answer: 0,
+    explain: "Soren identifies as female — a criminal offense in J'naii society, where gender itself is considered a primitive deviance. She is captured and 'treated' — subjected to psychotectic therapy that erases her identity. Riker attempts a rescue but arrives too late. Soren, her identity forcibly altered, tells him the feelings are gone. The episode is TNG's most direct allegory about conversion therapy and gender identity."
+  },
+  {
+    q: "In 'Attached,' Picard and Dr. Crusher are linked by telepathic implants that let them hear each other's thoughts. What long-suppressed feeling does Crusher discover in Picard's mind?",
+    choices: ["That he resents Jack Crusher for dying and leaving Beverly alone", "That he has been in love with her for years", "That he believes she is a more capable leader than he is", "That he is terrified of dying alone"],
+    answer: 1,
+    explain: "Beverly discovers that Picard has been in love with her for years — feelings he has kept buried out of loyalty to her late husband Jack Crusher, his closest friend. Picard's mortification at having his most private feelings exposed is matched only by the episode's bittersweet ending: they acknowledge the feeling exists, and decide to keep things as they are, knowing what they've both been missing."
+  },
+  {
+    q: "What significant biological fact does 'The Host' establish about Trills — later contradicted or refined in Deep Space Nine?",
+    choices: ["That a Trill symbiont cannot survive in a human host", "That Trill joining requires a surgical procedure that kills the host", "That the Trill symbiont in 'The Host' is transplanted into Riker temporarily, then into a female host — and Crusher cannot continue the relationship with the female host, raising questions about love and identity", "That only one in a thousand Trills are compatible with symbionts"],
+    answer: 2,
+    explain: "Dr. Crusher falls in love with Ambassador Odan — then discovers Odan is the Trill symbiont, not the host body. After the host is mortally wounded, the symbiont is temporarily placed in Riker, then transferred to a female Trill host. Beverly finds she cannot continue the relationship. The episode raises profound questions about what we love: the body or the person inside? DS9 later gave Trills much greater depth through Jadzia Dax."
+  },
+  {
+    q: "In 'Chain of Command,' Picard is captured by the Cardassians and tortured by Gul Madred. What is the central question of the torture scene, now one of the most referenced moments in TNG?",
+    choices: ["Whether Picard will reveal the defense codes for Minos Korva", "Whether Picard will admit that there are five lights when there are only four, as a demonstration of total subjugation", "Whether Picard will sign a confession to espionage that will justify Cardassian war claims", "Whether Picard will reveal the location of the Enterprise"],
+    answer: 1,
+    explain: "Gul Madred holds up four lights and demands Picard confirm there are five — not because the answer matters, but as the ultimate test of will. If Picard says five, Madred controls his reality. In the final scene, Picard tells Riker that at the very end, he could see five lights. That admission — that he was on the verge of breaking — is one of the bravest things a character in TNG ever confessed."
+  },
+  {
+    q: "What causes the Enterprise crew to rapidly de-age into children in 'Rascals,' and which four crew members are affected?",
+    choices: ["A transporter malfunction during an energy beam encounter; Picard, Guinan, Keiko, and Ro Laren", "A spatial anomaly near a black hole; Picard, Riker, Troi, and Worf", "An alien de-aging device used as a weapon; Picard, Data, Crusher, and La Forge", "A Romulan biological agent; Picard, Crusher, Guinan, and O'Brien"],
+    answer: 0,
+    explain: "A transporter accident during an energy ribbon encounter de-aged Picard, Guinan, Keiko, and Ro Laren to approximately twelve years old. Their adult minds remained intact. The episode is remembered chiefly for the scene where child-Picard must pretend to be Riker's son while Ferengi occupy the ship — and for the philosophical wrinkle: Keiko's husband O'Brien struggles with being married to a twelve-year-old version of his wife."
+  },
+  {
+    q: "In 'Second Chances,' the crew discovers a duplicate of Riker — a transporter echo created eight years earlier — living alone on Nervala IV. How do the two Rikers differ in outlook?",
+    choices: ["The duplicate is more aggressive and militaristic after years of isolation", "The duplicate, who spent eight years alone, never advanced his career and is still in love with Troi — representing the life the 'main' Riker chose not to lead", "The duplicate has developed telepathic abilities from prolonged isolation", "The duplicate is more at peace and plans to leave Starfleet entirely"],
+    answer: 1,
+    explain: "Thomas Riker — as he comes to be called — is the version of Riker who never advanced beyond lieutenant commander and never stopped loving Deanna Troi. The episode forces the 'main' Riker to confront the choices he made: his career over relationships, adventure over commitment. Thomas later reappears in DS9, having joined the Maquis — the path the more reckless Riker never took."
+  },
+  {
+    q: "What is the formal name of the neural parasite species that infects Starfleet Command in 'Conspiracy,' and what happens at the episode's climax?",
+    choices: ["They are unnamed on screen; Picard and Riker kill the mother creature in a graphic scene that remains TNG's most violent moment", "They are the Bluegills; their queen is disabled by a feedback pulse through the ship's comm system", "They are identified as Ceti Eel descendants; the mother creature escapes into space", "They are called the Parasites; they are expelled from all hosts simultaneously by a Vulcan psi-weapon"],
+    answer: 0,
+    explain: "The parasites are never formally named in the episode. The climax — Picard and Riker vaporizing the mother creature in a scene explicit enough that it was reportedly edited or banned in some markets — remains the single most graphically violent moment in TNG. The episode ends with the creature transmitting a homing signal to an unknown destination. The threat is never followed up on in the series."
+  },
+  {
+    q: "In 'The Enemy,' Geordi is stranded on Galorndon Core with an injured Romulan. What is the subplot that connects to the main story, and who refuses to help — and why?",
+    choices: ["Picard refuses to beam down to help, citing the Prime Directive", "Worf refuses to provide a ribosomes transfusion to save another injured Romulan prisoner, citing his parents' deaths at Khitomer — a refusal Picard cannot override", "Data refuses to participate in rescue operations because his probability calculations show they are futile", "Dr. Crusher refuses to treat the Romulan without authorization from the Romulan commander"],
+    answer: 1,
+    explain: "A Romulan survivor aboard the Enterprise will die without a ribosome transfusion from a compatible donor — Worf. Worf refuses. His parents were killed by Romulans at Khitomer. Picard cannot order him to give his biological tissue. The Romulan dies. It's TNG at its most honest: sometimes the moral choice isn't made, and there are no clean resolutions. Worf's refusal is neither condemned nor endorsed by the episode."
+  },
+  {
+    q: "In 'Transfigurations,' a mysterious injured alien is brought aboard whose body is undergoing a transformation. What is he actually experiencing?",
+    choices: ["He is evolving into a noncorporeal life form — his species undergoes a natural transformation that their government fears and suppresses", "He is the victim of a Romulan genetic experiment designed to create a hybrid soldier", "He is a Q in the process of losing his powers as punishment from the Continuum", "He is a holographic being whose matrix is destabilizing after years of independent operation"],
+    answer: 0,
+    explain: "John Doe — as the crew names him — is undergoing a natural evolutionary transformation of his species into beings of pure energy. His government hunted and executed members of their own species who reached this stage, fearing what they might become. His complete transformation — and his healing of a fatally injured crew member before departing — frames the episode as a meditation on fear of transcendence."
+  },
+  {
+    q: "What Klingon ritual combat does Worf periodically practice aboard the Enterprise, and what is its purpose in Klingon culture?",
+    choices: ["Mok'bara — a martial arts discipline used for physical and spiritual conditioning", "bat'leth forms — weapons practice used purely for combat readiness", "Kal'Hyah — a fasting ritual performed before major battles", "Hegh'bat — a ceremonial combat form performed to honor the dead"],
+    answer: 0,
+    explain: "Mok'bara is the Klingon martial art — a meditative, flowing combat discipline similar in form to tai chi but rooted in Klingon warrior philosophy. Worf leads Mok'bara sessions in Ten Forward. It represents the spiritual and physical dimensions of Klingon identity that go beyond simple aggression — a nuance the series uses consistently to deepen Worf's characterization."
+  },
+  {
+    q: "In 'Future Imperfect,' Riker awakens sixteen years in the future to find he is captain of the Enterprise and has a son named Jean-Luc. What is the reality?",
+    choices: ["The future is real but Riker has amnesia; his son is real but the boy is hiding a secret about the Romulan peace treaty", "It is a Romulan simulation designed to extract tactical information; then revealed to be a holodeck created by a lonely alien child", "It is a Q test of Riker's readiness for command", "It is a temporal anomaly that showed Riker a genuine possible future that he then prevented"],
+    answer: 1,
+    explain: "The Romulan simulation is peeled away to reveal a second layer: a holodeck created by Barash, a lonely alien child left alone on Alpha Onias III by his mother for his protection. He created the elaborate fantasy because he wanted a companion — a father. Riker's compassion toward the child, once the deception is revealed, is genuine. He takes Barash with him."
+  },
+  {
+    q: "What is the name of the ancient Vulcan artifact — a mental repository — that Spock's father Sarek dies leaving unshielded, causing it to become dangerous?",
+    choices: ["The Katra", "The Koon-ut-kal-if-fee", "The Golem of Vulcan", "The katric ark"],
+    answer: 3,
+    explain: "A katric ark is a vessel used by Vulcans to preserve a katra — the living spirit or consciousness — after death. Sarek's passing while his Bendii Syndrome was advanced left his mental legacy partially unguarded. The concept bridges the original series' 'Search for Spock' mythology with TNG's exploration of Vulcan culture and the nature of consciousness after death."
+  },
+  {
+    q: "In 'Genesis,' the Enterprise crew devolves into primitive creatures due to a synthetic T-cell created by Dr. Crusher. What does Worf devolve into?",
+    choices: ["A proto-Klingon amphibious predator", "A feral mammalian hunter resembling a large cat", "A venom-spraying creature that infects others with the T-cell", "A prehistoric aquatic creature"],
+    answer: 2,
+    explain: "Worf devolves into a creature resembling a prehistoric Klingon predator — venomous, territorial, and responsible for spreading the de-evolution to much of the crew through his venom. Riker becomes an early primate, Troi an amphibian. Picard and Data, unaffected, must synthesize a cure from Picard's natural immunity. It's among TNG's most outlandish premieres but features some genuinely unsettling creature design."
+  },
+  {
+    q: "In 'Homeward,' Worf's human foster brother Nikolai violates the Prime Directive to save a primitive alien people. What is the method he uses — and why does it create a crisis aboard the Enterprise?",
+    choices: ["He beams the entire village into a holodeck simulation of their world without their knowledge, so they believe they are on a natural journey to a new homeland", "He reveals Federation technology to the villagers and teaches them warp theory", "He transports the villagers to a Federation colony world and introduces them to modern medicine", "He uses a weather modification network to make their dying world habitable again"],
+    answer: 0,
+    explain: "Nikolai secretly beamed the entire Boraalian village into a holodeck simulation — a perfect recreation of their world — while the real planet died outside. The crisis: one villager, Vorin, accidentally stumbles out of the holodeck into the real Enterprise and sees the truth. He cannot reconcile what he has seen with his entire understanding of reality, and ultimately takes his own life rather than live with the knowledge. It is the Prime Directive's cost made devastatingly personal."
+  }
+];
+
+// Shuffle questions
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+let shuffled = shuffle([...questions]);
+let current = 0;
+let score = 0;
+let answered = false;
+
+function loadQuestion() {
+  const q = shuffled[current];
+  const numStr = String(current + 1).padStart(2, '0');
+  document.getElementById('q-number').textContent = numStr;
+  document.getElementById('question-text').textContent = q.q;
+  document.getElementById('progress-label').textContent = `Query ${current + 1} of ${shuffled.length}`;
+  document.getElementById('progress-score').textContent = `Score: ${score}`;
+  document.getElementById('progress-bar').style.width = `${(current / shuffled.length) * 100}%`;
+
+  const section = document.getElementById('choices-section');
+  section.innerHTML = '';
+  const letters = ['A', 'B', 'C', 'D'];
+  q.choices.forEach((choice, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerHTML = `<span class="choice-letter">${letters[i]}</span><span>${choice}</span>`;
+    btn.onclick = () => selectAnswer(i);
+    section.appendChild(btn);
+  });
+
+  document.getElementById('explanation').classList.remove('show');
+  const nextBtn = document.getElementById('next-btn');
+  nextBtn.style.display = 'none';
+  const banner = document.getElementById('feedback-banner');
+  banner.className = 'feedback-banner';
+  banner.textContent = '';
+  answered = false;
+}
+
+function selectAnswer(selected) {
+  if (answered) return;
+  answered = true;
+
+  const q = shuffled[current];
+  const buttons = document.querySelectorAll('.choice-btn');
+  const banner = document.getElementById('feedback-banner');
+
+  buttons.forEach(btn => btn.disabled = true);
+
+  if (selected === q.answer) {
+    score++;
+    buttons[selected].classList.add('correct');
+    banner.className = 'feedback-banner correct-bg';
+    banner.textContent = '// CONFIRMED — STARFLEET DATABASE MATCH';
+  } else {
+    buttons[selected].classList.add('wrong');
+    buttons[q.answer].classList.add('reveal-correct');
+    banner.className = 'feedback-banner wrong-bg';
+    banner.textContent = '// NEGATIVE — QUERY MISMATCH DETECTED';
+  }
+
+  document.getElementById('progress-score').textContent = `Score: ${score}`;
+  document.getElementById('explanation-text').textContent = q.explain;
+  document.getElementById('explanation').classList.add('show');
+
+  const nextBtn = document.getElementById('next-btn');
+  nextBtn.style.display = 'block';
+  nextBtn.textContent = current < shuffled.length - 1 ? 'Next Query //' : 'View Assessment //';
+
+  setTimeout(() => {
+    nextBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 150);
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= shuffled.length) {
+    showResults();
+  } else {
+    loadQuestion();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function showResults() {
+  document.getElementById('quiz-card').style.display = 'none';
+  document.getElementById('progress-container').style.display = 'none';
+
+  const pct = Math.round((score / shuffled.length) * 100);
+  document.getElementById('final-score').textContent = `${score} / ${shuffled.length}`;
+  document.getElementById('final-pct').textContent = `${pct}% ACCURACY RATING`;
+  document.getElementById('final-correct').textContent = score;
+  document.getElementById('final-wrong').textContent = shuffled.length - score;
+
+  let icon, title, sub;
+  if (pct >= 90) {
+    icon = '★'; title = 'Captain\'s Commendation';
+    sub = 'Exceptional. Your knowledge of the TNG universe is encyclopedic. Picard would trust you with the conn. Q would find you mildly interesting.';
+  } else if (pct >= 75) {
+    icon = '◆'; title = 'Starfleet Qualified';
+    sub = 'Solid performance, officer. You know your episodes and your lore. A few gaps in the deeper database, but nothing a rewatch wouldn\'t resolve.';
+  } else if (pct >= 60) {
+    icon = '▲'; title = 'Promising Cadet';
+    sub = 'A respectable score for a casual fan. The finer details of Federation history eluded you, but the core knowledge is there. More study recommended.';
+  } else if (pct >= 40) {
+    icon = '○'; title = 'Holodeck Tourist';
+    sub = 'You know the broad strokes of TNG but the details slipped by. Counselor Troi senses you may have been watching with the sound down.';
+  } else {
+    icon = '?'; title = 'Unknown Life Form';
+    sub = 'Your knowledge pattern does not match any known Starfleet database entry. This is... unexpected. We recommend beginning with Season 3.';
+  }
+
+  document.getElementById('results-icon').textContent = icon;
+  document.getElementById('results-title').textContent = title;
+  document.getElementById('verdict-title').textContent = 'Starfleet Assessment: ' + title;
+  document.getElementById('verdict-sub').textContent = sub;
+  document.getElementById('results-screen').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restartQuiz() {
+  shuffled = shuffle([...questions]);
+  current = 0; score = 0; answered = false;
+  document.getElementById('quiz-card').style.display = 'block';
+  document.getElementById('progress-container').style.display = 'block';
+  document.getElementById('results-screen').style.display = 'none';
+  loadQuestion();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+loadQuestion();
+</script>
+</body>
+</html>
