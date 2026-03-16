@@ -3,1460 +3,1089 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ゴジラ — Godzilla Trivia Challenge</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Barlow+Condensed:wght@500;700;800&display=swap" rel="stylesheet">
+<title>80s Sitcoms Quiz – 100 Questions</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Special+Elite&family=Oswald:wght@400;600&family=Source+Serif+4:ital,wght@0,300;0,600;1,300&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink: #150800;
-    --red: #B81C1C;
-    --red-bright: #D42020;
-    --red-dark: #7A0F0F;
-    --paper: #F2E2C0;
-    --paper-dark: #E8D4A8;
-    --paper-shadow: #D4BA88;
-    --gold: #B8860B;
-    --gold-light: #D4A017;
-    --cream: #FDF6E3;
-    --correct: #2D6A2D;
-    --correct-bg: #EAF4EA;
-    --wrong: #8B1515;
-    --wrong-bg: #FAE8E8;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
+  :root { --amber:#e8a020; --rust:#c4491a; --cream:#f5ecd7; --warm-grey:#6b5c4a; }
+  * { margin:0; padding:0; box-sizing:border-box; }
   body {
-    background-color: #0D0500;
+    background-color:#0a0806;
     background-image:
-      radial-gradient(ellipse at 50% 0%, rgba(184,28,28,0.15) 0%, transparent 55%),
-      repeating-linear-gradient(
-        90deg,
-        transparent 0px, transparent 3px,
-        rgba(255,255,255,0.015) 3px, rgba(255,255,255,0.015) 4px
-      );
-    min-height: 100vh;
-    font-family: 'Crimson Text', serif;
-    color: var(--ink);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 28px 14px 64px;
-  }
-
-  /* ── HEADER ── */
-  .header {
-    width: 100%;
-    max-width: 720px;
-    margin-bottom: 24px;
-    text-align: center;
-    position: relative;
-  }
-
-  .header-frame {
-    background: var(--paper);
-    border: 3px solid var(--ink);
-    box-shadow:
-      4px 4px 0 var(--red-dark),
-      8px 8px 0 var(--ink),
-      0 0 0 6px var(--red),
-      0 0 0 9px var(--ink);
-    padding: 20px 24px 18px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  /* Aged paper texture overlay */
-  .header-frame::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      repeating-linear-gradient(
-        0deg,
-        transparent, transparent 28px,
-        rgba(0,0,0,0.04) 28px, rgba(0,0,0,0.04) 29px
-      );
-    pointer-events: none;
-  }
-
-  .header-eyebrow {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 5px;
-    text-transform: uppercase;
-    color: var(--red);
-    margin-bottom: 6px;
-  }
-
-  .header-kanji {
-    font-size: clamp(2.8rem, 10vw, 5rem);
-    line-height: 1;
-    color: var(--red);
-    font-family: serif;
-    text-shadow:
-      2px 2px 0 var(--red-dark),
-      4px 4px 0 rgba(0,0,0,0.3);
-    margin-bottom: 4px;
-    display: block;
-    letter-spacing: 8px;
-  }
-
-  .header-english {
-    font-family: 'Bebas Neue', cursive;
-    font-size: clamp(1rem, 4vw, 1.5rem);
-    color: var(--ink);
-    letter-spacing: 6px;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-
-  .header-rule {
-    height: 3px;
-    background: linear-gradient(to right, transparent, var(--red), var(--gold), var(--red), transparent);
-    margin: 8px 0;
-  }
-
-  .header-sub {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 3px;
-    color: var(--red-dark);
-    text-transform: uppercase;
-  }
-
-  /* ── PROGRESS ── */
-  .progress-container {
-    width: 100%;
-    max-width: 720px;
-    margin-bottom: 16px;
-    background: rgba(242,226,192,0.08);
-    border: 1px solid rgba(184,28,28,0.3);
-    border-radius: 2px;
-    padding: 10px 14px;
-  }
-
-  .progress-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 7px;
-  }
-
-  .progress-label {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 0.78rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--paper-dark);
-  }
-
-  .progress-score {
-    font-family: 'Bebas Neue', cursive;
-    font-size: 1rem;
-    letter-spacing: 3px;
-    color: var(--red);
-  }
-
-  .progress-bar-bg {
-    background: rgba(0,0,0,0.4);
-    border-radius: 2px;
-    height: 8px;
-    overflow: hidden;
-    border: 1px solid rgba(184,28,28,0.2);
-  }
-
-  .progress-bar-fill {
-    height: 100%;
-    background: linear-gradient(to right, var(--red-dark), var(--red), var(--gold-light));
-    border-radius: 2px;
-    transition: width 0.5s ease;
-    box-shadow: 0 0 6px rgba(184,28,28,0.5);
-  }
-
-  /* ── QUIZ CARD ── */
-  .quiz-card {
-    width: 100%;
-    max-width: 720px;
-    background: var(--paper);
-    border: 3px solid var(--ink);
-    box-shadow:
-      5px 5px 0 var(--red-dark),
-      9px 9px 0 var(--ink);
-    overflow: hidden;
-    position: relative;
-  }
-
-  /* Ruled paper lines */
-  .quiz-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: repeating-linear-gradient(
-      0deg,
-      transparent, transparent 31px,
-      rgba(0,0,0,0.05) 31px, rgba(0,0,0,0.05) 32px
-    );
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .card-header {
-    background: var(--red);
-    border-bottom: 3px solid var(--ink);
-    padding: 0;
-    display: flex;
-    position: relative;
-    z-index: 1;
-  }
-
-  .q-number-block {
-    background: var(--ink);
-    color: var(--paper);
-    width: 64px;
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 14px 4px;
-    gap: 2px;
-  }
-
-  .q-num {
-    font-family: 'Bebas Neue', cursive;
-    font-size: 1.9rem;
-    line-height: 1;
-    letter-spacing: 2px;
-    color: var(--paper);
-  }
-
-  .q-of-total {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.55rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: rgba(242,226,192,0.5);
-    text-transform: uppercase;
-  }
-
-  .card-header-content {
-    flex: 1;
-    padding: 12px 16px;
-  }
-
-  .q-era-tag {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.68rem;
-    font-weight: 800;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.7);
-    margin-bottom: 5px;
-  }
-
-  .question-text {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: clamp(1rem, 2.8vw, 1.18rem);
-    font-weight: 700;
-    color: #fff;
-    line-height: 1.38;
-  }
-
-  /* ── FEEDBACK BANNER ── */
-  .feedback-banner {
-    display: none;
-    padding: 9px 16px;
-    font-family: 'Bebas Neue', cursive;
-    font-size: 1rem;
-    letter-spacing: 3px;
-    text-align: center;
-    border-bottom: 2px solid var(--ink);
-    position: relative;
-    z-index: 1;
-  }
-
-  .feedback-banner.correct-bg {
-    display: block;
-    background: var(--correct-bg);
-    color: var(--correct);
-    border-bottom-color: var(--correct);
-  }
-
-  .feedback-banner.wrong-bg {
-    display: block;
-    background: var(--wrong-bg);
-    color: var(--wrong);
-    border-bottom-color: var(--wrong);
-  }
-
-  /* ── CHOICES ── */
-  .choices-section {
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 9px;
-    position: relative;
-    z-index: 1;
-  }
-
-  .choice-btn {
-    background: var(--cream);
-    border: 2px solid var(--paper-shadow);
-    border-left: 5px solid var(--red-dark);
-    border-radius: 1px;
-    padding: 11px 14px;
-    text-align: left;
-    cursor: pointer;
-    font-family: 'Crimson Text', serif;
-    font-size: clamp(0.95rem, 2vw, 1.05rem);
-    font-weight: 600;
-    color: var(--ink);
-    transition: all 0.15s ease;
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .choice-btn:hover:not(:disabled) {
-    background: var(--paper-dark);
-    border-left-color: var(--red-bright);
-    transform: translateX(4px);
-    box-shadow: -2px 0 0 var(--red-bright);
-  }
-
-  .choice-letter {
-    font-family: 'Bebas Neue', cursive;
-    font-size: 1.05rem;
-    color: var(--red);
-    min-width: 20px;
-    letter-spacing: 1px;
-    flex-shrink: 0;
-    padding-top: 1px;
-  }
-
-  .choice-btn.correct {
-    background: var(--correct-bg);
-    border-color: var(--correct);
-    border-left-color: var(--correct);
-    color: var(--correct);
-  }
-  .choice-btn.correct .choice-letter { color: var(--correct); }
-
-  .choice-btn.wrong {
-    background: var(--wrong-bg);
-    border-color: #c44;
-    border-left-color: var(--wrong);
-    color: var(--wrong);
-  }
-  .choice-btn.wrong .choice-letter { color: var(--wrong); }
-
-  .choice-btn.reveal-correct {
-    background: var(--correct-bg);
-    border-left-color: var(--correct);
-    color: var(--correct);
-    animation: revealPulse 0.35s ease;
-  }
-  .choice-btn.reveal-correct .choice-letter { color: var(--correct); }
-
-  @keyframes revealPulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.01); }
-    100% { transform: scale(1); }
-  }
-
-  .choice-btn:disabled { cursor: default; transform: none !important; box-shadow: none !important; }
-
-  /* ── EXPLANATION ── */
-  .explanation {
-    display: none;
-    background: var(--paper-dark);
-    border-top: 3px solid var(--ink);
-    padding: 14px 16px;
-    animation: slideDown 0.3s ease;
-    position: relative;
-    z-index: 1;
-  }
-
-  .explanation::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 5px;
-    background: var(--gold);
-  }
-
-  .explanation.show { display: block; }
-
-  @keyframes slideDown {
-    from { opacity: 0; transform: translateY(-8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .explanation-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.68rem;
-    font-weight: 800;
-    color: var(--gold);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-    padding-left: 10px;
-  }
-
-  .explanation-text {
-    font-size: 0.95rem;
-    font-weight: 400;
-    color: #2a1500;
-    line-height: 1.6;
-    padding-left: 10px;
-    font-style: italic;
-  }
-
-  /* ── NEXT BUTTON ── */
-  .next-btn-wrap {
-    display: flex;
-    justify-content: flex-end;
-    padding: 12px 16px;
-    background: var(--paper-shadow);
-    border-top: 2px solid var(--ink);
-    position: relative;
-    z-index: 1;
-  }
-
-  .next-btn {
-    display: none;
-    background: var(--ink);
-    color: var(--paper);
-    border: 2px solid var(--ink);
-    padding: 10px 26px;
-    font-family: 'Bebas Neue', cursive;
-    font-size: 1rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.15s;
-    box-shadow: 3px 3px 0 var(--red-dark);
-  }
-
-  .next-btn:hover {
-    background: var(--red-dark);
-    box-shadow: 4px 4px 0 var(--ink);
-    transform: translate(-1px, -1px);
-  }
-
-  .next-btn:active {
-    transform: translate(2px, 2px);
-    box-shadow: 1px 1px 0 var(--ink);
-  }
-
-  /* ── RESULTS ── */
-  #results-screen {
-    display: none;
-    width: 100%;
-    max-width: 720px;
-  }
-
-  .results-card {
-    background: var(--paper);
-    border: 3px solid var(--ink);
-    box-shadow:
-      5px 5px 0 var(--red-dark),
-      9px 9px 0 var(--ink);
-    overflow: hidden;
-  }
-
-  .results-header {
-    background: var(--red);
-    border-bottom: 3px solid var(--ink);
-    padding: 24px 20px;
-    text-align: center;
-    position: relative;
-  }
-
-  .results-header::after {
-    content: 'ゴジラ';
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 2.5rem;
-    color: rgba(255,255,255,0.12);
-    font-family: serif;
-    pointer-events: none;
-  }
-
-  .results-eyebrow {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.7rem;
-    font-weight: 800;
-    letter-spacing: 4px;
-    color: rgba(255,255,255,0.6);
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  .results-title {
-    font-family: 'Bebas Neue', cursive;
-    font-size: clamp(1.6rem, 5vw, 2.4rem);
-    color: var(--paper);
-    letter-spacing: 4px;
-    text-shadow: 2px 2px 0 rgba(0,0,0,0.4);
-  }
-
-  .score-display {
-    background: var(--ink);
-    padding: 24px;
-    text-align: center;
-    border-bottom: 3px solid var(--red);
-  }
-
-  .score-number {
-    font-family: 'Bebas Neue', cursive;
-    font-size: 4.5rem;
-    color: var(--paper);
-    letter-spacing: 6px;
-    display: block;
-    line-height: 1;
-    text-shadow: 0 0 20px rgba(184,28,28,0.5);
-    margin-bottom: 6px;
-  }
-
-  .score-pct {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 1rem;
-    letter-spacing: 3px;
-    color: var(--paper-shadow);
-    text-transform: uppercase;
-  }
-
-  .verdict {
-    padding: 20px;
-    border-bottom: 2px solid var(--paper-shadow);
-    position: relative;
-    background: var(--paper);
-  }
-
-  .verdict-title {
-    font-family: 'Bebas Neue', cursive;
-    font-size: 1.5rem;
-    color: var(--red);
-    letter-spacing: 3px;
-    margin-bottom: 6px;
-  }
-
-  .verdict-sub {
-    font-size: 1rem;
-    color: #3a1a00;
-    line-height: 1.55;
-    font-style: italic;
-  }
-
-  .breakdown {
-    padding: 16px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    background: var(--paper);
-  }
-
-  .breakdown-item {
-    background: var(--cream);
-    border: 2px solid var(--paper-shadow);
-    padding: 14px;
-    text-align: center;
-  }
-
-  .breakdown-num {
-    font-family: 'Bebas Neue', cursive;
-    font-size: 2.8rem;
-    letter-spacing: 3px;
-    display: block;
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-
-  .breakdown-num.c { color: var(--correct); }
-  .breakdown-num.w { color: var(--wrong); }
-
-  .breakdown-label {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 0.75rem;
-    letter-spacing: 2px;
-    color: var(--paper-shadow);
-    text-transform: uppercase;
-  }
-
-  .restart-btn {
-    display: block;
-    width: calc(100% - 32px);
-    margin: 0 16px 16px;
-    background: var(--red);
-    color: var(--paper);
-    border: 2px solid var(--ink);
-    padding: 14px;
-    font-family: 'Bebas Neue', cursive;
-    font-size: 1.2rem;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    cursor: pointer;
-    box-shadow: 3px 3px 0 var(--ink);
-    transition: all 0.15s;
-  }
-
-  .restart-btn:hover {
-    background: var(--red-dark);
-    transform: translate(-1px, -1px);
-    box-shadow: 4px 4px 0 var(--ink);
-  }
-
-  /* ── FOOTER ── */
-  .footer {
-    margin-top: 28px;
-    text-align: center;
-  }
-
-  .footer-rule {
-    width: 180px;
-    height: 1px;
-    background: linear-gradient(to right, transparent, var(--red), transparent);
-    margin: 0 auto 8px;
-    opacity: 0.5;
-  }
-
-  .footer-text {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 3px;
-    color: rgba(184,28,28,0.35);
-    text-transform: uppercase;
-  }
+      repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,0.01) 2px,rgba(255,255,255,0.01) 4px),
+      radial-gradient(ellipse at 50% 0%,rgba(232,160,32,0.07) 0%,transparent 60%);
+    min-height:100vh; font-family:'Source Serif 4',serif; color:var(--cream);
+    display:flex; flex-direction:column; align-items:center; padding:30px 16px 60px;
+  }
+  body::before {
+    content:''; position:fixed; top:0;left:0;right:0;bottom:0;
+    background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0px,rgba(0,0,0,0) 3px,rgba(0,0,0,0.06) 3px,rgba(0,0,0,0.06) 4px);
+    pointer-events:none; z-index:999;
+  }
+  header { text-align:center; margin-bottom:32px; }
+  .antenna { display:flex; justify-content:center; gap:24px; margin-bottom:6px; }
+  .antenna-line { width:2px; height:40px; background:linear-gradient(to top,var(--amber),transparent); transform-origin:bottom center; }
+  .antenna-line:first-child { transform:rotate(-20deg); }
+  .antenna-line:last-child  { transform:rotate(20deg); }
+  .channel-badge { display:inline-block; border:2px solid var(--amber); color:var(--amber); font-family:'Bebas Neue',sans-serif; font-size:11px; letter-spacing:3px; padding:3px 12px; margin-bottom:12px; }
+  h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(36px,8vw,70px); letter-spacing:4px; color:var(--cream); text-shadow:0 0 40px rgba(232,160,32,0.5),0 2px 0 var(--rust); line-height:1; }
+  .subtitle { font-family:'Special Elite',cursive; font-size:clamp(12px,3vw,16px); color:var(--amber); letter-spacing:2px; margin-top:8px; }
+
+  .progress-wrap { width:100%; max-width:680px; margin-bottom:24px; }
+  .progress-info { display:flex; justify-content:space-between; font-family:'Oswald',sans-serif; font-size:13px; letter-spacing:1px; color:var(--warm-grey); margin-bottom:8px; }
+  .progress-bar-bg { width:100%; height:4px; background:rgba(255,255,255,0.07); border-radius:2px; overflow:hidden; }
+  .progress-bar-fill { height:100%; background:linear-gradient(to right,var(--rust),var(--amber)); border-radius:2px; transition:width 0.5s cubic-bezier(0.4,0,0.2,1); }
+
+  .card { width:100%; max-width:680px; background:linear-gradient(145deg,#1a1108,#120d05); border:1px solid rgba(232,160,32,0.2); border-radius:4px; padding:clamp(24px,5vw,44px); box-shadow:0 0 60px rgba(0,0,0,0.8),inset 0 1px 0 rgba(255,255,255,0.05); position:relative; overflow:hidden; }
+  .card::before { content:''; position:absolute; top:0;left:0;right:0;height:2px; background:linear-gradient(to right,transparent,var(--amber),var(--rust),var(--amber),transparent); }
+
+  .show-tag { display:inline-block; background:rgba(196,73,26,0.2); border:1px solid rgba(196,73,26,0.5); color:#e8896a; font-family:'Oswald',sans-serif; font-size:11px; letter-spacing:2px; padding:3px 10px; border-radius:2px; margin-bottom:16px; text-transform:uppercase; }
+  .question-num { font-family:'Bebas Neue',sans-serif; font-size:13px; letter-spacing:3px; color:var(--warm-grey); margin-bottom:6px; }
+  .question-text { font-size:clamp(17px,3vw,21px); line-height:1.5; color:var(--cream); margin-bottom:28px; font-weight:300; }
+
+  .choices { display:flex; flex-direction:column; gap:12px; }
+  .choice-btn { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:3px; padding:14px 18px; text-align:left; color:var(--cream); font-family:'Source Serif 4',serif; font-size:15px; font-weight:300; cursor:pointer; transition:all 0.18s ease; display:flex; align-items:center; gap:14px; }
+  .choice-btn:hover:not(:disabled) { background:rgba(232,160,32,0.08); border-color:rgba(232,160,32,0.4); transform:translateX(3px); }
+  .choice-btn:disabled { cursor:default; }
+  .choice-letter { font-family:'Bebas Neue',sans-serif; font-size:16px; letter-spacing:1px; color:var(--amber); min-width:20px; flex-shrink:0; }
+  .choice-btn.correct { background:rgba(58,125,68,0.2); border-color:rgba(58,125,68,0.7); color:#8fd49c; }
+  .choice-btn.correct .choice-letter { color:#8fd49c; }
+  .choice-btn.wrong { background:rgba(155,35,53,0.2); border-color:rgba(155,35,53,0.7); color:#d67a87; }
+  .choice-btn.wrong .choice-letter { color:#d67a87; }
+  .choice-btn.reveal-correct { background:rgba(58,125,68,0.12); border-color:rgba(58,125,68,0.4); color:#8fd49c; }
+
+  .explanation { margin-top:20px; padding:14px 18px; background:rgba(255,255,255,0.03); border-left:3px solid var(--amber); font-size:14px; line-height:1.6; color:#c9b896; font-style:italic; display:none; animation:fadeIn 0.3s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);} }
+
+  .next-btn { display:none; margin-top:24px; background:linear-gradient(135deg,var(--rust),#8b2800); border:none; color:var(--cream); font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:3px; padding:13px 36px; cursor:pointer; border-radius:2px; transition:all 0.2s; box-shadow:0 4px 20px rgba(196,73,26,0.3); width:100%; }
+  .next-btn:hover { background:linear-gradient(135deg,#d95e28,var(--rust)); transform:translateY(-1px); }
+
+  .score-ticker { width:100%; max-width:680px; display:flex; justify-content:center; gap:32px; margin-top:20px; font-family:'Oswald',sans-serif; }
+  .score-item { text-align:center; }
+  .score-num { font-family:'Bebas Neue',sans-serif; font-size:32px; line-height:1; }
+  .score-num.green{color:#6dbf78;} .score-num.red{color:#d67a87;} .score-num.amber{color:var(--amber);}
+  .score-label { font-size:10px; letter-spacing:2px; color:var(--warm-grey); margin-top:2px; }
+
+  #results-screen { display:none; width:100%; max-width:680px; text-align:center; }
+  .results-card { background:linear-gradient(145deg,#1a1108,#120d05); border:1px solid rgba(232,160,32,0.25); border-radius:4px; padding:clamp(30px,6vw,60px); box-shadow:0 0 80px rgba(0,0,0,0.9); position:relative; overflow:hidden; }
+  .results-card::before { content:''; position:absolute; top:0;left:0;right:0;height:2px; background:linear-gradient(to right,transparent,var(--amber),var(--rust),var(--amber),transparent); }
+  .trophy { font-size:60px; margin-bottom:16px; }
+  .final-score { font-family:'Bebas Neue',sans-serif; font-size:clamp(60px,14vw,110px); color:var(--amber); text-shadow:0 0 60px rgba(232,160,32,0.5); line-height:1; }
+  .final-out-of { font-family:'Oswald',sans-serif; font-size:18px; letter-spacing:3px; color:var(--warm-grey); margin-bottom:16px; }
+  .grade-label { font-family:'Special Elite',cursive; font-size:clamp(17px,4vw,24px); color:var(--cream); margin-bottom:24px; }
+  .results-breakdown { display:flex; justify-content:center; gap:40px; margin:24px 0; padding:20px; background:rgba(255,255,255,0.03); border-radius:3px; }
+  .breakdown-item { text-align:center; }
+  .breakdown-num { font-family:'Bebas Neue',sans-serif; font-size:40px; line-height:1; }
+  .breakdown-num.g{color:#6dbf78;} .breakdown-num.r{color:#d67a87;}
+  .breakdown-label { font-family:'Oswald',sans-serif; font-size:11px; letter-spacing:2px; color:var(--warm-grey); margin-top:4px; }
+  .restart-btn { background:linear-gradient(135deg,var(--rust),#8b2800); border:none; color:var(--cream); font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:3px; padding:14px 48px; cursor:pointer; border-radius:2px; transition:all 0.2s; box-shadow:0 4px 20px rgba(196,73,26,0.3); margin-top:10px; }
+  .restart-btn:hover { background:linear-gradient(135deg,#d95e28,var(--rust)); transform:translateY(-2px); }
+
+  #start-screen { width:100%; max-width:680px; text-align:center; }
+  .start-card { background:linear-gradient(145deg,#1a1108,#120d05); border:1px solid rgba(232,160,32,0.2); border-radius:4px; padding:clamp(28px,5vw,50px); box-shadow:0 0 60px rgba(0,0,0,0.8); position:relative; overflow:hidden; }
+  .start-card::before { content:''; position:absolute; top:0;left:0;right:0;height:2px; background:linear-gradient(to right,transparent,var(--amber),var(--rust),var(--amber),transparent); }
+  .start-desc { font-size:16px; line-height:1.7; color:#c9b896; margin-bottom:28px; font-weight:300; }
+  .shows-grid { display:flex; flex-wrap:wrap; gap:7px; justify-content:center; margin-bottom:32px; }
+  .show-pill { font-family:'Oswald',sans-serif; font-size:10px; letter-spacing:1px; color:var(--amber); border:1px solid rgba(232,160,32,0.3); padding:3px 10px; border-radius:20px; }
+  .start-btn { background:linear-gradient(135deg,var(--rust),#8b2800); border:none; color:var(--cream); font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:4px; padding:16px 56px; cursor:pointer; border-radius:2px; transition:all 0.2s; box-shadow:0 4px 24px rgba(196,73,26,0.4); }
+  .start-btn:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(196,73,26,0.6); }
+  #quiz-screen { display:none; width:100%; max-width:680px; }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="header-frame">
-    <div class="header-eyebrow">Toho Co., Ltd. · Kaiju Trivia Challenge</div>
-    <span class="header-kanji">ゴジラ</span>
-    <div class="header-english">Godzilla — The Toho Years</div>
-    <div class="header-rule"></div>
-    <div class="header-sub">Showa Era 1954–1975 &nbsp;·&nbsp; Heisei Era 1984–1995 &nbsp;·&nbsp; 50 Questions</div>
-  </div>
-</div>
+<header>
+  <div class="antenna"><div class="antenna-line"></div><div class="antenna-line"></div></div>
+  <div class="channel-badge">CLASSIC TELEVISION</div>
+  <h1>SITCOM SMACKDOWN</h1>
+  <div class="subtitle">100 Questions · 80s Sitcoms · All New · Random Order</div>
+</header>
 
-<!-- PROGRESS -->
-<div class="progress-container" id="progress-container">
-  <div class="progress-header">
-    <span class="progress-label" id="progress-label">Question 1 of 50</span>
-    <span class="progress-score" id="progress-score">Score: 0</span>
-  </div>
-  <div class="progress-bar-bg">
-    <div class="progress-bar-fill" id="progress-bar" style="width:0%"></div>
-  </div>
-</div>
-
-<!-- QUIZ CARD -->
-<div class="quiz-card" id="quiz-card">
-  <div class="card-header">
-    <div class="q-number-block">
-      <div class="q-num" id="q-num">1</div>
-      <div class="q-of-total">of 50</div>
+<div id="start-screen">
+  <div class="start-card">
+    <p class="start-desc">
+      One hundred questions. Pure 1980s sitcoms. Every question is brand new.
+      Mix of fair-game basics and things that will genuinely make you think.
+      The order shuffles every time you play.
+    </p>
+    <div class="shows-grid">
+      <span class="show-pill">Cheers</span><span class="show-pill">The Golden Girls</span>
+      <span class="show-pill">The Cosby Show</span><span class="show-pill">Married with Children</span>
+      <span class="show-pill">Roseanne</span><span class="show-pill">Family Ties</span>
+      <span class="show-pill">Growing Pains</span><span class="show-pill">Who's the Boss?</span>
+      <span class="show-pill">Night Court</span><span class="show-pill">Full House</span>
+      <span class="show-pill">Murphy Brown</span><span class="show-pill">ALF</span>
+      <span class="show-pill">Designing Women</span><span class="show-pill">Perfect Strangers</span>
+      <span class="show-pill">Newhart</span><span class="show-pill">Diff'rent Strokes</span>
+      <span class="show-pill">The Facts of Life</span><span class="show-pill">Silver Spoons</span>
+      <span class="show-pill">Three's Company</span><span class="show-pill">Mama's Family</span>
+      <span class="show-pill">Benson</span><span class="show-pill">A Different World</span>
+      <span class="show-pill">Head of the Class</span><span class="show-pill">Mr. Belvedere</span>
+      <span class="show-pill">My Two Dads</span><span class="show-pill">Punky Brewster</span>
+      <span class="show-pill">Kate &amp; Allie</span><span class="show-pill">Charles in Charge</span>
+      <span class="show-pill">Saved by the Bell</span><span class="show-pill">Seinfeld</span>
+      <span class="show-pill">Amen</span>
     </div>
-    <div class="card-header-content">
-      <div class="q-era-tag" id="q-era-tag">Showa Era</div>
-      <div class="question-text" id="question-text">Loading...</div>
-    </div>
-  </div>
-
-  <div class="feedback-banner" id="feedback-banner"></div>
-  <div class="choices-section" id="choices-section"></div>
-
-  <div class="explanation" id="explanation">
-    <div class="explanation-title">Toho Archives</div>
-    <div class="explanation-text" id="explanation-text"></div>
-  </div>
-
-  <div class="next-btn-wrap">
-    <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next →</button>
+    <button class="start-btn" onclick="startQuiz()">TAKE THE QUIZ</button>
   </div>
 </div>
 
-<!-- RESULTS -->
+<div id="quiz-screen">
+  <div class="progress-wrap">
+    <div class="progress-info">
+      <span id="q-count">Question 1 of 100</span>
+      <span id="q-pct">0%</span>
+    </div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+  <div class="card">
+    <div class="show-tag" id="show-tag"></div>
+    <div class="question-num" id="q-num">QUESTION 1</div>
+    <div class="question-text" id="q-text"></div>
+    <div class="choices" id="choices"></div>
+    <div class="explanation" id="explanation"></div>
+    <button class="next-btn" id="next-btn" onclick="nextQuestion()">NEXT QUESTION →</button>
+  </div>
+  <div class="score-ticker">
+    <div class="score-item"><div class="score-num green" id="s-correct">0</div><div class="score-label">CORRECT</div></div>
+    <div class="score-item"><div class="score-num red" id="s-wrong">0</div><div class="score-label">WRONG</div></div>
+    <div class="score-item"><div class="score-num amber" id="s-remain">100</div><div class="score-label">REMAINING</div></div>
+  </div>
+</div>
+
 <div id="results-screen">
   <div class="results-card">
-    <div class="results-header">
-      <div class="results-eyebrow">Assessment Complete</div>
-      <div class="results-title" id="results-title">Final Score</div>
+    <div class="trophy" id="trophy-icon">📺</div>
+    <div class="final-score" id="final-score">0</div>
+    <div class="final-out-of">OUT OF 100</div>
+    <div class="grade-label" id="grade-label"></div>
+    <div class="results-breakdown">
+      <div class="breakdown-item"><div class="breakdown-num g" id="r-correct">0</div><div class="breakdown-label">CORRECT</div></div>
+      <div class="breakdown-item"><div class="breakdown-num r" id="r-wrong">0</div><div class="breakdown-label">WRONG</div></div>
+      <div class="breakdown-item"><div class="breakdown-num" id="r-pct" style="color:var(--amber)">0%</div><div class="breakdown-label">SCORE</div></div>
     </div>
-    <div class="score-display">
-      <span class="score-number" id="final-score">0 / 50</span>
-      <div class="score-pct" id="final-pct">0%</div>
-    </div>
-    <div class="verdict">
-      <div class="verdict-title" id="verdict-title">Toho Verdict</div>
-      <div class="verdict-sub" id="verdict-sub"></div>
-    </div>
-    <div class="breakdown">
-      <div class="breakdown-item">
-        <span class="breakdown-num c" id="final-correct">0</span>
-        <span class="breakdown-label">Correct</span>
-      </div>
-      <div class="breakdown-item">
-        <span class="breakdown-num w" id="final-wrong">0</span>
-        <span class="breakdown-label">Missed</span>
-      </div>
-    </div>
-    <button class="restart-btn" onclick="restartQuiz()">Play Again</button>
+    <button class="restart-btn" onclick="restartQuiz()">PLAY AGAIN</button>
   </div>
-</div>
-
-<div class="footer">
-  <div class="footer-rule"></div>
-  <div class="footer-text">東宝株式会社 · Est. 1932 · King of the Monsters</div>
 </div>
 
 <script>
-const questions = [
+const allQuestions = [
+
+  // ════════════════════════════════════
+  //  CHEERS  (5)
+  // ════════════════════════════════════
   {
-    era: "Showa Era · 1954",
-    q: "In the original 1954 Godzilla, Dr. Serizawa possesses a weapon capable of killing Godzilla. What does he do immediately after deploying it — and why?",
-    choices: [
-      "He seals the weapon in a vault and destroys the only key",
-      "He destroys all his research notes, then cuts his own air hose and dies alongside Godzilla",
-      "He surrenders himself to the authorities so the weapon's formula can be secured by the government",
-      "He releases the formula publicly, believing science belongs to all mankind"
-    ],
-    answer: 1,
-    explain: "Serizawa burned his notes before diving — ensuring the Oxygen Destroyer's secret died with him. He understood that a weapon capable of stripping all oxygen from water would be weaponized far beyond its original purpose. The parallel with Oppenheimer and the atomic bomb is entirely intentional."
+    show:"Cheers",
+    q:"What nickname did Sam Malone go by during his baseball-playing days?",
+    choices:["Wild Thing","Slider Sam","Mayday Malone","The Hammer"],
+    answer:2,
+    explain:"'Mayday' Malone — a nod to his tendency for on-field chaos and erratic pitching. The nickname occasionally surfaced at the bar when Sam's Red Sox career came up, and it fit perfectly for a man whose life kept requiring emergency intervention."
   },
   {
-    era: "Showa Era · 1954",
-    q: "What is the name of the weapon Dr. Serizawa uses to kill Godzilla in the original 1954 film?",
-    choices: [
-      "The Neutron Lance",
-      "The Molecular Disruptor",
-      "The Oxygen Destroyer",
-      "The Bio-Corrosion Device"
-    ],
-    answer: 2,
-    explain: "The Oxygen Destroyer (酸素破壊剤) works by splitting oxygen atoms, reducing all nearby organic matter to skeletons. It leaves no residue, no radiation — just emptiness. Decades later, in the Heisei era, the Oxygen Destroyer's use in 1954 is revealed to have spawned Destoroyah."
+    show:"Cheers",
+    q:"Who took over as bar manager and female lead when Shelley Long left Cheers?",
+    choices:["Lilith Sternin","Rebecca Howe","Holly Matheson","Diane Chambers"],
+    answer:1,
+    explain:"Rebecca Howe — played by Kirstie Alley — arrived as the corporate-appointed manager when Sam sold the bar. She won an Emmy for the role and brought an entirely different comic energy: anxiety-ridden ambition versus Diane's wounded romanticism."
   },
   {
-    era: "Showa Era · 1955",
-    q: "In 'Godzilla Raids Again' (1955), which kaiju does Godzilla battle — making it the first monster vs. monster fight in Toho history?",
-    choices: [
-      "Rodan",
-      "Baragon",
-      "King Ghidorah",
-      "Anguirus"
-    ],
-    answer: 3,
-    explain: "Anguirus — an ankylosaurus-like quadruped — was Godzilla's first on-screen opponent. Godzilla kills him in Osaka, though the two later become unlikely allies in later Showa films. Their reversal from mortal enemies to companions is one of the era's more charming continuity threads."
+    show:"Cheers",
+    q:"Where was Woody Boyd originally from before moving to Boston?",
+    choices:["Springfield, Ohio","Hanover, Indiana","Millbrook, Indiana","Cornfield, Iowa"],
+    answer:1,
+    explain:"Hanover, Indiana — a place Woody spoke of with complete, unironic pride. Woody Harrelson played the character's small-town innocence not as a joke but as genuine goodness, which made him immediately and enduringly loveable."
   },
   {
-    era: "Showa Era · 1964",
-    q: "In 'Mothra vs. Godzilla' (1964), two tiny women serve as spokespersons and interpreters for Mothra. What are these twin fairies commonly called?",
-    choices: [
-      "The Cosmos",
-      "The Shobijin",
-      "The Elias",
-      "The Twin Priests of Infant Island"
-    ],
-    answer: 1,
-    explain: "The Shobijin (小美人 — 'tiny beauties') are Mothra's eternal twin priestesses from Infant Island. They appear in both Showa and Heisei eras, though the Heisei counterparts are called the Cosmos. Their purpose is always the same: plead Mothra's case to an unlistening humanity."
+    show:"Cheers",
+    q:"What was the name of Frasier Crane's brilliantly cold psychiatrist wife who became a recurring character?",
+    choices:["Laura Crane","Lilith Sternin","Diane Chambers","Rebecca Crane"],
+    answer:1,
+    explain:"Dr. Lilith Sternin — played by Bebe Neuwirth — was introduced as Frasier's girlfriend and eventually married him. Her absolute emotional frigidity, played completely straight, made her one of the funniest characters in the show's run."
   },
   {
-    era: "Showa Era · 1964",
-    q: "In 'Ghidorah, the Three-Headed Monster' (1964), a woman possessed by the spirit of a Venusian warns Earth about King Ghidorah. What fate does she say Ghidorah brought upon Venus?",
-    choices: [
-      "He drained the planet's oceans, leaving it a desert",
-      "He reduced it to a dead, lifeless world — annihilating all civilization",
-      "He infected its atmosphere with a poisonous gas",
-      "He shattered the planet into the asteroid belt"
-    ],
-    answer: 1,
-    explain: "The Venusian spirit warns that Ghidorah destroyed all life on Venus thousands of years ago — the same fate he plans for Earth. It's a remarkably dark origin for a franchise monster: King Ghidorah is not a weapon or an experiment, but an ancient destroyer of worlds."
+    show:"Cheers",
+    q:"What was Coach Pantusso's first name?",
+    choices:["Ernest","Ernie","Ed","Eugene"],
+    answer:1,
+    explain:"Ernie 'Coach' Pantusso — played by Nicholas Colasanto — was Sam's old pitching coach. His gentle confusion about nearly everything was played as warmth rather than stupidity. When Colasanto died in 1985, the loss was genuinely felt on screen and off."
+  },
+
+  // ════════════════════════════════════
+  //  THE GOLDEN GIRLS  (5)
+  // ════════════════════════════════════
+  {
+    show:"The Golden Girls",
+    q:"What was Dorothy Zbornak's occupation in Miami?",
+    choices:["College professor","Substitute teacher","High school principal","University librarian"],
+    answer:1,
+    explain:"Dorothy was a substitute teacher — a deliberately unglamorous career for someone of obvious intelligence, and a quiet source of her frustration. Bea Arthur played Dorothy's complicated feelings about the job with characteristic acidity."
   },
   {
-    era: "Showa Era · 1965",
-    q: "In 'Invasion of Astro-Monster' (1965), the aliens of Planet X want to borrow Godzilla and Rodan to fight King Ghidorah. What do the Planet X controllers call Ghidorah?",
-    choices: [
-      "Monster Alpha",
-      "The Great Destroyer",
-      "Monster Zero",
-      "Astro-Beast One"
-    ],
-    answer: 2,
-    explain: "The Planet X Controller refers to Ghidorah as 'Monster Zero' — the designation by which Ghidorah became known to Western audiences. The film's premise seems benevolent until it's revealed to be an invasion scheme: the 'borrowed' monsters are simply being added to Planet X's arsenal of controlled kaiju."
+    show:"The Golden Girls",
+    q:"What was the name of Sophia's retirement home — Dorothy's perpetual threat whenever Sophia went too far?",
+    choices:["Sunny Acres","Shady Pines","Golden Sunset","Palm Gardens"],
+    answer:1,
+    explain:"Shady Pines — 'One more word and it's back to Shady Pines, Ma.' Sophia met every such threat with serene indifference, which made the exchange one of the show's most reliably satisfying running bits."
   },
   {
-    era: "Showa Era · 1966",
-    q: "In 'Ebirah, Horror of the Deep' (1966), Godzilla battles the giant crustacean Ebirah off Letchi Island. What criminal organization is using the island as a base of operations?",
-    choices: [
-      "The Black Hole Alliance",
-      "The Red Bamboo",
-      "The Nebula Space Hunters",
-      "The Seatopian Brotherhood"
-    ],
-    answer: 1,
-    explain: "The Red Bamboo is a shadowy terrorist organization manufacturing a heavy water-based weapon on the remote island. They use enslaved Infant Islanders as labor. Mothra's eventual rescue of the prisoners — and the island's self-destruction — gives the film a more politically charged ending than most Showa entries."
+    show:"The Golden Girls",
+    q:"What was the name of Blanche Devereaux's late husband, idealized in her memory to near-sainthood?",
+    choices:["Robert","George","James","William"],
+    answer:1,
+    explain:"George Devereaux was Blanche's deceased husband — whose memory she treated as sacred while simultaneously proving that she was doing just fine without him. Rue McClanahan played the contradiction beautifully."
   },
   {
-    era: "Showa Era · 1967",
-    q: "In 'Son of Godzilla' (1967), the newly hatched Minilla is attacked by giant praying mantis creatures. What are these mantises called?",
-    choices: [
-      "Kamacuras",
-      "Kumonga",
-      "Megalon",
-      "Varan"
-    ],
-    answer: 0,
-    explain: "Kamacuras (Gimantis in some English dubs) are giant praying mantises that attack Minilla's egg and later terrorize Sogell Island. They're ultimately more nuisance than serious threat — the real danger on the island is Kumonga, the giant spider who nearly kills both Minilla and Godzilla before they escape together."
+    show:"The Golden Girls",
+    q:"Rose Nylund told rambling, baffling stories that always began 'Back in...' — where?",
+    choices:["Stillwater, Minnesota","St. Olaf, Minnesota","St. Cloud, Minnesota","Brainerd, Minnesota"],
+    answer:1,
+    explain:"St. Olaf, Minnesota — a fictional small town Rose treated as the cultural center of the universe. Betty White's delivery made every St. Olaf story funnier than the last, partly because Rose was always completely sincere."
   },
   {
-    era: "Showa Era · 1968",
-    q: "In 'Destroy All Monsters' (1968), which alien race seizes control of Earth's kaiju and uses them to attack major world cities?",
-    choices: [
-      "The Xiliens",
-      "The Simeons",
-      "The Kilaaks",
-      "The Mysterians"
-    ],
-    answer: 2,
-    explain: "The Kilaaks — female aliens who can assume human form but require extreme heat to survive — take control of every monster on Monsterland and unleash them on cities including Tokyo, Beijing, Moscow, London, and Paris. The sequence of simultaneous worldwide attacks remains one of the most ambitious visual set pieces of the entire Showa era."
+    show:"The Golden Girls",
+    q:"What unusual medical event did Sophia claim explained her total lack of social filter?",
+    choices:["She had been struck by lightning","She'd had a stroke that destroyed the part of her brain controlling tact","She was raised in a Sicilian village with no concept of privacy","She had simply always been this way, since childhood"],
+    answer:1,
+    explain:"Sophia's stroke had damaged the part of her brain that controlled tact and sensitivity — a brilliantly constructed excuse that gave every one of her brutal one-liners an ironclad alibi. The character became a masterclass in how to be merciless while remaining loveable."
+  },
+
+  // ════════════════════════════════════
+  //  THE COSBY SHOW  (5)
+  // ════════════════════════════════════
+  {
+    show:"The Cosby Show",
+    q:"Which Huxtable daughter left for the fictional Hillman College, inspiring her own spinoff series?",
+    choices:["Sondra","Denise","Vanessa","Rudy"],
+    answer:1,
+    explain:"Denise Huxtable — played by Lisa Bonet — departed for Hillman College, a fictional HBCU modeled on schools like Howard and Spelman. A Different World followed her story, though Bonet left that show too when she became pregnant."
   },
   {
-    era: "Showa Era · 1969",
-    q: "In 'All Monsters Attack' (1969), the film is largely told through the dreams of a latchkey child who visits Monster Island in his imagination. What is the boy's name?",
-    choices: [
-      "Taro",
-      "Ichiro",
-      "Kengo",
-      "Ryu"
-    ],
-    answer: 1,
-    explain: "Ichiro — a lonely boy whose parents work long hours — escapes to an imaginary Monster Island where he befriends Minilla. The film is explicitly aimed at younger children and is unusual in that the monster footage is entirely dream-sequence material. Ichiro's real-world storyline, dealing with bullies and a kidnapping, is arguably more grounded than any other Showa entry."
+    show:"The Cosby Show",
+    q:"What learning disability was Theo Huxtable eventually diagnosed with, reframing his years of academic difficulty?",
+    choices:["ADHD","Dyslexia","Dyscalculia","A processing disorder"],
+    answer:1,
+    explain:"Theo's dyslexia diagnosis was handled with real seriousness — reframing his struggles as a medical condition rather than laziness. The storyline was one of the show's most effective uses of its platform for something more than comedy."
   },
   {
-    era: "Showa Era · 1971",
-    q: "In 'Godzilla vs. Hedorah' (1971), what unusual property of Godzilla is demonstrated — becoming one of the most derided and beloved moments of the entire Showa era?",
-    choices: [
-      "Godzilla speaks Japanese to warn coastal cities",
-      "Godzilla uses his atomic breath as rocket propulsion to fly through the air",
-      "Godzilla is shown watching television in a cave",
-      "Godzilla cries during the battle, his tears causing acid rain"
-    ],
-    answer: 1,
-    explain: "In perhaps the most surreal moment in Showa Godzilla, he points his atomic breath downward and propels himself through the air like a rocket to catch the airborne Hedorah. Director Yoshimitsu Banno apparently intended this as a whimsical flourish; Toho's executive producer Tomoyuki Tanaka reportedly hated it. The fanbase remains divided to this day."
+    show:"The Cosby Show",
+    q:"What was the nickname of Theo's best friend, whose real name was Walter Bradley?",
+    choices:["Bugs","Roach","Cockroach","Cricket"],
+    answer:2,
+    explain:"'Cockroach' — played by Carl Anthony Payne II — was Theo's closest friend throughout the series. His nickname was never fully explained, which was somehow funnier than any backstory could have been."
   },
   {
-    era: "Showa Era · 1971",
-    q: "What is Hedorah, the Smog Monster, actually composed of — and what does it consume?",
-    choices: [
-      "Radioactive sea kelp mutated by Godzilla's atomic breath; it consumes radiation",
-      "A colony of alien microorganisms that feed on industrial pollution and grow by absorbing it",
-      "Condensed volcanic ash given life by nuclear fallout; it feeds on sulfur",
-      "A byproduct of chemical weapons testing; it absorbs heavy metals from soil"
-    ],
-    answer: 1,
-    explain: "Hedorah is a living colony of alien microorganisms that arrived on a meteorite and found Earth's pollution an ideal food source. As it consumes more industrial waste and smog, it grows through multiple physical stages — aquatic, amphibious, flying, and finally a giant bipedal form. The film is a blunt ecological allegory unusual even by kaiju standards."
+    show:"The Cosby Show",
+    q:"How many children did Cliff and Clair Huxtable have?",
+    choices:["Four","Five","Six","Three"],
+    answer:1,
+    explain:"Five children: Sondra, Denise, Theo, Vanessa, and Rudy — spanning Princeton law school graduate down to elementary school. The range of ages allowed the show to tell stories about nearly every stage of childhood and young adulthood simultaneously."
   },
   {
-    era: "Showa Era · 1972",
-    q: "In 'Godzilla vs. Gigan' (1972), the M Space Hunter Nebula aliens disguise themselves as humans on Earth. What is their true biological form?",
-    choices: [
-      "Giant squid-like beings with mechanical enhancements",
-      "Giant cockroach-like creatures who inhabit the bodies of recently deceased humans",
-      "Reptilian humanoids wearing bio-synthetic human skins",
-      "Energy beings who possess living humans as permanent hosts"
-    ],
-    answer: 1,
-    explain: "The Nebula aliens are enormous cockroach-like creatures who wear the bodies of dead humans as disguises. Their cover operation is the World Children's Land theme park — complete with a giant Godzilla Tower that doubles as their communications device. It's one of the stranger villain concepts in the franchise."
+    show:"The Cosby Show",
+    q:"What was the name of Theo's recurring girlfriend throughout the series?",
+    choices:["Charmaine","Justine","Alicia","Veronica"],
+    answer:1,
+    explain:"Justine was Theo's on-again-off-again girlfriend — one of the show's more fully developed recurring relationships, used to track Theo's gradual maturation from loveable goofball to something approaching a responsible young man."
+  },
+
+  // ════════════════════════════════════
+  //  MARRIED WITH CHILDREN  (5)
+  // ════════════════════════════════════
+  {
+    show:"Married with Children",
+    q:"What was Al Bundy's job?",
+    choices:["Auto mechanic","Women's shoe salesman","Plumber","Hardware store clerk"],
+    answer:1,
+    explain:"Al Bundy sold women's shoes at Gary's Shoes and Accessories — a job he hated with every fiber of his being and that served as the show's central metaphor for a life lived in quiet, furious defeat. It was a perfect occupation."
   },
   {
-    era: "Showa Era · 1973",
-    q: "In 'Godzilla vs. Megalon' (1973), Godzilla teams up with a robot to fight Megalon and Gigan. What is that robot's name — and what is unusual about how he acquires his battle capabilities?",
-    choices: [
-      "Mechagodzilla; he is piloted remotely by JSDF scientists",
-      "Moguera; he was built by the Seatopians as a peace offering that defects to Godzilla's side",
-      "Jet Jaguar; he is a human-built robot who independently decides to grow to giant size and fight",
-      "Kiryu; he is a rebuilt version of the original Godzilla's skeleton"
-    ],
-    answer: 2,
-    explain: "Jet Jaguar was built by inventor Goro Ibuki — but the remarkable plot point is that Jet Jaguar gains the ability to alter his own size independent of his programming, a capability his creator never gave him. The film offers no explanation for this. He simply decides to become giant and help Godzilla. It's perfectly in keeping with the film's overall commitment to logic."
+    show:"Married with Children",
+    q:"How many touchdowns did Al Bundy claim to have scored in a single high school football game?",
+    choices:["Three","Four","Five","Six"],
+    answer:1,
+    explain:"Four touchdowns in a single game for Polk High — Al's crowning achievement, invoked in virtually every episode as evidence that he had once been great. It was his personal mythology, his Alamo, and his rosary all in one."
   },
   {
-    era: "Showa Era · 1974",
-    q: "In 'Godzilla vs. Mechagodzilla' (1974), the Black Hole Planet 3 aliens disguise their weapon as Godzilla. How is the fake Godzilla eventually exposed?",
-    choices: [
-      "It is unable to enter the ocean, which the real Godzilla always uses as a retreat",
-      "The real Godzilla appears simultaneously, forcing a direct confrontation that reveals two 'Godzillas'",
-      "Anguirus attacks what he thinks is Godzilla, sensing something wrong — and is badly beaten before Mechagodzilla's metal body is scratched through the fake skin by lightning",
-      "A Shinto priest uses an ancient ritual to reveal the mechanical impostor"
-    ],
-    answer: 2,
-    explain: "Anguirus, apparently sensing something is wrong with his old rival, attacks the disguised Mechagodzilla — and is brutally beaten for his instinct. Then lightning strikes the fake and sparks reveal the metal underneath. It's a rare moment of genuine pathos for Anguirus, who pays a severe price for loyalty."
+    show:"Married with Children",
+    q:"What were the names of the Bundys' neighbors who looked down on them?",
+    choices:["Bill and Barbara Wilson","Steve and Marcy Rhodes","Tom and Helen Evans","Frank and Carol Douglas"],
+    answer:1,
+    explain:"Steve and Marcy Rhodes — Marcy later becoming Marcy D'Arcy after a second marriage. Amanda Bearse played Marcy as Al's ideological opposite and most reliable target, and their mutual contempt generated some of the show's finest moments."
   },
   {
-    era: "Showa Era · 1974",
-    q: "In 'Godzilla vs. Mechagodzilla,' which ancient Okinawan guardian monster is awakened to fight alongside Godzilla?",
-    choices: [
-      "Titanosaurus",
-      "Baragon",
-      "Varan",
-      "King Caesar"
-    ],
-    answer: 3,
-    explain: "King Caesar (キングシーサー) is an ancient Okinawan shisa lion-dog monster, awakened by a prophecy and a specific Azumi princess's song. He absorbs and reflects energy blasts through his eyes and ears — a power that is critical in the battle against Mechagodzilla. His mythology is rooted in actual Okinawan spiritual tradition."
+    show:"Married with Children",
+    q:"What did the acronym NO MA'AM stand for — Al Bundy's organization for the neighborhood men?",
+    choices:["No Men's Abusive Authority Anytime Mandate","National Organization of Men Against Amazonian Masterhood","No More Awful Attitudes in Modern Matrimony","National Order of Men Against Amazonian Motherhood"],
+    answer:1,
+    explain:"National Organization of Men Against Amazonian Masterhood — Al's club, comprised of the other defeated husbands of the neighborhood. Their meetings in the Bundy living room were group therapy for people who refused to admit they needed it."
   },
   {
-    era: "Showa Era · 1975",
-    q: "In 'Terror of Mechagodzilla' (1975), the Black Hole aliens have converted the daughter of reclusive scientist Dr. Mafune into something that enables them to control Mechagodzilla. What has been done to her?",
-    choices: [
-      "Her mind has been cloned into Mechagodzilla's computer brain",
-      "A Mechagodzilla control device has been implanted in her chest, making her a cyborg",
-      "She has been genetically merged with the monster Titanosaurus",
-      "Her consciousness has been transferred into a Mechagodzilla unit"
-    ],
-    answer: 1,
-    explain: "Katsura Mafune is a cyborg — a mechanical control device has been implanted in her chest, making her the literal remote control for Mechagodzilla. Her father is aware of this and cooperates with the aliens partly out of grief. Her eventual self-sacrifice to shut down Mechagodzilla is the emotional climax of the film, and the most human moment in any Mechagodzilla story."
+    show:"Married with Children",
+    q:"What was the name of the Bundy family dog?",
+    choices:["Rex","Buck","Duke","King"],
+    answer:1,
+    explain:"Buck was the Bundys' dog — and in one of the show's cleverest devices, his interior monologue was occasionally heard by the audience, revealing him to be considerably more self-aware and philosophical than any of the humans around him."
+  },
+
+  // ════════════════════════════════════
+  //  ROSEANNE  (5)
+  // ════════════════════════════════════
+  {
+    show:"Roseanne",
+    q:"What was the name of the Illinois town where the Connor family lived?",
+    choices:["Springfield","Shelbyville","Lanford","Milltown"],
+    answer:2,
+    explain:"Lanford, Illinois — a fictional working-class Midwestern town that felt entirely real because the show filled it with authentic working-class detail. The choice of the Midwest was deliberate and the show never let its characters pretend to be anything other than what they were."
   },
   {
-    era: "Heisei Era · 1984",
-    q: "In 'The Return of Godzilla' (1984), Japan possesses a device called the Super X designed to combat Godzilla. What is the Super X's key anti-Godzilla weapon?",
-    choices: [
-      "A sustained laser cannon capable of severing Godzilla's dorsal fins",
-      "Cadmium shells fired into Godzilla's mouth to disrupt his nuclear metabolism",
-      "A sonic wave emitter tuned to Godzilla's neural frequency",
-      "A freezing agent delivered by aerial drone"
-    ],
-    answer: 1,
-    explain: "The Super X fires cadmium shells — cadmium being a nuclear reaction suppressant — directly into Godzilla's mouth, essentially inducing cardiac arrest by disrupting his nuclear furnace heart. It works, briefly. The plan is undone when Soviet nuclear missiles detonate over Tokyo, raining radiation and reviving Godzilla during the Super X's victory lap."
+    show:"Roseanne",
+    q:"What was Dan Connor's occupation?",
+    choices:["He worked in a factory","He was a drywall contractor","He was a truck driver","He worked in construction management"],
+    answer:1,
+    explain:"Dan was a drywall contractor who ran his own small business — work that was physical, unpredictable in its income, and subject to the ups and downs of the construction economy. The show treated his working-class pride with complete seriousness."
   },
   {
-    era: "Heisei Era · 1989",
-    q: "In 'Godzilla vs. Biollante' (1989), the monster Biollante is a genetic hybrid. What combination of DNA does she contain?",
-    choices: [
-      "Godzilla cells, Venus flytrap, and deep-sea kelp",
-      "Godzilla cells, rose plant cells, and the DNA of Dr. Shiragami's deceased daughter Erika",
-      "Godzilla cells, giant sequoia, and an unknown alien organism",
-      "Godzilla cells, Mothra larva tissue, and coral reef organisms"
-    ],
-    answer: 1,
-    explain: "Dr. Shiragami — a geneticist whose daughter Erika was killed in a terrorist bombing — combined his daughter's DNA with rose cells to preserve her essence, then added Godzilla's G-cells for regenerative stability. Biollante is literally the botanical form of a man's grief. Her final transformation into a luminescent spore cloud that ascends into space is among the Heisei era's most haunting images."
+    show:"Roseanne",
+    q:"What was the name of the lunch counter that Roseanne and her sister Jackie opened together?",
+    choices:["Connor's Corner","The Lunch Box","Roseanne's","The Blue Plate"],
+    answer:1,
+    explain:"The Lunch Box was Roseanne's attempt at entrepreneurship and independence — a business storyline that engaged honestly with the genuine difficulty of keeping a small operation afloat on a tight budget in a working-class town."
   },
   {
-    era: "Heisei Era · 1991",
-    q: "In 'Godzilla vs. King Ghidorah' (1991), time travelers called Futurians secretly place three small genetically engineered creatures on Lagos Island before the nuclear tests. What are these creatures called — and what do they eventually become?",
-    choices: [
-      "Dorats; they are irradiated by nuclear testing and merge into King Ghidorah",
-      "Gremlins; they absorb Godzilla's atomic energy and evolve into Ghidorah",
-      "Mecha-seeds; they are robot eggs that self-assemble into Mecha-King Ghidorah",
-      "Futurians; they are human embryos altered to become Ghidorah through radiation"
-    ],
-    answer: 0,
-    explain: "The Dorats — small, cute, genetically engineered pets — are left on Lagos Island after the Futurians secretly remove the original Godzillasaurus. Nuclear weapons testing on the island in 1954 irradiates them, and they merge into King Ghidorah. The Futurians' plan to erase Godzilla from history actually creates a worse threat — and their backup plan creates an even worse one."
+    show:"Roseanne",
+    q:"What was the name of Roseanne's sister and closest confidante throughout the series?",
+    choices:["Vicki Harris","Jackie Harris","Sandy Harris","Linda Harris"],
+    answer:1,
+    explain:"Jackie Harris — played by Laurie Metcalf, who won three Emmy Awards for the role — was Roseanne's sister and best friend. Her character arc from passive and uncertain to self-possessed and grounded was one of the series' most satisfying personal journeys."
   },
   {
-    era: "Heisei Era · 1991",
-    q: "At the climax of 'Godzilla vs. King Ghidorah,' a cyborg version of King Ghidorah is deployed to fight Godzilla. What is it called, and who built it?",
-    choices: [
-      "Cyber-Ghidorah, built by the JSDF using recovered alien technology",
-      "Mecha-King Ghidorah, rebuilt in the future by the Futurians from Ghidorah's corpse",
-      "Mecha-King Ghidorah, rebuilt in the 23rd century and sent back by a repentant Futurian named Emmy",
-      "King Mechagodzilla-Ghidorah, a hybrid built by Shindo Industries"
-    ],
-    answer: 2,
-    explain: "Emmy Kano — the one Futurian who sided with Japan — travels back from the 23rd century with Mecha-King Ghidorah, rebuilt from Ghidorah's corpse with mechanical components. It's able to capture Godzilla with cables and drag him into the ocean, though the victory is temporary and leaves Godzilla injured but alive at the sea floor — and growing."
+    show:"Roseanne",
+    q:"What was the name of the local bar where Dan and his friends regularly gathered?",
+    choices:["The Rusty Nail","The Lobo Lounge","Arno's","The Blue Moon"],
+    answer:1,
+    explain:"The Lobo Lounge was the neighborhood bar — dark, unpretentious, and exactly right for the world the show inhabited. It was a working-class institution where men went not to escape their lives but to share the weight of them."
+  },
+
+  // ════════════════════════════════════
+  //  FAMILY TIES  (4)
+  // ════════════════════════════════════
+  {
+    show:"Family Ties",
+    q:"What was the name of the baby boy born to Steven and Elyse Keaton during the series?",
+    choices:["Jake","Andy","Ryan","Sam"],
+    answer:1,
+    explain:"Andy Keaton — played by Brian Bonsall — arrived in Season 3 and immediately became a scene-stealing presence. His early scenes with Michael J. Fox were written specifically to showcase the chemistry between the two, and it worked beautifully."
   },
   {
-    era: "Heisei Era · 1992",
-    q: "In 'Godzilla vs. Mothra' (1992), a new antagonist moth monster appears called Battra. According to the Cosmos (the twin fairies), what is Battra's original purpose — distinguishing it from Mothra?",
-    choices: [
-      "Battra was created by an ancient civilization as a weapon of conquest",
-      "Battra is the Earth's own dark guardian — created to punish humanity for environmental destruction, not to protect it",
-      "Battra is Mothra's ancient twin, separated and corrupted by a meteor impact",
-      "Battra was engineered by the Futurians as a contingency weapon against Godzilla"
-    ],
-    answer: 1,
-    explain: "The Cosmos explain that Battra was created by the Earth itself 12,000 years ago as a protector — but one designed to punish and eliminate civilizations that damage the planet's environment. After an ancient civilization's climate-altering superweapon threatened the Earth, Battra was unleashed. The Earth eventually stopped him because his methods threatened all life, not just the guilty. He is not evil — just merciless."
+    show:"Family Ties",
+    q:"What was the name of Mallory Keaton's leather-jacketed, barely-articulate boyfriend who drove Steven quietly insane?",
+    choices:["Danny Tanner","Nick Moore","Jeff Stone","Brad Wilson"],
+    answer:1,
+    explain:"Nick Moore — played by Scott Valentine — was Mallory's artistic, chronically inarticulate love interest. His well-meaning attempts at meaningful conversation were a reliable source of Steven Keaton's quiet existential despair."
   },
   {
-    era: "Heisei Era · 1993",
-    q: "In 'Godzilla vs. Mechagodzilla II' (1993), Baby Godzilla's egg is discovered on a remote island. What unusual circumstance surrounds its hatching?",
-    choices: [
-      "It hatches inside a Mechagodzilla research facility, imprinting on a scientist",
-      "It hatches thinking Rodan is its parent, having been found in a pteranodon nesting ground on Adonoa Island",
-      "It hatches during a thunderstorm that supercharges it with electric energy",
-      "It is the last Godzilla egg; the shell contains genetic information for all prior Godzilla mutations"
-    ],
-    answer: 1,
-    explain: "Baby Godzilla's egg was found on Adonoa Island alongside a giant pteranodon — the creature that would become Rodan — which had been incubating it. Baby hatches looking up at Rodan, briefly imprinting on him before human researchers intervene. The psychic bond between Baby and the telepathic Azusa Gojo drives much of the film's plot, and Baby's eventual growth into the Heisei Godzilla Junior carries through to the next two films."
+    show:"Family Ties",
+    q:"How did Steven and Elyse Keaton originally meet, before settling into comfortable Ohio suburban life?",
+    choices:["In a college English class","At a protest during their college years","Through mutual friends at a commune","At a Joan Baez concert"],
+    answer:1,
+    explain:"They met as young protesters — a meeting that perfectly explained everything about who they became and why their Reagan-worshipping son Alex felt like such a pointed joke at their own biographical expense."
   },
   {
-    era: "Heisei Era · 1993",
-    q: "In 'Godzilla vs. Mechagodzilla II,' what does Rodan ultimately do that allows the severely wounded Godzilla to survive?",
-    choices: [
-      "He destroys the Garuda aircraft, removing Mechagodzilla's power source",
-      "He sacrifices himself — transferring his life energy into Godzilla, reviving and supercharging him into a more powerful form",
-      "He attacks the Super Mechagodzilla from behind, exposing its vulnerable underbelly",
-      "He shields Godzilla from the G-Crusher attack by absorbing the energy himself"
-    ],
-    answer: 1,
-    explain: "Fire Rodan — already mortally wounded by Mechagodzilla — lands on Godzilla's body and transfers his remaining life energy into him. This revives Godzilla and temporarily upgrades him into a state with a red-tinged atomic spiral ray powerful enough to destroy Super Mechagodzilla. Rodan's sacrifice for his adoptive nest-mate is one of the most unexpectedly moving moments in the entire franchise."
+    show:"Family Ties",
+    q:"What Ohio city did the Keaton family live in?",
+    choices:["Cincinnati","Columbus","Cleveland","Dayton"],
+    answer:1,
+    explain:"Columbus, Ohio was the Keaton family's home — where Steven managed the local public television station and Elyse practiced architecture. The Midwestern location grounded the show and made the family's liberal values feel rooted in a specific, non-coastal America."
+  },
+
+  // ════════════════════════════════════
+  //  GROWING PAINS  (4)
+  // ════════════════════════════════════
+  {
+    show:"Growing Pains",
+    q:"What was the nickname of Mike Seaver's best friend, whose real name was Richard Stabone?",
+    choices:["Eddie","Boner","Skipper","Gonzo"],
+    answer:1,
+    explain:"'Boner' Stabone — played by Andrew Koenig — was Mike's best friend throughout most of the series. The nickname was never really explained on the show, which was probably the correct editorial decision."
   },
   {
-    era: "Heisei Era · 1994",
-    q: "In 'Godzilla vs. SpaceGodzilla' (1994), what is the leading theory for how SpaceGodzilla came into existence?",
-    choices: [
-      "He is the Futurian-modified Godzillasaurus that was removed from Lagos Island, further mutated in space",
-      "Godzilla cells traveled into space — via Biollante's spores or carried by Mothra — entered a black hole, and were crystalline-mutated into an entirely new organism",
-      "He is a Bagan-class monster from a parallel dimension where Godzilla conquered his world",
-      "He is a clone created by the Cosmos from Godzilla's shed cells, intended as a protector that went wrong"
-    ],
-    answer: 1,
-    explain: "The film suggests Godzilla cells entered space through either Biollante's final ascension into spores or Mothra's passage during migration. These cells then entered a black hole or star cluster and underwent crystalline mutation, emerging as SpaceGodzilla — essentially a corrupted cosmic mirror of Godzilla. He carries Godzilla's power amplified by crystal energy structures, which he uses to imprison Little Godzilla."
+    show:"Growing Pains",
+    q:"Which future superstar played troubled teen Luke Brower in Growing Pains' later seasons before his film career exploded?",
+    choices:["Brad Pitt","Leonardo DiCaprio","Johnny Depp","Tom Cruise"],
+    answer:1,
+    explain:"Leonardo DiCaprio joined in Season 7 as Luke Brower, a homeless teenager the Seavers took in. He was so clearly exceptional that he was immediately given substantial material, and left almost immediately to film What's Eating Gilbert Grape."
   },
   {
-    era: "Heisei Era · 1995",
-    q: "In 'Godzilla vs. Destoroyah' (1995), what is Destoroyah's origin — and why does it create a grim irony for the original 1954 film?",
-    choices: [
-      "Destoroyah evolved from the micro-organisms of deep-sea volcanic vents, mutated by decades of accumulated nuclear runoff from Godzilla's battles",
-      "Destoroyah is the reanimated remains of the original 1954 Godzilla, revived by the Oxygen Destroyer's residual energy",
-      "Destoroyah evolved from Precambrian micro-crustaceans that were mutated by the original Oxygen Destroyer deployed in 1954 — the same weapon that killed the first Godzilla",
-      "Destoroyah is a colony organism grown from a fragment of Biollante that was never fully destroyed"
-    ],
-    answer: 2,
-    explain: "Destoroyah grew from Precambrian-era micro-organisms mutated by the Oxygen Destroyer in Tokyo Bay in 1954. The weapon that saved humanity from Godzilla in the original film has spent 40 years incubating the most dangerous creature in franchise history. He is, in a sense, humanity's karmic debt — born from the same destructive impulse as Godzilla himself."
+    show:"Growing Pains",
+    q:"Which Canadian entertainer — previously a talk show host — played psychiatrist Jason Seaver?",
+    choices:["Martin Short","Alan Thicke","John Candy","Dave Thomas"],
+    answer:1,
+    explain:"Alan Thicke played Jason Seaver — a Canadian entertainer who had struggled to find an American acting vehicle before Growing Pains. The show made him a household name and established him as one of TV's most reliable fathers."
   },
   {
-    era: "Heisei Era · 1995",
-    q: "Throughout the Heisei era, a recurring female character with psychic abilities serves as a bridge between humanity and Godzilla. What is her name, and in which Heisei film does she first appear?",
-    choices: [
-      "Azusa Gojo; she first appears in Godzilla vs. Mechagodzilla II (1993)",
-      "Miki Saegusa; she first appears in Godzilla vs. Biollante (1989)",
-      "Emmy Kano; she first appears in Godzilla vs. King Ghidorah (1991)",
-      "Chinatsu Gondo; she first appears in The Return of Godzilla (1984)"
-    ],
-    answer: 1,
-    explain: "Miki Saegusa appears in every Heisei Godzilla film from Biollante (1989) through Destoroyah (1995), serving as the ESP Institute's primary Godzilla-sensitive telepath. Her arc across seven films — from detached scientist to someone who genuinely grieves for Godzilla Junior's death in the finale — is the most sustained character development the Heisei era offers."
+    show:"Growing Pains",
+    q:"What was the name of the youngest Seaver sibling, born during the series' run?",
+    choices:["Jamie","Chrissy","Emma","Molly"],
+    answer:1,
+    explain:"Chrissy Seaver was born during the series and later aged up rapidly when a school-age child became plot-useful — a sitcom tradition almost as old as television itself. The show handled the acceleration with more grace than most."
+  },
+
+  // ════════════════════════════════════
+  //  WHO'S THE BOSS?  (4)
+  // ════════════════════════════════════
+  {
+    show:"Who's the Boss?",
+    q:"What was the name of Angela Bower's man-chasing, free-spirited mother who was a recurring presence?",
+    choices:["Rita Bower","Mona Robinson","Gena Bower","Carol Robinson"],
+    answer:1,
+    explain:"Mona Robinson — played by Katherine Helmond — was Angela's mother, whose enthusiastic pursuit of younger men and general aversion to conventional behavior put her in perpetual comic contrast with her buttoned-up daughter."
   },
   {
-    era: "Heisei Era · 1995",
-    q: "What is Godzilla's condition throughout 'Godzilla vs. Destoroyah,' and how does it manifest visually?",
-    choices: [
-      "He is suffering from an accelerating mutation that is transforming him into a Biollante hybrid",
-      "His nuclear heart is going critical — he is undergoing a slow-motion nuclear meltdown, shown by his glowing red dorsal spines and molten patches on his skin",
-      "He has been infected by Destoroyah's oxygen-destroying micro-organisms, which are dissolving him from within",
-      "He is dying of old age, his cells breaking down faster than they can regenerate"
-    ],
-    answer: 1,
-    explain: "Godzilla's internal nuclear reactor has gone critical — his body temperature is rising toward meltdown, which if uncontrolled would cause a thermonuclear explosion capable of destroying the planet. The visual language is unmistakable: glowing red cracks across his body, molten patches, superheated steam. The JSDF deploys cryogenic weapons not to defeat him but to delay the inevitable. He is dying, and he knows it."
+    show:"Who's the Boss?",
+    q:"Where was Tony Micelli from — the blue-collar background that contrasted with Angela's affluent Connecticut world?",
+    choices:["South Philly","Brooklyn, New York","The South Bronx","Newark, New Jersey"],
+    answer:1,
+    explain:"Tony was from Brooklyn — a detail central to his identity throughout the series. The contrast between his working-class Brooklyn roots and the wealthy Fairfield County, Connecticut environment he moved into was the show's social engine."
   },
   {
-    era: "Showa & Heisei",
-    q: "Both Showa and Heisei eras feature a version of Mechagodzilla. Who builds each version, and what key difference distinguishes them in terms of origin?",
-    choices: [
-      "Both are built by the JSDF; the Showa version uses alien blueprints, the Heisei version is an original Japanese design",
-      "The Showa Mechagodzilla is built by the Black Hole Planet 3 aliens as an invasion weapon; the Heisei Mechagodzilla (Kiryu) is built by the JSDF using the bones of the original 1954 Godzilla",
-      "The Showa Mechagodzilla is built by the Black Hole Planet 3 aliens as an invasion weapon; the Heisei Mechagodzilla is built by the human anti-Godzilla agency G-Force",
-      "Both versions are built by alien invaders; the key difference is the Heisei version is remote-controlled while the Showa version is autonomous"
-    ],
-    answer: 2,
-    explain: "The Showa Mechagodzilla (1974–75) is an alien weapon built by the Black Hole Planet 3 aliens disguised as the real Godzilla. The Heisei Mechagodzilla (1993) is a human-built machine created by G-Force as an anti-Godzilla weapon — combining the advanced Garuda craft with the Mechagodzilla body into 'Super Mechagodzilla.' Two very different machines, both sharing the same iconic design."
+    show:"Who's the Boss?",
+    q:"What was the name of Angela's son who initially struggled to accept Tony's presence in the household?",
+    choices:["Christopher","Jonathan","Michael","Kevin"],
+    answer:1,
+    explain:"Jonathan Bower — played by Danny Pintauro — was Angela's son, whose relationship with Tony and Samantha evolved from awkward necessity to genuine family warmth. Pintauro's comic timing improved considerably over the course of the show's run."
   },
   {
-    era: "Showa & Heisei",
-    q: "In 'Ghidorah, the Three-Headed Monster' (1964), Mothra attempts to convince Godzilla and Rodan to help fight King Ghidorah, with the Shobijin translating. What is their initial response — and what eventually changes their minds?",
-    choices: [
-      "Both immediately agree when they realize Ghidorah threatens Monster Island directly",
-      "Both refuse, saying humanity's problems are not their concern. Mothra decides to fight alone — and watching the tiny larva try to fight Ghidorah single-handedly shames Godzilla and Rodan into joining",
-      "Godzilla agrees immediately but Rodan refuses until Mothra is nearly killed",
-      "They agree only after the Shobijin promise that humanity will leave Monster Island permanently"
-    ],
-    answer: 1,
-    explain: "Godzilla and Rodan refuse — telling Mothra, through the Shobijin, that humans have done nothing for monsters and deserve what they get. Mothra, undeterred, tackles Ghidorah alone. Watching a tiny larva fighting a planet-destroying space dragon against impossible odds moves both Godzilla and Rodan to abandon their cynicism and join the fight. It's the franchise's first genuine team-up, and the emotional logic is completely sound."
+    show:"Who's the Boss?",
+    q:"Tony Micelli was hired specifically as what — the role that gave the show its ambiguous title?",
+    choices:["A personal assistant","A live-in housekeeper","A nanny for Jonathan","A combination driver and household manager"],
+    answer:1,
+    explain:"Tony was the housekeeper — officially. From the pilot onward, the question of who actually ran the household was genuinely unresolved, and the title's answer shifted depending on who was asking and what mood everyone was in."
+  },
+
+  // ════════════════════════════════════
+  //  NIGHT COURT  (4)
+  // ════════════════════════════════════
+  {
+    show:"Night Court",
+    q:"What was the job of Mac Robinson — the long-suffering straight man of the night court group?",
+    choices:["Public defender","Court clerk","Bailiff","Court reporter"],
+    answer:1,
+    explain:"Mac Robinson was the court clerk — played by Charlie Robinson. He was the most professionally competent person in the building and the organizational glue that kept the night court functioning despite its daily chaos. His composure under fire was heroic."
   },
   {
-    era: "Showa Era · 1954",
-    q: "The original 1954 Godzilla was directed by Ishiro Honda, but the special effects sequences were the work of a pioneering tokusatsu artist. Who was he, and what technique was he most famous for perfecting?",
-    choices: [
-      "Eiji Tsuburaya — he perfected suitmation, the technique of filming a suited actor in miniature sets to create convincing monster destruction",
-      "Akira Ifukube — he developed the miniature photography method and also composed the iconic score",
-      "Teruyoshi Nakano — he invented the rear-projection composite photography system used in all Toho films",
-      "Sadamasa Arikawa — he created the forced-perspective lens system that made actors appear giant"
-    ],
-    answer: 0,
-    explain: "Eiji Tsuburaya is the father of tokusatsu — the art of special filming techniques. His suitmation method, using a suited performer in highly detailed miniature citysets filmed at high frame rates then slowed down, became the defining visual language of kaiju cinema. He later founded Tsuburaya Productions, creator of Ultraman. His influence on practical effects filmmaking worldwide is incalculable."
+    show:"Night Court",
+    q:"Who was the original bailiff on Night Court before Roz took over — a perpetually exhausted woman who regarded the circus with weary tolerance?",
+    choices:["Selma Hacker","Florence Douglas","Ruth Worthy","Harriet Blake"],
+    answer:0,
+    explain:"Selma Hacker — played by Florence Stanley — was the original bailiff, a woman of monumental tiredness who had clearly seen everything twice before. Her replacement by the formidable Roz was one of the show's more seamless cast transitions."
   },
   {
-    era: "Showa Era · 1954",
-    q: "The score of the original 1954 Godzilla — including the iconic main march — was composed by which musician, who went on to score the majority of Showa era Godzilla films?",
-    choices: [
-      "Masaru Sato",
-      "Riichiro Manabe",
-      "Akira Ifukube",
-      "Kunio Miyauchi"
-    ],
-    answer: 2,
-    explain: "Akira Ifukube composed Godzilla's main march theme — one of the most recognizable musical motifs in cinema history. His heavy brass and percussion style defined the sound of Toho's monster films. He returned to score multiple Heisei films including Godzilla vs. King Ghidorah and Godzilla vs. Destoroyah, bringing thematic continuity across four decades."
+    show:"Night Court",
+    q:"Which actress played public defender Christine Sullivan throughout most of Night Court's run?",
+    choices:["Marsha Warfield","Markie Post","Melissa Gilbert","Shelley Long"],
+    answer:1,
+    explain:"Markie Post played Christine Sullivan — earnest, good-hearted, and perpetually trying to maintain professional dignity in a courtroom where dignity was not the prevailing value. She was the character the audience rooted for most consistently."
   },
   {
-    era: "Showa Era · 1956",
-    q: "When the original 1954 Godzilla was released in the United States in 1956, it was significantly reedited. What was added that was not in the Japanese original?",
-    choices: [
-      "A new monster battle sequence filmed in Hollywood using stop-motion animation",
-      "Footage of American reporter Steve Martin, played by Raymond Burr, inserted throughout the film via reaction shots and a new framing narration",
-      "An alternate ending in which the US military kills Godzilla with atomic bombs",
-      "Dubbed dialogue that replaced the Oxygen Destroyer with a conventional depth charge"
-    ],
-    answer: 1,
-    explain: "Godzilla, King of the Monsters! inserted Raymond Burr as American reporter Steve Martin through newly filmed reaction footage and a voice-over narration framing device. Much of the film's anti-nuclear subtext was softened or removed. Burr's Steve Martin character returned — very awkwardly — in the 1985 US cut of The Return of Godzilla, with the actor visibly much older."
+    show:"Night Court",
+    q:"Which Night Court character won four consecutive Emmy Awards before asking to be removed from consideration?",
+    choices:["Bull Shannon","Judge Harry Stone","Mac Robinson","Dan Fielding"],
+    answer:3,
+    explain:"John Larroquette won four consecutive Emmys for playing Dan Fielding and then asked to be removed from consideration — a gracious and unusual gesture from someone with every reason to keep accepting the award. He felt it was unfair to other performers."
+  },
+
+  // ════════════════════════════════════
+  //  FULL HOUSE  (4)
+  // ════════════════════════════════════
+  {
+    show:"Full House",
+    q:"What was the name of Danny Tanner's brother-in-law who moved in to help raise the girls?",
+    choices:["Joey Gladstone","Jesse Katsopolis","Joey Lawrence","Jesse Johnson"],
+    answer:1,
+    explain:"Jesse Katsopolis — played by John Stamos — was the aspiring rock musician who became an unlikely father figure. His hair received approximately equal narrative attention to any storyline involving the actual children."
   },
   {
-    era: "Showa Era · 1962",
-    q: "In 'King Kong vs. Godzilla' (1962), a pharmaceutical company retrieves King Kong from Faro Island to use him as a publicity stunt. What unusual property does Kong demonstrate in this film that is unique to this entry and has no basis in the original Kong mythology?",
-    choices: [
-      "He can communicate telepathically with Godzilla",
-      "He absorbs and is strengthened by electricity, including lightning",
-      "He can regenerate damaged tissue at an accelerated rate",
-      "He grows larger each time he enters the ocean"
-    ],
-    answer: 1,
-    explain: "In this film, Kong absorbs electricity and becomes stronger from it — a power conveniently introduced so he can battle Godzilla's atomic breath on even terms. Lightning bolts visibly charge him up during the climax. This ability has no precedent in RKO's Kong films and was invented wholesale by Toho. It has been referenced and restored in subsequent Kong appearances in the Monsterverse."
+    show:"Full House",
+    q:"What was Joey Gladstone's professional ambition throughout the series?",
+    choices:["He was an aspiring actor","He was a stand-up comedian and impressionist","He was a children's television writer","He was a radio morning host"],
+    answer:1,
+    explain:"Joey was a stand-up comedian and impressionist — and Dave Coulier's actual comedy skills gave the performance sequences a credibility that TV comedian characters rarely achieve. His Bullwinkle impression could defuse almost any tension with the children."
   },
   {
-    era: "Showa Era · 1964",
-    q: "In 'Mothra vs. Godzilla' (1964), a giant egg washes ashore and is commercially exploited by a greedy entrepreneur. What is eventually revealed to have been developing inside it?",
-    choices: [
-      "A second Godzilla, which hatches and helps the first battle the military",
-      "Two Mothra larvae, which together manage to cocoon Godzilla when the adult Mothra dies in the attempt",
-      "A new kaiju species that bonds with Godzilla upon hatching",
-      "A single enormous Mothra imago, born mature and ready to fight"
-    ],
-    answer: 1,
-    explain: "Two Mothra larvae hatch from the egg — and where their dying mother failed, they succeed by working together. They encase Godzilla in silk, immobilizing him on Iwa Island. The image of two tiny larvae defeating the most powerful monster on Earth through cooperation while their mother lay dying nearby carries a weight the film earns entirely."
+    show:"Full House",
+    q:"What was Michelle Tanner's most famous catchphrase, delivered by the Olsen twins with total commitment?",
+    choices:["How rude!","You got it, dude!","No way, José!","Whatever, dude!"],
+    answer:1,
+    explain:"'You got it, dude!' became one of the most quoted toddler lines in television history. It competed for catchphrase supremacy with Stephanie's 'How rude!' and the two of them together were probably responsible for a significant percentage of the show's merchandising revenue."
   },
   {
-    era: "Showa Era · 1966",
-    q: "In 'Godzilla vs. the Sea Monster' (1966), why does Godzilla sleep through the early part of the film and need to be awakened — and how is he woken up?",
-    choices: [
-      "He is hibernating in an underwater cave; a depth charge accidentally detonates near him",
-      "He is dormant on Letchi Island; a group of shipwreck survivors discover him and use a stolen sword to conduct lightning to him",
-      "He has been drugged by the Red Bamboo's chemical weapons; Mothra's pollen revives him",
-      "He is sleeping in a cave on the island; a shipwrecked youth wanders in and accidentally plays a Famicom game that emits a frequency waking him"
-    ],
-    answer: 1,
-    explain: "A group of shipwrecked young men find Godzilla asleep in a cave on Letchi Island. Recalling folklore about lightning and monsters, they use a stolen sword as a lightning rod during a storm to channel electricity into him — and it works. Godzilla wakes up irritable and ready to level the Red Bamboo's operation. It is among the more inventive and low-budget monster-waking mechanisms in the franchise."
+    show:"Full House",
+    q:"What was the name of Jesse Katsopolis's band, which was a recurring subplot throughout the series?",
+    choices:["Jesse and the Rippers","The Rippers","Hot Daddy and the Monkey Puppets","Jesse and the Boys"],
+    answer:0,
+    explain:"Jesse and the Rippers — a band name that somehow combined genuine rock credibility with complete absurdity. John Stamos's real musical ability gave the performance scenes more authenticity than this kind of storyline usually earns."
+  },
+
+  // ════════════════════════════════════
+  //  MURPHY BROWN  (4)
+  // ════════════════════════════════════
+  {
+    show:"Murphy Brown",
+    q:"What was the name of the fictional TV newsmagazine where Murphy Brown worked?",
+    choices:["The Evening Report","FYI","Capital News","The Morning Beat"],
+    answer:1,
+    explain:"FYI — a show-within-a-show that gave the writers endless material about television news' vanities, compromises, and occasional genuine moments of journalistic integrity. The fictional newsroom felt more real than most actual newsroom dramas."
   },
   {
-    era: "Showa Era · 1967",
-    q: "In 'King Kong Escapes' (1967), the villain Doctor Who — no relation to the British series — builds a robotic Kong to mine a radioactive element. What is the element called, and why does the real Kong need to be captured?",
-    choices: [
-      "Element X — the robot Kong malfunctions due to Element X's radiation, so the real Kong is captured to replace it",
-      "Mechonite — the robot needs Kong's brain patterns as a template to mine efficiently",
-      "Radioactive isotope Z — Kong's bioelectric field is the only thing that can stabilize it during extraction",
-      "Element Zero — the robot cannot locate the deposits without Kong's instinctive navigation abilities"
-    ],
-    answer: 0,
-    explain: "Element X — a powerful radioactive ore at the North Pole — disrupts Mechani-Kong's systems during mining. Dr. Who (voiced with tremendous villainy) captures the real Kong to finish the job instead. The film is a companion piece to the Rankin/Bass King Kong animated series of the same era and features one of Toho's more flamboyantly theatrical antagonists."
+    show:"Murphy Brown",
+    q:"Murphy Brown was famous for her inability to keep a secretary. Roughly how many secretaries did she go through over the course of the series?",
+    choices:["About 30","About 50","More than 80","Exactly 112"],
+    answer:2,
+    explain:"Murphy went through more than 80 secretaries — the number grew into the dozens and eventually past that. Each new introduction was its own comedy beat and the reasons for departures became increasingly creative as the writers exhausted obvious possibilities."
   },
   {
-    era: "Showa Era · 1969",
-    q: "In 'All Monsters Attack,' Minilla can speak in this film — a first and essentially last for any Godzilla offspring. What life lesson does he confide to Ichiro, the dreaming boy?",
-    choices: [
-      "That even the smallest creatures deserve respect, since size means nothing without heart",
-      "That he is also bullied on Monster Island by a monster called Gabara, and that standing up to a bully himself gave him the courage to face him",
-      "That Godzilla has no real feelings and treats Minilla as a training tool rather than a son",
-      "That humans and monsters are the same — both afraid, both searching for acceptance"
-    ],
-    answer: 1,
-    explain: "Minilla confides that he is bullied by Gabara — a horned, electricity-shooting monster who torments him on Monster Island. The parallel with Ichiro's real-world bully is explicit and deliberate. Both Minilla and Ichiro find the courage to fight back, with Godzilla coaching Minilla from the sidelines. The film is unabashedly didactic, aimed squarely at children, but its emotional honesty about bullying is genuine."
+    show:"Murphy Brown",
+    q:"Which real-life political figure's public criticism of Murphy Brown became a famous moment in the show's history?",
+    choices:["President George H.W. Bush","Vice President Dan Quayle","Pat Buchanan","Tipper Gore"],
+    answer:1,
+    explain:"Vice President Dan Quayle criticized Murphy Brown in a 1992 speech on family values, taking issue with her choice to have a child as a single woman. The show responded directly in its season premiere — Murphy addressed his speech on air in a moment that genuinely blurred the lines between fiction and politics."
   },
   {
-    era: "Showa Era · 1972",
-    q: "In 'Godzilla vs. Gigan,' the monsters communicate with each other during the battle in a briefly glimpsed speech bubble sequence. What do Godzilla and Anguirus say to each other?",
-    choices: [
-      "Godzilla warns Anguirus that something is wrong with the Godzilla Tower; Anguirus agrees to investigate",
-      "Godzilla tells Anguirus to retreat while he handles both Gigan and King Ghidorah alone",
-      "They discuss a strategy to separate Gigan from Ghidorah before attacking",
-      "Godzilla scolds Anguirus for arriving late to the battle"
-    ],
-    answer: 0,
-    explain: "In a remarkable and frequently discussed scene, Godzilla and Anguirus exchange dialogue in speech bubbles — Godzilla telling Anguirus something seems wrong with the Godzilla Tower, Anguirus agreeing to investigate. It was the only time Toho had monsters speak actual dialogue on screen. The decision was controversial and was not repeated. In the English dub, Godzilla sounds like a surfer."
+    show:"Murphy Brown",
+    q:"What personal history did Murphy Brown carry into every episode — the backstory that grounded her intensity in something real?",
+    choices:["She was battling cancer","She was a recovering alcoholic","She was estranged from her father","She had lost a child"],
+    answer:1,
+    explain:"Murphy was ten years sober from alcoholism when the series began — and the show treated this history with unusual seriousness for a sitcom. It gave Candice Bergen something real to play beneath all the professional confidence and gave Murphy's drive a specific, painful source."
+  },
+
+  // ════════════════════════════════════
+  //  ALF  (4)
+  // ════════════════════════════════════
+  {
+    show:"ALF",
+    q:"What was the name of ALF's home planet, which had been destroyed before he arrived on Earth?",
+    choices:["Orlok","Melmac","Zarkon","Delmak"],
+    answer:1,
+    explain:"Melmac — gone before the series began, leaving ALF as one of its few surviving refugees. His references to Melmacian culture (food, sports, social customs) gave the comedy occasional genuine notes of loss and displacement."
   },
   {
-    era: "Showa Era · 1973",
-    q: "In 'Godzilla vs. Megalon,' the underground civilization of Seatopia sends Megalon to destroy the surface world in retaliation for what specific grievance?",
-    choices: [
-      "A deep-sea oil drilling operation that broke through the roof of their kingdom",
-      "Nuclear testing in the Pacific that repeatedly damaged their underground civilization",
-      "A submarine program that accidentally flooded their deepest territories",
-      "The construction of an undersea tunnel that destroyed their sacred temple"
-    ],
-    answer: 1,
-    explain: "The Seatopians have been subjected to constant devastation from nuclear and hydrogen bomb testing in the Pacific — tests conducted by surface nations with no knowledge of or concern for the civilization living beneath the ocean floor. Their grievance is entirely legitimate, which gives the film an unusual moral ambiguity: the 'villains' have been genuinely wronged. They simply chose a monster as their remedy."
+    show:"ALF",
+    q:"What was the name of the human family that ALF lived with?",
+    choices:["The Hendersons","The Tanners","The Millers","The Coopers"],
+    answer:1,
+    explain:"The Tanner family — Willie, Kate, Lynn, and Brian — were ALF's reluctant hosts. The coincidence with Full House's Tanner family was accidental, a collision of network scheduling rather than any creative connection."
   },
   {
-    era: "Showa Era · 1975",
-    q: "In 'Terror of Mechagodzilla,' who is Dr. Mafune, and what is his relationship to the scientific establishment that drives his cooperation with the aliens?",
-    choices: [
-      "A former JSDF weapons engineer, expelled for unauthorized experiments on captured kaiju tissue",
-      "A once-celebrated marine biologist who was ridiculed and expelled from the scientific community for his theory that Titanosaurus existed — now working with the aliens out of vindictive bitterness",
-      "A Toho corporation scientist who secretly sold Mechagodzilla blueprints to alien agents",
-      "A government-sanctioned kaiju researcher who lost his funding after failing to predict Godzilla's 1974 attack"
-    ],
-    answer: 1,
-    explain: "Dr. Shinzo Mafune was a marine biologist whose discovery of Titanosaurus was laughed out of the scientific community. Discredited and embittered, he retreated into isolation — where the Titan III aliens found him and his daughter. His cooperation with them is fueled partly by revenge against a world that rejected him, and partly by the terrible secret of what they did to Katsura. He is among the most genuinely tragic human figures in the Showa era."
+    show:"ALF",
+    q:"Beyond trying to eat the family cat, what was ALF's other great obsession that drove many episode plots?",
+    choices:["Watching and commenting on American television","Professional wrestling","Baseball","Fast food"],
+    answer:0,
+    explain:"ALF was a passionate and opinionated television watcher whose running commentary on American pop culture was one of the show's cleverest devices — a genuinely alien perspective on the medium, delivered from inside the medium itself."
   },
   {
-    era: "Heisei Era · 1984",
-    q: "In 'The Return of Godzilla' (1984), Japan faces a Cold War dilemma when both the Soviet Union and the United States pressure the government regarding their planned response to Godzilla. What does each superpower demand?",
-    choices: [
-      "The Soviets demand Japan surrender Godzilla's body for study; the US demands Japan allow nuclear weapons testing near Godzilla",
-      "The Soviets want to use a nuclear warhead against Godzilla; the US also wants nuclear options, and Japan is caught trying to refuse both while secretly deploying its own solution",
-      "The US demands Japan cede its anti-Godzilla technology; the Soviets want to detonate a submarine-launched warhead in Tokyo Bay",
-      "Both nations demand Japan evacuate Tokyo and cede the ruins as a nuclear test zone"
-    ],
-    answer: 1,
-    explain: "Both superpowers push for nuclear options against Godzilla, reflecting genuine Cold War fears about escalation and sovereignty. Japan's government tries to resist, insisting on a conventional response via the Super X. A Soviet nuclear missile is accidentally launched and detonates over Tokyo, raining radiation — reviving the briefly defeated Godzilla. Japan is caught between two nuclear powers and nearly destroyed by the diplomatic fallout of their 'solutions.'"
+    show:"ALF",
+    q:"What was the name of the persistently nosy neighbor who came dangerously close to discovering ALF on multiple occasions?",
+    choices:["Raquel Ochmonek","Peggy Wilson","Dorothy Harper","Bev Smith"],
+    answer:0,
+    explain:"Raquel Ochmonek — played by Liz Sheridan — and her husband Trevor were the neighbors whose curiosity about the Tanners generated the show's recurring tension. Her near-discoveries required increasingly elaborate evasions that tested the audience's credulity in delightful ways."
+  },
+
+  // ════════════════════════════════════
+  //  DESIGNING WOMEN  (5)
+  // ════════════════════════════════════
+  {
+    show:"Designing Women",
+    q:"In what city was the Sugarbaker interior design firm located?",
+    choices:["Charlotte, North Carolina","Atlanta, Georgia","Nashville, Tennessee","Birmingham, Alabama"],
+    answer:1,
+    explain:"Atlanta — a deliberate choice that allowed the show to engage with Southern culture, race, gender, and class from the inside rather than as an observer. It gave Julia Sugarbaker's speeches their specific geographic weight and authority."
   },
   {
-    era: "Heisei Era · 1989",
-    q: "In 'Godzilla vs. Biollante,' a bio-major corporation and a Middle Eastern nation both pursue Godzilla's G-cells. What property of G-cells makes them so strategically valuable beyond kaiju research?",
-    choices: [
-      "They can survive and replicate in any environment including extreme radiation, making them the basis for an invulnerable super-soldier program",
-      "They contain the genetic template for near-unlimited regeneration, with agricultural and medical applications that would be worth trillions",
-      "They emit a low-frequency radiation that disrupts enemy electronics when concentrated in large quantities",
-      "They contain a natural immunity to all known biological pathogens, making them the foundation of a universal vaccine"
-    ],
-    answer: 1,
-    explain: "G-cells possess extraordinary regenerative properties — Godzilla's ability to survive nuclear blasts and regenerate catastrophic damage is encoded in every cell. Bio-Major wants them for agricultural super-crops that could survive any environment, while the fictional nation of Saradia wants them for desert-resistant food crops to end dependence on foreign aid. The geopolitics of genetic material in this film are unusually sophisticated for a kaiju movie."
+    show:"Designing Women",
+    q:"What was the name of the warehouse manager who was as much a part of the team as the four women?",
+    choices:["Charlene's brother Marcus","Anthony Bouvier","Thomas Wells","Jerome Johnson"],
+    answer:1,
+    explain:"Anthony Bouvier — played by Meshach Taylor — was the delivery and warehouse manager who became a full member of the Sugarbaker family. The show used his character to engage with Southern race relations with more directness than most television of the era attempted."
   },
   {
-    era: "Heisei Era · 1992",
-    q: "In 'Godzilla vs. Mothra' (1992), where is the ancient Cosmos civilization's superweapon — the device that originally angered the Earth and triggered Battra's creation — located, and what happened when it was used?",
-    choices: [
-      "It was located in the Himalayas and created a global ice age when activated 12,000 years ago",
-      "It was a orbital weapon that the Cosmos fired at a meteor, accidentally hitting the Earth instead",
-      "It was located in the Indian Ocean and altered the Earth's climate when used 12,000 years ago, nearly destroying all life",
-      "It was buried in the Antarctic and was accidentally activated by modern mining operations"
-    ],
-    answer: 2,
-    explain: "The Cosmos civilization built a device to control the Earth's climate — effectively attempting to play god with the planet's weather systems. When activated, it threw the Earth's natural systems into catastrophic imbalance, nearly destroying all life. The Earth's response was Battra. The civilization was destroyed by its own hubris. The parallel with contemporary climate anxiety is not subtle, and was presumably intentional by director Takao Okawara."
+    show:"Designing Women",
+    q:"Which Designing Women character was from Poplar Bluff, Missouri, and was the most relentlessly cheerful person in the group?",
+    choices:["Mary Jo Shively","Suzanne Sugarbaker","Charlene Frazier","Julia Sugarbaker"],
+    answer:2,
+    explain:"Charlene Frazier — played by Jean Smart — was from Poplar Bluff, Missouri and brought enormous, authentic warmth to everything around her. She was Julia's softer counterpart: where Julia used intelligence as a weapon, Charlene deployed goodwill."
   },
   {
-    era: "Heisei Era · 1994",
-    q: "In 'Godzilla vs. SpaceGodzilla,' the JSDF deploys a new mech to fight Godzilla alongside the attempt to destroy SpaceGodzilla. What is the name of this machine, operated by a lone soldier?",
-    choices: [
-      "Super X3",
-      "Garuda Mark II",
-      "M.O.G.U.E.R.A.",
-      "Mechagodzilla Unit 3"
-    ],
-    answer: 2,
-    explain: "M.O.G.U.E.R.A. — Mobile Operation Godzilla Universal Expert Robot Aero-type — is the rebuilt successor to the original MOGUERA from The Mysterians (1957). It can separate into two independent vehicles: Star Falcon and Land Moguera. Despite being comprehensively outmatched by SpaceGodzilla, M.O.G.U.E.R.A. plays a pivotal role in destroying the crystal towers that amplify SpaceGodzilla's power, allowing Godzilla to finish the fight."
+    show:"Designing Women",
+    q:"What was the family relationship between Julia and Suzanne Sugarbaker?",
+    choices:["Business partners who met in college","Cousins","Sisters","Former college roommates"],
+    answer:2,
+    explain:"Julia and Suzanne were sisters — which explained both their genuine affection and their equally genuine ability to drive each other to the edge. The sisterly dynamic gave their arguments a texture that simple professional conflict couldn't have produced."
   },
   {
-    era: "Heisei Era · 1995",
-    q: "In 'Godzilla vs. Destoroyah,' Godzilla Junior undergoes a key development before the climax of the film. What happens to him, and how does it affect the finale?",
-    choices: [
-      "He is absorbed by Destoroyah, becoming part of the creature's mass and increasing its power",
-      "He reaches full adult size and briefly battles Destoroyah before being killed — and Godzilla, witnessing his son's death, goes into a rage that accelerates his own meltdown",
-      "He evolves into a mature Godzilla form and helps his father fight Destoroyah before being driven into the ocean",
-      "He is captured by Destoroyah and used as a hostage to lure the dying Godzilla into Tokyo"
-    ],
-    answer: 1,
-    explain: "Godzilla Junior reaches full adult size during the film — the torch of the franchise being visually passed. Then Destoroyah kills him. Godzilla, already melting down, goes berserk with grief and rage. The military freezes the collapsing Godzilla to prevent a global nuclear catastrophe — and his dying radiation revives Junior. The Heisei era ends with a new Godzilla standing in the ruins, carrying forward the legacy."
+    show:"Designing Women",
+    q:"After Jean Smart left the show, which character — a relative of the departing one — joined the firm?",
+    choices:["Shelby Kincaid","Carlene Dobber","Cassie Barnett","Luanne Frazier"],
+    answer:1,
+    explain:"Carlene Dobber — Charlene's cousin from Poplar Bluff, played by Jan Hooks — joined after Jean Smart's departure. Making the replacement a family member was a neater solution than most cast transitions manage, and Jan Hooks brought enough original energy to make Carlene her own creation."
+  },
+
+  // ════════════════════════════════════
+  //  PERFECT STRANGERS  (3)
+  // ════════════════════════════════════
+  {
+    show:"Perfect Strangers",
+    q:"What was the name of the Chicago newspaper where Larry Appleton worked as a photographer?",
+    choices:["The Chicago Tribune","The Chicago Chronicle","The Midwest Daily","The Chicago Post"],
+    answer:1,
+    explain:"The Chicago Chronicle was the fictional paper — Larry's workplace and his vehicle for professional ambition. His desire to move from photographer to writer was a recurring storyline, and the paper's dysfunction was a reliable backdrop for his misadventures."
   },
   {
-    era: "Showa Era · 1964",
-    q: "In 'Mothra vs. Godzilla,' the villainous entrepreneur Happy Enterprises refuses to return the giant Mothra egg and exploits it commercially. What is the name of this character, and what is his nationality as depicted in the film?",
-    choices: [
-      "Nelson — he is a Chinese-American smuggler working for a Hong Kong syndicate",
-      "Kumayama — he is a Japanese businessman working with a foreign investor named Torahata",
-      "Jiro Torahata — he is a Japanese industrialist who bribed local officials to acquire the egg",
-      "Heinrich Schmidt — he is a German developer who purchased the beachfront rights"
-    ],
-    answer: 1,
-    explain: "Kumayama is the local Japanese face of the scheme, while his backer Torahata holds the real financial power. Their greed drives the film's human plot — both men ultimately die for their refusal to return the egg, killed by each other and then by Godzilla. The film is unusually direct about corporate greed as the root cause of the catastrophe that follows."
+    show:"Perfect Strangers",
+    q:"Who played Larry Appleton — the straight man whose reactions made Balki's behavior register?",
+    choices:["Bronson Pinchot","Mark Linn-Baker","Mark-Paul Gosselaar","Matthew Perry"],
+    answer:1,
+    explain:"Mark Linn-Baker played Larry Appleton. His physical comedy timing was consistently underappreciated because Bronson Pinchot's Balki was so spectacular — but the show's dynamic required Larry's specific brand of anxiety and exasperation to function."
   },
   {
-    era: "Showa Era · 1970",
-    q: "In 'Space Amoeba' (1970) — a Toho kaiju film not featuring Godzilla — which three real-world sea creatures are mutated into giant monsters by the alien space amoeba Yog?",
-    choices: [
-      "A squid, a crab, and a snapping turtle",
-      "An octopus, a cuttlefish, and a sea snake",
-      "A jellyfish, a moray eel, and a horseshoe crab",
-      "An octopus, a giant crab, and a snapping turtle"
-    ],
-    answer: 3,
-    explain: "Gezora (octopus), Ganimes (crab), and Kamoebas (snapping turtle) are mutated by the alien Yog. The film is often grouped with the broader Toho kaiju library and is directed by Ishiro Honda. Kamoebas later appears as a dead specimen washed ashore in 'Godzilla: Tokyo S.O.S.' — a neat bit of continuity from Toho's wider monster universe."
+    show:"Perfect Strangers",
+    q:"What were Larry and Balki's respective job titles at the Chicago Chronicle?",
+    choices:["Larry was a reporter and Balki was a photographer","Larry was a photographer and Balki worked in the mailroom","Both were reporters at different desks","Larry was an editor and Balki was his assistant"],
+    answer:1,
+    explain:"Larry was a photographer and Balki started in the mailroom — humble positions reflecting their status as outsiders working their way up. Larry's ambition to become a writer was the professional engine of most of their workplace storylines."
+  },
+
+  // ════════════════════════════════════
+  //  NEWHART  (3)
+  // ════════════════════════════════════
+  {
+    show:"Newhart",
+    q:"What had Dick Loudon done for a career before buying the Stratford Inn?",
+    choices:["He was a corporate lawyer","He wrote practical how-to books","He was a television producer","He was a college history professor"],
+    answer:1,
+    explain:"Dick wrote practical how-to books — a perfectly mundane profession for a man now surrounded by daily Vermont absurdity. Bob Newhart played Dick's quiet bafflement as a man who had written books about how to handle things, now unable to apply any of it to actual life."
   },
   {
-    era: "Heisei Era · 1991",
-    q: "The Futurian time travelers in 'Godzilla vs. King Ghidorah' claim to come from which century, and what is their stated reason for wanting to erase Godzilla from history?",
-    choices: [
-      "The 22nd century; they claim Godzilla will destroy Japan so thoroughly it can never become an economic superpower, which destabilizes global history",
-      "The 23rd century; they claim Godzilla will destroy Japan in the future and want to save it — but actually want to prevent Japan from becoming the dominant world power",
-      "The 25th century; they claim nuclear proliferation caused by Godzilla's attacks will lead to a third world war",
-      "The 24th century; they claim Godzilla's radiation is slowly poisoning Earth's atmosphere and they must prevent it at the source"
-    ],
-    answer: 1,
-    explain: "The Futurians claim they're saving Japan from Godzilla — but their true motive is to prevent Japan from becoming the dominant global economic power of the 23rd century by erasing the nuclear accident that created Godzilla and replacing him with a controllable King Ghidorah. The film's politics — foreigners trying to sabotage Japanese economic destiny — were deliberately provocative in 1991, at the peak of trade tensions between Japan and the West."
+    show:"Newhart",
+    q:"What was the name of the local talk show that Dick Loudon eventually hosted?",
+    choices:["The Vermont Report","Vermont Today","Talk of the Town","The Green Mountain Hour"],
+    answer:1,
+    explain:"Vermont Today was the local talk show that Dick hosted — a vehicle for bringing topical humor and occasional celebrity visitors into the show's otherwise self-contained Vermont universe. Dick's mild local celebrity was a running source of gentle comedy."
   },
   {
-    era: "Showa & Heisei",
-    q: "Godzilla's dorsal spines glow immediately before he fires his atomic breath. In the Heisei era, his atomic breath undergoes a significant visual and power upgrade late in the series. What is this upgraded form called, and in which film does it first appear?",
-    choices: [
-      "The Hyper Spiral Ray — first appears in Godzilla vs. SpaceGodzilla (1994)",
-      "The Red Spiral Ray — first appears in Godzilla vs. Mechagodzilla II (1993) after Rodan's life energy transfer",
-      "The Nuclear Pulse Beam — introduced in Godzilla vs. King Ghidorah (1991) after the nuclear submarine encounter",
-      "The Burning Ray — first appears in Godzilla vs. Biollante (1989) after absorbing Biollante's spores"
-    ],
-    answer: 1,
-    explain: "The Red Spiral Ray — sometimes called the Spiral Fire Ray — debuts in Godzilla vs. Mechagodzilla II when Rodan's life energy supercharges Godzilla. It is visually distinct from the standard blue-white atomic breath: a tightly coiled red-and-orange spiral beam of devastating power that destroys Super Mechagodzilla in a single sustained blast. It recurs in later Heisei films as Godzilla's upgraded state, most devastatingly in the Destoroyah finale."
+    show:"Newhart",
+    q:"What was the family relationship between the three woodsmen brothers — Larry, Darryl, and Darryl?",
+    choices:["Larry was their nephew","Larry was the eldest brother who spoke for all three","They were actually triplets","Larry had adopted the Darryls"],
+    answer:1,
+    explain:"Larry was the eldest — introducing them every time as 'my brother Darryl and my other brother Darryl.' The Darryls' absolute silence through the entire series made their eventual speech in the finale one of television's most satisfying payoffs."
+  },
+
+  // ════════════════════════════════════
+  //  DIFF'RENT STROKES  (3)
+  // ════════════════════════════════════
+  {
+    show:"Diff'rent Strokes",
+    q:"What was the name of Phillip Drummond's biological daughter who lived in the apartment with the family?",
+    choices:["Patricia Drummond","Kimberly Drummond","Jennifer Drummond","Melissa Drummond"],
+    answer:1,
+    explain:"Kimberly Drummond — played by Dana Plato — was Phillip's daughter, whose relationship with Willis and Arnold evolved from initial awkwardness into genuine sibling affection. Dana Plato's later personal struggles gave the character a complicated afterlife in fans' memories."
+  },
+  {
+    show:"Diff'rent Strokes",
+    q:"Before leaving for The Facts of Life, what role did Mrs. Edna Garrett play in the Drummond household?",
+    choices:["She was the children's private tutor","She was the family housekeeper","She was the family cook","She was the children's nanny"],
+    answer:1,
+    explain:"Mrs. Garrett was the family's housekeeper — a role Charlotte Rae played on Diff'rent Strokes before spinning off to The Facts of Life as housemother at Eastland. Her warmth was identical in both settings; only the uniform changed."
+  },
+  {
+    show:"Diff'rent Strokes",
+    q:"The famous 'very special episode' about a predatory bicycle shop owner featured which WKRP in Cincinnati actor in the role?",
+    choices:["Howard Hesseman","Gordon Jump","Frank Bonner","Tim Reid"],
+    answer:1,
+    explain:"Gordon Jump — best known as WKRP's bumbling station manager Arthur Carlson — played the bicycle shop owner who groomed Arnold and Dudley in 'The Bicycle Man.' The casting of a familiar, likeable actor in the role made the episode more disturbing, which was exactly the point."
+  },
+
+  // ════════════════════════════════════
+  //  THE FACTS OF LIFE  (3)
+  // ════════════════════════════════════
+  {
+    show:"The Facts of Life",
+    q:"What was the real name of the character everyone called Tootie?",
+    choices:["Darlene Ramsey","Dorothy Ramsey","Donna Ramsey","Diana Ramsey"],
+    answer:1,
+    explain:"Dorothy 'Tootie' Ramsey — played by Kim Fields from age ten through young adulthood. Fields' long tenure on the show made Tootie one of the most genuinely developed characters in its run, her growth visible across the seasons rather than implied."
+  },
+  {
+    show:"The Facts of Life",
+    q:"In the later seasons, the main characters opened a business together in Peekskill. What was it?",
+    choices:["Eastland Emporium","Over Our Heads","Blair's Boutique","The Peekskill Shop"],
+    answer:1,
+    explain:"Over Our Heads was the gift and novelty shop the girls ran after leaving school — a business that gave the later seasons a new setting and the sense of actual adult lives forming beyond Eastland's walls."
+  },
+  {
+    show:"The Facts of Life",
+    q:"Who replaced Mrs. Garrett as housemother when Charlotte Rae left the series?",
+    choices:["She was replaced by her cousin","She was replaced by Beverly Ann Stickle, played by Cloris Leachman","The role was written out","She was replaced by a younger housemother named Carol"],
+    answer:1,
+    explain:"Beverly Ann Stickle — Mrs. Garrett's sister, played by Cloris Leachman — took over in Season 7. The choice to make the replacement a family member was cleaner than most cast transitions, and Leachman brought enough authority and oddness to make Beverly Ann entirely her own character."
+  },
+
+  // ════════════════════════════════════
+  //  SILVER SPOONS  (3)
+  // ════════════════════════════════════
+  {
+    show:"Silver Spoons",
+    q:"What was the name of Ricky Stratton's wealthy, man-child father who had a toy train running through his living room?",
+    choices:["Edward Stratton II","Edward Stratton III","Richard Stratton","Robert Stratton"],
+    answer:1,
+    explain:"Edward Stratton III — played by Joel Higgins — was the billionaire who had never grown up, living surrounded by toys, arcade games, and a life-size working train set. His immaturity was the show's visual identity and its central dramatic problem."
+  },
+  {
+    show:"Silver Spoons",
+    q:"Which future Fresh Prince star played Ricky Stratton's best friend Alfonso, showcasing his dancing ability years before Carlton?",
+    choices:["Will Smith","Alfonso Ribeiro","James Avery","DJ Jazzy Jeff"],
+    answer:1,
+    explain:"Alfonso Ribeiro played Alfonso Spears — and his dancing ability was showcased early, giving audiences an preview of what Carlton Banks would do with 'It's Not Unusual' several years later. The connection was irresistible in retrospect."
+  },
+  {
+    show:"Silver Spoons",
+    q:"What kind of home did Edward Stratton III live in — the environment that immediately communicated everything about his character?",
+    choices:["A New York City penthouse","A mansion filled with toys, arcade games, and a working life-size train set","A converted factory in New Jersey","A California beach house"],
+    answer:1,
+    explain:"Edward's home was essentially a giant toy store — the train ran through the living room, arcade games lined the walls, and the whole estate was a physical representation of a man who had money, freedom, and absolutely no intention of being an adult."
+  },
+
+  // ════════════════════════════════════
+  //  THREE'S COMPANY  (3)
+  // ════════════════════════════════════
+  {
+    show:"Three's Company",
+    q:"What was Janet Wood's occupation throughout most of the series?",
+    choices:["She was a nurse","She worked at a flower shop","She was a secretary","She was a schoolteacher"],
+    answer:1,
+    explain:"Janet worked at a flower shop — a job that was cheerful, modest, and entirely consistent with her practical, grounded character. In a household defined by Jack's culinary ambitions and Chrissy's profound bafflement, Janet's modest stability was the load-bearing wall."
+  },
+  {
+    show:"Three's Company",
+    q:"What was the full name of the Ropers' successor as landlord, played by Don Knotts?",
+    choices:["Ralph Furley","Stanley Furley","Harold Furley","Warren Furley"],
+    answer:0,
+    explain:"Ralph Furley fancied himself a sophisticated bachelor and dressed with an ambition that his actual appeal couldn't support. Don Knotts brought his full gift for physical comedy and hapless dignity to the role, making Furley one of his most remembered late-career characters."
+  },
+  {
+    show:"Three's Company",
+    q:"When Suzanne Somers departed, who was the very first replacement as the third roommate?",
+    choices:["Terri Alden","Cindy Snow","Jenny Snow","Diana Prince"],
+    answer:1,
+    explain:"Cindy Snow — Chrissy's cousin, played by Jenilee Harrison — was the first replacement. She lasted about a season before Priscilla Barnes arrived as Terri Alden, a nurse who became the more permanent arrangement."
+  },
+
+  // ════════════════════════════════════
+  //  MAMA'S FAMILY  (2)
+  // ════════════════════════════════════
+  {
+    show:"Mama's Family",
+    q:"From which long-running variety show did Mama's Family originate as a sketch comedy segment?",
+    choices:["The Sonny & Cher Comedy Hour","The Carol Burnett Show","Rowan & Martin's Laugh-In","The Tonight Show"],
+    answer:1,
+    explain:"The Harper family — Thelma, Eunice, and the rest — originated in recurring 'Family' sketches on The Carol Burnett Show. Vicki Lawrence's Mama was so completely realized that she could sustain her own series, even after Burnett's show ended."
+  },
+  {
+    show:"Mama's Family",
+    q:"What was the name of Mama's divorced son who moved back in with his children, reconstituting the multi-generational household?",
+    choices:["Bubba Harper","Vint Harper","Earl Harper","Roy Harper"],
+    answer:1,
+    explain:"Vint Harper — played by Ken Berry — was Thelma's son who came home with his two kids after his marriage fell apart. Three generations crammed under one roof, all of them in Mama's way, was the show's entire domestic situation."
+  },
+
+  // ════════════════════════════════════
+  //  BENSON  (2)
+  // ════════════════════════════════════
+  {
+    show:"Benson",
+    q:"Benson DuBois was a spinoff from which other sitcom, where the character first appeared?",
+    choices:["The Jeffersons","Soap","Barney Miller","All in the Family"],
+    answer:1,
+    explain:"Benson first appeared as the butler on Soap before getting his own series. In his spinoff he moved from the Tate household to work as the governor's mansion manager — and eventually rose to Lieutenant Governor, a remarkable personal arc for any sitcom character."
+  },
+  {
+    show:"Benson",
+    q:"What was the name of the governor that Benson worked for throughout the series?",
+    choices:["Governor Robert Sterns","Governor James Gatling","Governor Thomas Kearney","Governor William Hartley"],
+    answer:1,
+    explain:"Governor James Gatling — played by James Noble — was the well-meaning, slightly befuddled man whose household Benson ran. Their relationship evolved from employer-employee toward something closer to genuine mutual respect, which gave the show warmth beyond its satirical surface."
+  },
+
+  // ════════════════════════════════════
+  //  A DIFFERENT WORLD  (2)
+  // ════════════════════════════════════
+  {
+    show:"A Different World",
+    q:"Which actress became the show's breakout star after Lisa Bonet departed, playing the sharp-tongued Southern belle Whitley Gilbert?",
+    choices:["Jada Pinkett","Jasmine Guy","Regina King","Holly Robinson Peete"],
+    answer:1,
+    explain:"Jasmine Guy played Whitley Gilbert — a Virginia socialite whose snobbery gradually gave way to genuine warmth and self-awareness. When the show was rebuilt around Whitley and Dwayne Wayne after Bonet's departure, it became considerably better."
+  },
+  {
+    show:"A Different World",
+    q:"What was the name of Whitley Gilbert's love interest — the physics student famous for his flip-up glasses?",
+    choices:["Walter Oakes","Dwayne Wayne","Julian Day","Ron Johnson"],
+    answer:1,
+    explain:"Dwayne Wayne — played by Kadeem Hardison — was the engineering student whose flip-up glasses became one of TV's most recognizable accessories. His on-again-off-again relationship with Whitley was the show's central romance, and their wedding episode was one of the season's highest-rated broadcasts."
+  },
+
+  // ════════════════════════════════════
+  //  HEAD OF THE CLASS  (2)
+  // ════════════════════════════════════
+  {
+    show:"Head of the Class",
+    q:"Head of the Class was set in what New York City high school?",
+    choices:["Jefferson High","Monroe High School","Westover High","Hamilton High"],
+    answer:1,
+    explain:"Monroe High School in Manhattan was the setting — specifically the IHP (Individualized Honors Program) classroom where Charlie Moore's gifted students spent most of their time. The urban competitive atmosphere was central to the show's dynamic."
+  },
+  {
+    show:"Head of the Class",
+    q:"Which actor — already known from WKRP in Cincinnati — played IHP teacher Charlie Moore?",
+    choices:["Bill Macy","Howard Hesseman","Richard Lewis","John Ritter"],
+    answer:1,
+    explain:"Howard Hesseman — Dr. Johnny Fever from WKRP in Cincinnati — played Charlie Moore, a stand-up comedian who took the teaching job for practical reasons and stayed for more idealistic ones. His comedy background gave Charlie a rapport with students that more conventional TV teachers couldn't achieve."
+  },
+
+  // ════════════════════════════════════
+  //  MR. BELVEDERE  (2)
+  // ════════════════════════════════════
+  {
+    show:"Mr. Belvedere",
+    q:"What was Mr. Belvedere's actual first name — the name almost nobody used?",
+    choices:["Geoffrey","Reginald","Lynn","Alistair"],
+    answer:2,
+    explain:"Lynn Aloysius Belvedere — formally trained, impeccably mannered, and entirely out of place in a chaotic American suburban household. Christopher Hewett played him with magnificent British formality that never quite disguised the genuine affection he developed for the Owens family despite himself."
+  },
+  {
+    show:"Mr. Belvedere",
+    q:"In what Pennsylvania city was the Owens family home — Mr. Belvedere's American posting?",
+    choices:["Altoona","Beaver Falls","Erie","Scranton"],
+    answer:1,
+    explain:"Beaver Falls, Pennsylvania was the Owens family's home — a specific, real place rather than a fictional suburb, which gave the show an unusual geographic specificity. Mr. Belvedere's casual references to more glamorous previous postings kept the class contrast alive throughout."
+  },
+
+  // ════════════════════════════════════
+  //  MY TWO DADS  (2)
+  // ════════════════════════════════════
+  {
+    show:"My Two Dads",
+    q:"Why did two very different men end up jointly raising a teenage girl in My Two Dads?",
+    choices:["Her mother died and left custody jointly in her will","Both had dated her mother who died, and paternity couldn't be established, so a judge awarded joint custody","Her divorced parents had both remarried and both new partners ended up raising her","Her father and uncle wanted custody and agreed to share it"],
+    answer:1,
+    explain:"Neither Michael Taylor (the free-spirited artist) nor Joey Harris (the conservative businessman) could prove paternity, so Judge Margaret Wilbur awarded joint custody to both. The premise was genuinely unusual for its era and the show committed to it seriously."
+  },
+  {
+    show:"My Two Dads",
+    q:"Which actress played Nicole Bradford, the teenage girl at the center of the arrangement?",
+    choices:["Candace Cameron","Staci Keanan","Tina Yothers","Soleil Moon Frye"],
+    answer:1,
+    explain:"Staci Keanan played Nicole Bradford — a teenager navigating life with two fundamentally incompatible father figures who had agreed to raise her together. Her chemistry with Paul Reiser and Greg Evigan made the unlikely premise feel natural."
+  },
+
+  // ════════════════════════════════════
+  //  PUNKY BREWSTER  (2)
+  // ════════════════════════════════════
+  {
+    show:"Punky Brewster",
+    q:"What was the name of Punky Brewster's dog, who was abandoned alongside her?",
+    choices:["Spot","Brandon","Freckles","Buddy"],
+    answer:1,
+    explain:"Brandon was Punky's dog — present from the beginning, abandoned with her. Henry Warnimont's decision to take both of them in was the show's foundational act of accidental decency, and Brandon remained a constant presence throughout the series."
+  },
+  {
+    show:"Punky Brewster",
+    q:"What was Henry Warnimont's profession — the quiet detail that explained his careful eye and his initially cautious approach to people?",
+    choices:["He was a retired teacher","He was a photographer","He was a small business owner","He was a retired civil servant"],
+    answer:1,
+    explain:"Henry was a photographer — a man trained to observe carefully before committing. George Gaynes played his gradual thawing toward Punky with quiet understatement, making the warmth of the eventual relationship feel genuinely earned."
+  },
+
+  // ════════════════════════════════════
+  //  KATE & ALLIE  (2)
+  // ════════════════════════════════════
+  {
+    show:"Kate & Allie",
+    q:"What was the living arrangement that gave Kate & Allie its premise?",
+    choices:["Two sisters-in-law moved in together after both divorced","Two divorced women and their children moved in together in New York City","Two divorcées met at a support group and became roommates","Two college friends reunited and shared an apartment as adults"],
+    answer:1,
+    explain:"Kate McArdle and Allie Lowell — played by Susan Saint James and Jane Curtin — were old friends who both divorced and moved in together with their respective children. The show was ahead of its time in presenting divorced women as full adults navigating real lives rather than cautionary tales."
+  },
+  {
+    show:"Kate & Allie",
+    q:"How would you characterize the contrasting personalities that drove Kate and Allie's friendship dynamic?",
+    choices:["Kate was book-smart, Allie was street-smart","Kate was free-spirited and adventurous, Allie was more cautious and traditional","Kate was the organizer, Allie was the impulsive one","Kate was career-focused, Allie was the maternal one"],
+    answer:1,
+    explain:"Kate's free-spirited energy and Allie's conventional caution was the show's engine — two women who were better together than apart, and whose differences complemented rather than drove each other away. It was a friendship comedy rather than a conflict comedy, which was rarer than it should have been."
+  },
+
+  // ════════════════════════════════════
+  //  CHARLES IN CHARGE  (2)
+  // ════════════════════════════════════
+  {
+    show:"Charles in Charge",
+    q:"When Charles in Charge was revived for syndication, the original family was replaced. What was the original family's surname?",
+    choices:["Pembroke","Henderson","Powell","Franklin"],
+    answer:0,
+    explain:"The Pembrokes were Charles's original employers — but when the show was revived for first-run syndication after initial cancellation, they were replaced by the Powell family. Most viewers who remember the show at all remember the Powell years rather than the Pembroke era."
+  },
+  {
+    show:"Charles in Charge",
+    q:"What was the name of Charles's irresponsible best friend who was a reliable source of trouble?",
+    choices:["Buddy Lembeck","Frankie Muñoz","Eddie Moran","Tommy Lukowicz"],
+    answer:0,
+    explain:"Buddy Lembeck — played by Willie Aames — was Charles's best friend, whose schemes provided the show's most dependable comic fuel. His loyalty to Charles was as genuine as his judgment was poor, which is an excellent combination for a supporting character."
+  },
+
+  // ════════════════════════════════════
+  //  SAVED BY THE BELL  (2)
+  // ════════════════════════════════════
+  {
+    show:"Saved by the Bell",
+    q:"What was the name of the California high school where the show was set?",
+    choices:["Valley High","Bayside High School","Westside High","Pacific High"],
+    answer:1,
+    explain:"Bayside High School in Palisades, California — a fictional school in a fictional neighborhood that somehow felt immediately recognizable to anyone who had navigated the social hierarchies of American high school."
+  },
+  {
+    show:"Saved by the Bell",
+    q:"What was the name of Zack Morris's primary love interest throughout the series?",
+    choices:["Lisa Turtle","Kelly Kapowski","Jessie Spano","Tori Scott"],
+    answer:1,
+    explain:"Kelly Kapowski — played by Tiffani Thiessen — was the cheerleader at the center of Zack's perpetual romantic attention. Their relationship was the show's central romance, even when temporarily replaced by other arrangements that the audience never entirely accepted."
+  },
+
+  // ════════════════════════════════════
+  //  SEINFELD  (2)
+  // ════════════════════════════════════
+  {
+    show:"Seinfeld",
+    q:"What was the first name of Jerry's neighbor Kramer — a detail not revealed until a later season?",
+    choices:["Kenny","Cosmo","Conrad","Calvin"],
+    answer:1,
+    explain:"Cosmo Kramer — his first name was withheld for several seasons and revealed late as a running joke payoff. Michael Richards made the name feel earned: no ordinary name could have matched the force of nature that entered Jerry's apartment through the unlocked door."
+  },
+  {
+    show:"Seinfeld",
+    q:"When George Costanza wanted to impress women, what profession did he most frequently claim to be?",
+    choices:["A marine biologist","An architect","A doctor","A movie producer"],
+    answer:1,
+    explain:"George most frequently claimed to be an architect — choosing it for its implied creativity and respectability. He also memorably claimed to be a marine biologist in one episode, which resulted in one of the series' most celebrated monologues involving a golf ball and a whale."
+  },
+
+  // ════════════════════════════════════
+  //  AMEN  (2)
+  // ════════════════════════════════════
+  {
+    show:"Amen",
+    q:"What was the dual professional life of Deacon Ernest Frye — the two roles that gave him power in overlapping spheres?",
+    choices:["He was a retired judge and church deacon","He was a successful attorney and the deacon of his church","He was a high school principal and youth minister","He was a city councilman and church treasurer"],
+    answer:1,
+    explain:"Ernest Frye — played by Sherman Hemsley, reuniting with the Norman Lear world after The Jeffersons — was both a successful attorney and the deacon of First Community Church in Philadelphia. The combination gave him influence in two different communities and considerable opportunity to exercise both."
+  },
+  {
+    show:"Amen",
+    q:"What was the name of Deacon Frye's daughter, whose romance with the new pastor was the show's central relationship?",
+    choices:["Patricia Frye","Thelma Frye","Sandra Frye","Gloria Frye"],
+    answer:1,
+    explain:"Thelma Frye — played by Anna Maria Horsford — was Ernest's daughter, whose relationship with the Reverend Reuben Gregory was central to the show. Ernest's sustained disapproval of the match was, predictably, total, creatively expressed, and entirely ineffective."
   }
-];
+
+]; // end allQuestions
 
 function shuffle(arr) {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
 }
 
-let shuffled = shuffle([...questions]);
-let current = 0;
-let score = 0;
-let answered = false;
+let questions=[],current=0,score=0,wrong=0,answered=false;
 
-function loadQuestion() {
-  const q = shuffled[current];
-  document.getElementById('q-num').textContent = current + 1;
-  document.getElementById('q-era-tag').textContent = q.era;
-  document.getElementById('question-text').textContent = q.q;
-  document.getElementById('progress-label').textContent = `Question ${current + 1} of ${shuffled.length}`;
-  document.getElementById('progress-score').textContent = `Score: ${score}`;
-  document.getElementById('progress-bar').style.width = `${(current / shuffled.length) * 100}%`;
-
-  const section = document.getElementById('choices-section');
-  section.innerHTML = '';
-  const letters = ['A', 'B', 'C', 'D'];
-  q.choices.forEach((choice, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'choice-btn';
-    btn.innerHTML = `<span class="choice-letter">${letters[i]}</span><span>${choice}</span>`;
-    btn.onclick = () => selectAnswer(i);
-    section.appendChild(btn);
-  });
-
-  document.getElementById('explanation').classList.remove('show');
-  const nb = document.getElementById('next-btn');
-  nb.style.display = 'none';
-  const banner = document.getElementById('feedback-banner');
-  banner.className = 'feedback-banner';
-  banner.textContent = '';
-  answered = false;
-}
-
-function selectAnswer(selected) {
-  if (answered) return;
-  answered = true;
-
-  const q = shuffled[current];
-  const buttons = document.querySelectorAll('.choice-btn');
-  const banner = document.getElementById('feedback-banner');
-  buttons.forEach(btn => btn.disabled = true);
-
-  if (selected === q.answer) {
-    score++;
-    buttons[selected].classList.add('correct');
-    banner.className = 'feedback-banner correct-bg';
-    banner.textContent = '✓  Correct — Tokyo Stands';
-  } else {
-    buttons[selected].classList.add('wrong');
-    buttons[q.answer].classList.add('reveal-correct');
-    banner.className = 'feedback-banner wrong-bg';
-    banner.textContent = '✗  Incorrect — Tokyo Falls';
-  }
-
-  document.getElementById('progress-score').textContent = `Score: ${score}`;
-  document.getElementById('explanation-text').textContent = q.explain;
-  document.getElementById('explanation').classList.add('show');
-
-  const nb = document.getElementById('next-btn');
-  nb.style.display = 'block';
-  nb.textContent = current < shuffled.length - 1 ? 'Next →' : 'Final Score →';
-
-  setTimeout(() => {
-    nb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }, 150);
-}
-
-function nextQuestion() {
-  current++;
-  if (current >= shuffled.length) {
-    showResults();
-  } else {
-    loadQuestion();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-}
-
-function showResults() {
-  document.getElementById('quiz-card').style.display = 'none';
-  document.getElementById('progress-container').style.display = 'none';
-
-  const pct = Math.round((score / shuffled.length) * 100);
-  document.getElementById('final-score').textContent = `${score} / ${shuffled.length}`;
-  document.getElementById('final-pct').textContent = `${pct}% Accuracy`;
-  document.getElementById('final-correct').textContent = score;
-  document.getElementById('final-wrong').textContent = shuffled.length - score;
-
-  let title, sub;
-  if (pct >= 90) {
-    title = 'Toho Master — King of the Monsters';
-    sub = 'Extraordinary. Your knowledge of the Toho universe is encyclopedic. Serizawa himself would trust you with the Oxygen Destroyer.';
-  } else if (pct >= 75) {
-    title = 'G-Force Commander';
-    sub = 'Solid command of the kaiju canon across both eras. A few gaps in the deeper archive, but you clearly grew up watching Tokyo get leveled.';
-  } else if (pct >= 60) {
-    title = 'JSDF Veteran';
-    sub = 'You know your Godzilla — the major battles, the major monsters. The fine details of Seatopia and the Shobijin translation may have slipped by.';
-  } else if (pct >= 40) {
-    title = 'Civilian Evacuee';
-    sub = 'You saw the monster and ran. A respectable instinct. Time to revisit the Toho archive from the beginning.';
-  } else {
-    title = 'Godzilla Stomped You';
-    sub = 'Tokyo has fallen. Your knowledge of the kaiju canon needs significant reinforcement. Start with 1954 and work forward — there is no shame in the classics.';
-  }
-
-  document.getElementById('results-title').textContent = title;
-  document.getElementById('verdict-title').textContent = 'Toho Verdict';
-  document.getElementById('verdict-sub').textContent = sub;
-  document.getElementById('results-screen').style.display = 'block';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function restartQuiz() {
-  shuffled = shuffle([...questions]);
-  current = 0; score = 0; answered = false;
-  document.getElementById('quiz-card').style.display = 'block';
-  document.getElementById('progress-container').style.display = 'block';
-  document.getElementById('results-screen').style.display = 'none';
+function startQuiz(){
+  questions=shuffle(allQuestions);
+  current=0;score=0;wrong=0;answered=false;
+  document.getElementById('start-screen').style.display='none';
+  document.getElementById('quiz-screen').style.display='block';
+  document.getElementById('s-correct').textContent=0;
+  document.getElementById('s-wrong').textContent=0;
+  document.getElementById('s-remain').textContent=questions.length;
   loadQuestion();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-loadQuestion();
+function loadQuestion(){
+  answered=false;
+  const q=questions[current];
+  const letters=['A','B','C','D'];
+  document.getElementById('show-tag').textContent=q.show;
+  document.getElementById('q-num').textContent=`QUESTION ${current+1}`;
+  document.getElementById('q-text').textContent=q.q;
+  document.getElementById('q-count').textContent=`Question ${current+1} of ${questions.length}`;
+  document.getElementById('q-pct').textContent=`${Math.round(current/questions.length*100)}%`;
+  document.getElementById('prog-fill').style.width=`${(current/questions.length)*100}%`;
+  document.getElementById('explanation').style.display='none';
+  document.getElementById('next-btn').style.display='none';
+  const cd=document.getElementById('choices');
+  cd.innerHTML='';
+  q.choices.forEach((c,i)=>{
+    const btn=document.createElement('button');
+    btn.className='choice-btn';
+    btn.innerHTML=`<span class="choice-letter">${letters[i]}</span><span>${c}</span>`;
+    btn.onclick=()=>selectAnswer(i);
+    cd.appendChild(btn);
+  });
+}
+
+function selectAnswer(idx){
+  if(answered)return;
+  answered=true;
+  const q=questions[current];
+  document.querySelectorAll('.choice-btn').forEach((btn,i)=>{
+    btn.disabled=true;
+    if(i===q.answer)btn.classList.add(idx===q.answer?'correct':'reveal-correct');
+    if(i===idx&&idx!==q.answer)btn.classList.add('wrong');
+  });
+  if(idx===q.answer)score++;else wrong++;
+  document.getElementById('s-correct').textContent=score;
+  document.getElementById('s-wrong').textContent=wrong;
+  document.getElementById('s-remain').textContent=questions.length-current-1;
+  const exp=document.getElementById('explanation');
+  exp.textContent=q.explain;
+  exp.style.display='block';
+  const nb=document.getElementById('next-btn');
+  nb.style.display='block';
+  nb.textContent=current+1<questions.length?'NEXT QUESTION →':'SEE MY SCORE →';
+}
+
+function nextQuestion(){
+  current++;
+  if(current>=questions.length)showResults();else loadQuestion();
+}
+
+function showResults(){
+  document.getElementById('quiz-screen').style.display='none';
+  document.getElementById('results-screen').style.display='block';
+  const pct=Math.round(score/questions.length*100);
+  document.getElementById('final-score').textContent=score;
+  document.getElementById('r-correct').textContent=score;
+  document.getElementById('r-wrong').textContent=wrong;
+  document.getElementById('r-pct').textContent=pct+'%';
+  let trophy,grade;
+  if(pct>=92){trophy='🏆';grade="100 questions and you barely flinched. You ARE the 1980s.";}
+  else if(pct>=80){trophy='📺';grade="Outstanding. You watched these shows and you were paying attention.";}
+  else if(pct>=66){trophy='📻';grade="Strong fan knowledge across a decade of great television.";}
+  else if(pct>=50){trophy='📡';grade="A solid base with some gaps. 100 questions is a long way to go.";}
+  else{trophy='🔌';grade="The '80s had a lot of television. Go back and do your homework.";}
+  document.getElementById('trophy-icon').textContent=trophy;
+  document.getElementById('grade-label').textContent=grade;
+}
+
+function restartQuiz(){
+  document.getElementById('results-screen').style.display='none';
+  startQuiz();
+}
 </script>
 </body>
 </html>
